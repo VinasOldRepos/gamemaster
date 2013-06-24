@@ -16,6 +16,7 @@
 	// Framework Classes
 	use SaSeed\View;
 	use SaSeed\Session;
+	use SaSeed\General;
 
 	// Model Classes
 	use Application\Model\Menu;
@@ -196,7 +197,7 @@
 			$int_knowledge		= (isset($_POST['int_knowledge'])) ? trim($_POST['int_knowledge']) : false;
 			$int_treasure_min	= (isset($_POST['int_treasure_min'])) ? trim($_POST['int_treasure_min']) : false;
 			$int_treasure_max	= (isset($_POST['int_treasure_max'])) ? trim($_POST['int_treasure_max']) : false;
-			$tx_description		= (isset($_POST['tx_description'])) ? trim($_POST['tx_description']) : false;
+			$tx_description		= (isset($_POST['tx_description'])) ? General::quotes(trim($_POST['tx_description'])) : false;
 			$return				= false;
 			// If values were sent
 			if (($vc_id !== false) && ($vc_name !== false) && ($int_hits_min !== false) && ($int_hits_max !== false) && ($int_me !== false) && ($int_damage_min !== false) && ($int_damage_max !== false) && ($int_ds !== false) && ($int_knowledge !== false) && ($int_treasure_min !== false) && ($int_treasure_max !== false) && ($tx_description !== false)) {
@@ -242,7 +243,7 @@
 			$int_knowledge		= (isset($_POST['int_knowledge'])) ? trim($_POST['int_knowledge']) : false;
 			$int_treasure_min	= (isset($_POST['int_treasure_min'])) ? trim($_POST['int_treasure_min']) : false;
 			$int_treasure_max	= (isset($_POST['int_treasure_max'])) ? trim($_POST['int_treasure_max']) : false;
-			$tx_description		= (isset($_POST['tx_description'])) ? trim($_POST['tx_description']) : false;
+			$tx_description		= (isset($_POST['tx_description'])) ? General::quotes(trim($_POST['tx_description'])) : false;
 			$return				= false;
 			// If values were sent
 			if (($id_monster !== false) && ($vc_id !== false) && ($vc_name !== false) && ($int_hits_min !== false) && ($int_hits_max !== false) && ($int_me !== false) && ($int_damage_min !== false) && ($int_damage_max !== false) && ($int_ds !== false) && ($int_knowledge !== false) && ($int_treasure_min !== false) && ($int_treasure_max !== false) && ($tx_description !== false)) {
