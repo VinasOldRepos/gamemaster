@@ -2,6 +2,14 @@
 				<div class="separator"><img src="/gamemaster/Application/View/img/menu_detail_01.gif" width="49" height="75" border="0" /></div>
 				<div class="menu">
 					<div class="item_separator">&nbsp;</div>
+					<div class="<?php echo $GLOBALS['menu']['maps']['css'] ?>" key="Maps">
+						maps
+					</div>
+					<div class="item_separator">&nbsp;</div>
+					<div class="<?php echo $GLOBALS['menu']['textures']['css'] ?>" key="Textures">
+						textures
+					</div>
+					<div class="item_separator">&nbsp;</div>
 					<div class="<?php echo $GLOBALS['menu']['monsters']['css'] ?>" key="Monsters">
 						monsters
 					</div>
@@ -11,6 +19,23 @@
 					</div>
 					<br />
 					<div class="details" id="blank_display" style="display: <?php echo $GLOBALS['menu']['blank']['display'] ?>;">
+					</div>
+					<div class="details" id="Maps" style="display: <?php echo $GLOBALS['menu']['maps']['display'] ?>;">
+						<div class="<?php echo $GLOBALS['menu']['maps']['opt1_css'] ?>" key="Insert">insert</div>
+						<div class="<?php echo $GLOBALS['menu']['maps']['opt2_css'] ?>" key="Search">search</div>
+						<div class="<?php echo $GLOBALS['menu']['maps']['opt3_css'] ?>" key="EditWorld">edit world</div>
+					</div>
+					<div class="details" id="Textures" style="display: <?php echo $GLOBALS['menu']['textures']['display'] ?>;">
+						<div style="width:	250px;">
+							<div style="float: left;" id="Textures">
+								<div class="<?php echo $GLOBALS['menu']['textures']['opt1_css'] ?>" key="Insert">insert</div>
+								<div class="<?php echo $GLOBALS['menu']['textures']['opt2_css'] ?>" key="SearchTiles">search map tiles</div>
+							</div>
+							<div style="float: right;" id="Textures">
+								<div class="<?php echo $GLOBALS['menu']['textures']['opt3_css'] ?>" key="SearchMapIcons">search map icons</div>
+								<div class="<?php echo $GLOBALS['menu']['textures']['opt4_css'] ?>" key="SearchImages">search images</div>
+							</div>
+						</div>
 					</div>
 					<div class="details" id="Monsters" style="display: <?php echo $GLOBALS['menu']['monsters']['display'] ?>;">
 						<div class="<?php echo $GLOBALS['menu']['monsters']['opt1_css'] ?>" key="Insert">insert</div>

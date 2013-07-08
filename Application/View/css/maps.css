@@ -1,0 +1,43 @@
+.formInsertCourse {
+	width:			400px;
+	position:		absolute;
+	margin-left:	100px;
+}
+
+.bt_cancel {
+	float:	left;
+}
+
+.bt_ok {
+	float:	right;
+}
+
+.form_buttons {
+	margin-left:	230px;
+	margin-top:		20px;
+	width:			110px;
+}
+
+.not_shown {
+	display:	none;
+}
+
+.map_area {
+	margin-top:		80px;
+	margin-left:	150px;
+}
+
+.map_row {
+	width:				382px;
+	height:				35px;
+}
+
+.map_tile {
+	width:			35px;
+	height:			35px;
+	border-width:	1px;
+}
+
+.map_tile:hover {
+	cursor:	pointer;
+}

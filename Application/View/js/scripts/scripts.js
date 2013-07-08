@@ -192,7 +192,9 @@ function actionURL() {
 	$thispage	= $("#this_page").val();
 	$action		= $("#action").val();
 	if (($thispage) && ($action)) {
-		if ($thispage == 'monsters') {
+		if ($thispage == 'textures') {
+			$return	= '/gamemaster/Textures/'+$action;
+		} else if ($thispage == 'monsters') {
 			$return	= '/gamemaster/Monsters/'+$action;
 		} else if ($thispage == 'users') {
 			$return	= '/gamemaster/Users/'+$action;
@@ -217,6 +219,11 @@ function contentShowData($object, $data) {
 function contentShow($object) {
 	$($object).hide();
 	$($object).show(400);
+}
+
+// Handles static content being hidden
+function contentHide($object) {
+	$($object).hide(200);
 }
 
 // Opens fancybox

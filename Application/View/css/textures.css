@@ -1,0 +1,95 @@
+.formInsertCourse {
+	width:			400px;
+	position:		absolute;
+	margin-left:	100px;
+}
+
+.bt_cancel {
+	float:	left;
+}
+
+.bt_ok {
+	float:	right;
+}
+
+.form_buttons {
+	margin-left:	230px;
+	margin-top:		20px;
+	width:			110px;
+}
+
+.result_id {
+	width:		50px;
+	text-align:	center;
+}
+
+.result_tiletype {
+	width:		150px;
+	text-align:	left;
+}
+
+.result_tilename {
+	width:		300px;
+	text-align:	left;
+}
+
+.result_tile {
+	width:		50px;
+	text-align:	center;
+}
+
+.details_body {
+	margin:				0px;
+	border:				0px;
+	background-color:	#FFFFFF;
+	text-align:	 		center;
+	font-family:		Arial, Helvetica, sans-serif;
+	font-size:			12px;
+	color:				#FFF;
+}
+
+.details_container {
+	margin-left:	auto;
+	margin-right:	auto;
+	width:			800px;
+	height:			500px;
+	text-align:	 	center;
+}
+
+.delete_tile {
+	position:		absolute;
+	float:			left;
+	margin-top:		200px;
+	margin-left:	90px;
+	color: 			#FB6F6F;
+}
+
+.delete_tile:hover {
+	cursor:	pointer;
+}
+
+.not_shown, .img_input {
+	display:	none;
+}
+
+.img_resultrow {
+	height:	18px;
+}
+
+.result_header_tile {
+	margin-right:		1px;
+	padding-left:		10px;
+	padding-right:		10px;
+	float:				left;
+	color:				#FFFFFF;
+	background-color:	#000;
+	font-weight:		bold;
+}
+
+.result_header_tile:hover {
+	cursor:	pointer;
+}
+
+.results {
+	margin-left:	180px;
+}

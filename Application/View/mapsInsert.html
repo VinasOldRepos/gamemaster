@@ -17,20 +17,23 @@
 			<br /><br /><br /><br /><br /><br /><br />
 			<div class="content">
 				<br />
-				<span class="title_01" id="main_title">New User</span>
+				<span class="title_01" id="main_title">New Map</span>
 				<br /><br />
 				<div class="formInsertCourse" id="formInsertCourse">
 					<fieldset style="width: 500px;">
 						<form class="form">
-							<label for="id_branch">Profile:</label>
-							<select name="id_profile" id="id_profile" class="main_text_input" style="width: 206px;" />
-								<?php echo $profiles; ?>
+							<input type="hidden" name="action" id="action" />
+							<label for="id_world">World:</label>
+							<select name="id_world" id="id_world" class="main_text_input" style="width: 206px;" />
+								<?php echo $worlds; ?>
 							</select>
-							<label for="course">User:</label> <input type="text" name="vc_user" id="vc_user" maxlength="100" class="main_text_input" />
-							<label for="course">Email:</label> <input type="text" name="vc_email" id="vc_email" maxlength="100" class="main_text_input" />
-							<label for="course">Password:</label> <input type="password" name="password1" id="password1" maxlength="100" class="main_text_input" />
-							<label for="course">Confirm Password:</label> <input type="password" name="password2" id="password2" maxlength="100" class="main_text_input" />
-							<div class="form_buttons">
+							<div id="tiletype" class="not_shown">
+								<label for="id_tiletype">Background Type:</label>
+								<select name="id_tiletype" id="id_tiletype" class="main_text_input" style="width: 206px;" />
+									<?php echo $tiletypes; ?>
+								</select>
+							</div>
+							<div class="form_buttons not_shown">
 								<div class="bt_cancel">
 									<img class="form_button" src="/gamemaster/Application/View/img/bt_cancel.png" width="41" height="41" border="0" /><br />
 									<span class="text_02">Cancel</span>
@@ -42,8 +45,8 @@
 							</div>
 						</form>
 					</fieldset>
+					<div class="map_area" id="map_area"></div>
 				</div>
-				<div class="message_area" id="message_area" style="display: none;"></div>
 			</div>
 		</div>
 	</body>

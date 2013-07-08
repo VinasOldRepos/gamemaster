@@ -58,7 +58,7 @@
  		}
 
 		/*
-		Prints out new course page - New()
+		Prints out new User page - Insert()
 			@return format	- print
 		*/
 		public function Insert() {

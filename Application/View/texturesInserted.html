@@ -12,11 +12,17 @@
 	<body class="body" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0">
 		<div class="container">
 			<div class="main_menu">
-				<?php \SaSeed\View::render("partial_mainMenu"); ?>
+			<?php \SaSeed\View::render("partial_mainMenu"); ?>
 			</div>
 			<br /><br /><br /><br /><br /><br /><br />
 			<div class="content">
-				CONTENT
+				<br />
+				<span class="title_01" id="main_title">Texture Inserted Succefully!</span>
+				<br /><br /><br />
+				<img src="/gamemaster/Application/View/img/textures/<?php echo $texture ?>">
+				<br /><br /><br />
+				<a href="/gamemaster/Textures/insert" class="text_01"><u>Add another Texture</u></a>
+				</div>
 			</div>
 		</div>
 	</body>

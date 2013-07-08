@@ -85,7 +85,8 @@ class dbFunctions {
 			$conditions		= substr($conditions, 0, $str_pos);
 		}
 		// Define tabela de contagem
-		$count_table		= $this->defineCountTable($table);
+		//$count_table		= $this->defineCountTable($table);
+		$count_table		= $table;
 		// Calcula paginação
 		$select_what		= 'count(*) AS total';
 		$tot_rows			= $db->getRow($count_table, $conditions, $select_what);
