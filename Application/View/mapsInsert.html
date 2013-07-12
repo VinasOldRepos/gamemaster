@@ -15,37 +15,73 @@
 			<?php \SaSeed\View::render("partial_mainMenu"); ?>
 			</div>
 			<br /><br /><br /><br /><br /><br /><br />
-			<div class="content">
-				<br />
+			<div class="content_map">
 				<span class="title_01" id="main_title">New Map</span>
-				<br /><br />
+				<br />
 				<div class="formInsertCourse" id="formInsertCourse">
-					<fieldset style="width: 500px;">
-						<form class="form">
-							<input type="hidden" name="action" id="action" />
-							<label for="id_world">World:</label>
-							<select name="id_world" id="id_world" class="main_text_input" style="width: 206px;" />
-								<?php echo $worlds; ?>
-							</select>
-							<div id="tiletype" class="not_shown">
-								<label for="id_tiletype">Background Type:</label>
-								<select name="id_tiletype" id="id_tiletype" class="main_text_input" style="width: 206px;" />
-									<?php echo $tiletypes; ?>
+					<div style="float: left;">
+						<fieldset style="width: 500px;">
+							<form class="form">
+								<input type="hidden" name="action" id="action" value="" />
+								<input type="hidden" name="target_tile_id" id="target_tile_id" value="" />
+								<label for="id_world">World:</label>
+								<select name="id_world" id="id_world" class="main_text_input" style="width: 206px;" />
+									<?php echo $worlds; ?>
 								</select>
-							</div>
-							<div class="form_buttons not_shown">
-								<div class="bt_cancel">
-									<img class="form_button" src="/gamemaster/Application/View/img/bt_cancel.png" width="41" height="41" border="0" /><br />
-									<span class="text_02">Cancel</span>
+								<div id="tiletype" class="not_shown">
+									<label for="id_tiletype">Background Type:</label>
+									<select name="id_tiletype" id="id_tiletype" class="main_text_input" style="width: 206px;" />
+										<?php echo $tiletypes; ?>
+									</select>
 								</div>
-								<div class="bt_ok new_user">
-									<img class="form_button" src="/gamemaster/Application/View/img/bt_ok.png" width="41" height="41" border="0" /><br />
-									<span class="text_02">OK</span>
+								<div id="branch_field" class="not_shown">
+									<label for="id_branch">Select Branch:</label>
+									<select name="id_branch" id="id_branch" class="main_text_input" style="width: 206px;" />
+										<?php echo $branches; ?>
+									</select>
+									<label for="id_field">Field:</label>
+									<select name="id_field" id="id_field" class="main_text_input" style="width: 206px;" />
+									</select>
+									<label for="level">Level:</label>
+									<input type="text" name="level" id="level" class="main_text_input"	 />
+									</select>
 								</div>
-							</div>
-						</form>
-					</fieldset>
-					<div class="map_area" id="map_area"></div>
+								<div class="form_buttons not_shown">
+									<div class="bt_cancel">
+										<img class="form_button" src="/gamemaster/Application/View/img/bt_cancel.png" width="41" height="41" border="0" /><br />
+										<span class="text_02">Cancel</span>
+									</div>
+									<div class="bt_ok new_user">
+										<img class="form_button" src="/gamemaster/Application/View/img/bt_ok.png" width="41" height="41" border="0" /><br />
+										<span class="text_02">OK</span>
+									</div>
+								</div>
+							</form>
+						</fieldset>
+						<br />
+						<div class="map_area" id="map_area"></div>
+					</div>
+					<div class="map_interaction not_shown" id="map_interaction" align="center">
+						<span class="title_01">What do you wanna do?</span>
+						<br /><br /><br />
+						<div class="tile_options">
+							<div class="text_01 tile_opt" key="listIcons">Insert an icon</div><br /><br />
+							<div class="text_01 tile_opt" key="link_tile">Link this tile to another map</div><br /><br />
+							<div class="text_01 tile_opt" key="change_background">Change background tile</div><br /><br />
+							<div class="text_01 tile_opt" key="delete_tileinfo">Delete all info realted (but background)</div><br /><br />
+						</div>
+						<div class="opt_details" id="listIcons">
+						</div>
+						<div class="opt_details" id="link_tile">
+							link
+						</div>
+						<div class="opt_details" id="change_background">
+							change
+						</div>
+						<div class="opt_details" id="delete_tileinfo">
+							delete
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

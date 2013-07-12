@@ -26,12 +26,20 @@
 	setlocale(LC_MONETARY,	'pt_BR');
 	setlocale(LC_ALL,		'Portuguese_Brazil.1252 ');
 
-	// Database Settings (LOCAL)
-	$conection_config = parse_ini_file(APP_PATH.'/SaSeed/Config/database.ini', true);
+	// Database Settings - GameMaster DB
+	$conection_config = parse_ini_file(APP_PATH.'/SaSeed/Config/database_gm.ini', true);
 	define('DB_HOST', $conection_config['DATABASE_'.ENV]['local']);
 	define('DB_USER', $conection_config['DATABASE_'.ENV]['user']);
 	define('DB_PASS', $conection_config['DATABASE_'.ENV]['password']);
 	define('DB_NAME', $conection_config['DATABASE_'.ENV]['dbname']);
+	//define('DB_DRIVER', $conection_config['DATABASE_'.ENV]['driver']); // to be used with PDO
+
+	// Database Settings - QuestionMaster DB
+	$conection_config = parse_ini_file(APP_PATH.'/SaSeed/Config/database_qm.ini', true);
+	define('DB_HOST_Q', $conection_config['DATABASE_'.ENV]['local']);
+	define('DB_USER_Q', $conection_config['DATABASE_'.ENV]['user']);
+	define('DB_PASS_Q', $conection_config['DATABASE_'.ENV]['password']);
+	define('DB_NAME_Q', $conection_config['DATABASE_'.ENV]['dbname']);
 	//define('DB_DRIVER', $conection_config['DATABASE_'.ENV]['driver']); // to be used with PDO
 
 	// XSS String List

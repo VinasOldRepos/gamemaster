@@ -101,10 +101,6 @@
 			return $return;
 		}
 
-
-
-
-
 		/*
 		Get All AreaTypes - getAllAreaTypes($id)
 			@return format	- Mixed array
@@ -160,6 +156,24 @@
 			$select_what	= '*';
 			$conditions		= "1";
 			$return			= $dbFunctions->getPage($select_what, $table, $conditions, $max, $num_page, $ordering, $direction);
+			// Return
+			return $return;
+		}
+
+		/*
+		Get All Icons - getAllIcons(
+			@return format	- Mixed array
+		*/
+		public function getAllIcons() {
+			// Database Connection
+			$db				= $GLOBALS['db'];
+			// Initialize variables
+			$return			= false;
+			// Query set up
+			$table			= 'tb_icon';
+			$select_what	= '*';
+			$conditions		= "1 ORDER BY vc_name";
+			$return			= $db->getAllRows_Arr($table, $select_what, $conditions);
 			// Return
 			return $return;
 		}

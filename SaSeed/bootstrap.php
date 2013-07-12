@@ -56,5 +56,3 @@
 	// Call in Controller and Functions whithin proper environment
 	$obj = new $GLOBALS['controller'];
 	$obj->$GLOBALS['action_function']();
-
-

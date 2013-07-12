@@ -48,7 +48,7 @@
 						$return	.= '<div class="map_row">'.PHP_EOL;
 					}
 					$pos		= sprintf('%03d', $i);
-					$return	.= '<img class="map_tile local_map_tile" id="pos_'.$pos.'" image="'.$tiles[$tile_pos]['vc_path'].'" src="/gamemaster/Application/View/img/textures/'.$tiles[$tile_pos]['vc_path'].'" width="35" height="35" border="0" alt="" title="" >';
+					$return		.= '<div class="map_tile local_map_tile" id="'.$pos.'" bkgrnd="'.$tiles[$tile_pos]['vc_path'].'" style="background-image:url(/gamemaster/Application/View/img/textures/'.$tiles[$tile_pos]['vc_path'].');"></div>';
 					if ($i % 10 == 0) {
 						$return	.= '</div>'.PHP_EOL;
 						$return	.= '<div class="map_row">'.PHP_EOL;
@@ -74,4 +74,21 @@
 			return $return;
 		}
 
+		public function listIcons($entries = false, $ordering = false, $direction = false) {
+			$return	= '<br />No icons found'.PHP_EOL;
+			if ($entries) {
+				$tot_entries	= count($entries);
+				$return			= '<span class="title_01">Choose an icon</span><br />'.PHP_EOL;
+				$return			.= '<div class="details_result_box" id="result_box">'.PHP_EOL;
+				for ($i = 0; $i < $tot_entries; $i++) {
+					$return		.= '	<div class="details_return_row" key="'.$entries[$i]['id'].'" image="'.$entries[$i]['vc_path'].'">'.PHP_EOL;
+					$return		.= '		<div class="result_field result_id">'.$entries[$i]['id'].'</div>'.PHP_EOL;
+					$return		.= '		<div class="result_field result_iconname">'.$entries[$i]['vc_name'].'</div>'.PHP_EOL;
+					$return		.= '		<div class="result_field result_icon"><img src="/gamemaster/Application/View/img/textures/'.$entries[$i]['vc_path'].'" width="15" height="15" /></div>'.PHP_EOL;
+					$return		.= '	</div><br />'.PHP_EOL;
+				}
+				$return			.= '</div><br />'.PHP_EOL;
+			}
+			return $return;
+		}
 	}

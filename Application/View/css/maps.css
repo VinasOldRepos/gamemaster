@@ -1,7 +1,6 @@
 .formInsertCourse {
 	width:			400px;
 	position:		absolute;
-	margin-left:	100px;
 }
 
 .bt_cancel {
@@ -23,7 +22,7 @@
 }
 
 .map_area {
-	margin-top:		80px;
+	margin-top:		130px;
 	margin-left:	150px;
 }
 
@@ -40,4 +39,50 @@
 
 .map_tile:hover {
 	cursor:	pointer;
+}
+
+.content_map {
+	width:		850px;
+	position:	absolute;
+	margin-top:	5px;
+}
+
+.map_interaction {
+	position:			absolute;
+	background-color:	#666;
+	margin-left:		520px;
+	margin-top:			100px;
+	width:				400px;
+	text-align:			center;
+}
+
+.local_map_tile {
+	float:		 	left;
+	margin:	0.5px;
+}
+
+.tile_options {
+	width:		250px;
+	text-align:	left;
+	margin-left:	50px;
+}
+
+.tile_opt:hover {
+	cursor:				pointer;
+	text-decoration:	underline;
+}
+.opt_details {
+	display:	none;
+}
+
+.result_id {
+	width:	40px;
+}
+
+.result_iconname {
+	width:	200px;
+}
+
+.result_icon {
+	width:	30px;
 }

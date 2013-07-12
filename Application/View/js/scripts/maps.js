@@ -6,31 +6,6 @@ $('document').ready(function() {
 		$(location).attr('href', '/gamemaster/Users/insert');
 	});
 
-	// What happens when user tries to delete a User
-	$(".delete_user").live("click", function () {
-		$res					= confirm("ATENTION,\n\nAre you sure you want to delete this user??");
-		if ($res) {
-			document.body.style.cursor	= 'wait';
-			$id_user			= $("#id_user").val();
-			if ($id_user) {
-				$.post('/gamemaster/Users/deleteUser/', {
-					id_user:	$id_user
-				}, function($return) {
-					if ($return == 'ok') {
-						alert("User succefully deleted!");
-						document.body.style.cursor	= 'default';
-						parent.$.fancybox.close();
-					} else {
-						alert("User could NOT be deleted!\n\n"+$return);
-						document.body.style.cursor	= 'default';
-					}
-					return false;
-				});
-			}
-		}
-		document.body.style.cursor	= 'default';
-	});
-
 	// What happens when user selects a world on Insert Map
 	$("#id_world").live("change", function() {
 		$id_world	= $(this).val();
@@ -58,14 +33,30 @@ $('document').ready(function() {
 			$("#action").val($key);
 			contentHide("#map_area");
 			contentShow("#tiletype");
+			contentShow("#branch_field");
 		}
 		return false;
 	});
 
 	// What happens when user clickes a local map tile
 	$(".local_map_tile").live("click", function() {
-		$tile_pos	= $(this).attr('id');
-		alert($tile_pos);
+		$(".tile_options").show();
+		$(".opt_details").hide();
+		$last_id		= $("#target_tile_id").val();
+		$this_id		= $(this).attr('id');
+		$last_content	= $("#"+$last_id).html();
+		if ($last_content == '<img src="/gamemaster/Application/View/img/textures/selected.png" width="35" height="35" border="0">') {
+			$("#"+$last_id).html('');
+		} else {
+			$("#"+$last_id).css("visibility", 'visible');
+		}
+		$("#target_tile_id").val($this_id);
+		if (!$(this).html()) {
+			$html			= $(this).html('<img src="/gamemaster/Application/View/img/textures/selected.png" width="35" height="35" border="0" />');
+		} else {
+			$html			= $(this).css("visibility", 'hidden');
+		}
+		contentShow("#map_interaction");
 		return false;
 	});
 
@@ -86,6 +77,56 @@ $('document').ready(function() {
 				}
 				return false;
 			});
+		}
+		return false;
+	});
+
+	// What happens when user selects branch (new map)
+	$("#id_branch").live("change", function() {
+		$id_branch	= $(this).val();
+		if ($id_branch) {
+			$.post('/gamemaster/Maps/loadFields', {
+				id_branch:	$id_branch
+			}, function($return) {
+				if ($return) {
+					$("#id_field").html($return);
+				} else {
+					alert("Sorry,\n\nThere was a problem when loading the field for the selected branch.\n\nError: ");
+				}
+				return false;
+			});
+		}
+		return false;
+	});
+
+	// What happens when user clicks on "Insert an icon"
+	$(".tile_opt").live("click", function() {
+		$this_block	= $(this).attr('key');
+		if ($this_block) {
+			$.post('/gamemaster/Maps/'+$this_block, false, function($return) {
+				if ($return) {
+					$(".tile_options").hide();
+					contentShowData("#"+$this_block, $return);
+				}
+				return false;
+			});
+		}
+		return false;
+	});
+
+	// What happens when user clicks on an icon to be added
+	$(".details_return_row").live("click", function() {
+		$position	= $("#target_tile_id").val();
+		$id_map		= $("#id_map").val();
+		$id_icon	= $(this).attr('key');
+		$image		= $(this).attr('image');
+		if ($id_map) {
+			alert('edicao');
+		} else {
+			if ($id_icon) {
+				$("#"+$position).html('<img src="/gamemaster/Application/View/img/textures/'+$image+'" width="15" height="15" border="0">');
+				contentHide("#map_interaction");
+			}
 		}
 		return false;
 	});

@@ -152,7 +152,7 @@
 				// Model Result
 				$return			= $ModTexture->listTiles($rows, 't.id', 'ASC');
 				// Define Pager info
-				$pager				= Pager::pagerOptions($paging_info, 'textures', 'partialResultTiles');
+				$pager			= Pager::pagerOptions($paging_info, 'textures', 'partialResultTiles');
 			}
 			// Prepare info to be displayed
 			View::set('pager', $pager);

@@ -7,7 +7,7 @@ $('document').ready(function() {
 	});
 
 	// What happens when user changes Texture Type on Insert Form
-	$("#id_texturetype").live("change", function() {
+	$("#id_texturetype").live("click", function() {
 		$id_texturetype	= $(this).val();
 		if ($id_texturetype == 1) {
 			$(".not_shown").hide();

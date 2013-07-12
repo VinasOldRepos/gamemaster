@@ -22,10 +22,11 @@
 	// Model Classes
 	use Application\Model\Menu;
 	use Application\Model\Pager;
-	use Application\Model\Map					as ModMap;
+	use Application\Model\Map						as ModMap;
 
 	// Repository Classes
-	use Application\Controller\Repository\Map	as RepMap;
+	use Application\Controller\Repository\Map		as RepMap;
+	use Application\Controller\Repository\Question	as RepQuestion;
 
 	// Other Classes
 	use Application\Controller\LogInController		as LogIn;
@@ -65,21 +66,24 @@
 		*/
 		public function Insert() {
 			// Declare classes
-			$RepMap		= new RepMap();
-			$ModMap		= new ModMap();
-			// Initialize variables
-			$branches	= false;
+			$RepMap			= new RepMap();
+			$ModMap			= new ModMap();
 			// Fetch and model worlds for combo
-			$worlds		= $RepMap->getAllWorlds();
-			$worlds		= ($worlds) ? $ModMap->combo($worlds, true) : false;
+			$worlds			= $RepMap->getAllWorlds();
+			$worlds			= ($worlds) ? $ModMap->combo($worlds, true) : false;
 			// Fetch and model tile types for combo
-			$tiletypes	= $RepMap->getAllTileTypes();
-			$tiletypes	= ($tiletypes) ? $ModMap->combo($tiletypes, true) : false;
+			$tiletypes		= $RepMap->getAllTileTypes();
+			$tiletypes		= ($tiletypes) ? $ModMap->combo($tiletypes, true) : false;
+			// Fetch and model Branches for combo
+			$RepQuestion	= new RepQuestion();
+			$branches		= $RepQuestion->getAllBranches();
+			$branches		= ($branches) ? $ModMap->combo($branches, true) : false;
 			// Define sub menu selection
 			$GLOBALS['menu']['maps']['opt1_css'] = 'details_item_on';
 			// Prepare return values
 			View::set('worlds',		$worlds);
 			View::set('tiletypes',	$tiletypes);
+			View::set('branches',	$branches);
 			// Render view
 			View::render('mapsInsert');
  		}
@@ -132,7 +136,7 @@
 		}
 
 		/*
-		Generates a new local map (random texture) - Insert()
+		Generates a new local map (random texture) - generateLocalMap()
 			@return format	- print
 		*/
 		public function generateLocalMap() {
@@ -147,10 +151,48 @@
 				// Load World Map info
 				$world	= $RepMap->getWorldMapById($id_world);
 				// Model world
-				$return	= ($world) ? $ModMap->world($world) : false;
+				$return	= ($world) ? $ModMap->map($world) : false;
 			}
 			// Return
 			echo $return;
 		}
+
+		/*
+		 Loads Fields for combo box - loadFields()
+			@return format	- print
+		*/
+		public function loadFields() {
+			// Declare Classes
+			$RepQuestion	= new RepQuestion();
+			$ModMap			= new ModMap();
+			// Initialize variables
+			$return			= false;
+			$id_branch		= (isset($_POST['id_branch'])) ? trim($_POST['id_branch']) : false;
+			// If values were sent
+			if ($id_branch) {
+				// Load World Map info
+				$fields		= $RepQuestion->getFieldsBranchId($id_branch);
+				// Model world
+				$return		= ($fields) ? $ModMap->combo($fields) : false;
+			}
+			// Return
+			echo $return;
+		}
+
+		/*
+		 Loads icons for map building - listIcons()
+			@return format	- print
+		*/
+		public function listIcons() {
+			// Declare Classes
+			$RepMap			= new RepMap();
+			$ModMap			= new ModMap();
+			// Load and model Icon list
+			$icons		= $RepMap->getAllIcons();
+			$return		= ($icons) ? $ModMap->listIcons($icons) : false;
+			// Return
+			echo $return;
+		}
+
 
 	}
