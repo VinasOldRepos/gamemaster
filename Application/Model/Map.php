@@ -15,19 +15,51 @@
 
 	class Map {
 
-		public function world($world = false) {
+		public function world($world = false, $links = false) {
 			$return				= false;
+			if ($links) {
+				foreach ($links as $link) {
+					$id_target[$link['int_pos']]	= $link['id_map_target'];
+				}
+			}
 			if ($world) {
 				for ($i = 1; $i <= 100; $i++) {
 					if ($i == 1) {
 						$return	.= '<div class="map_row">'.PHP_EOL;
 					}
 					$pos		= sprintf('%03d', $i);
-					if ($world['vc_coord_'.$pos] != 0) {
-						$return	.= '<img class="map_tile world_map_tile" pos="'.$pos.'" key="EditLocalMap" src="/gamemaster/Application/View/img/textures/'.$world['vc_coord_'.$pos].'" width="35" height="35" border="0" alt="" title="" >';
-					} else {
+					if ($world['vc_coord_'.$pos] == '0') {
 						$return	.= '<img class="map_tile world_map_tile" pos="'.$pos.'" key="NewLocalMap" src="/gamemaster/Application/View/img/textures/bk_veil_of_ignorance.gif" width="35" height="35" border="0" alt="" title="" >';
+					} else {
+						
+						$map	= (isset($id_target[$i])) ? $id_target[$i] : false;
+						$return	.= '<img class="map_tile world_map_tile" pos="'.$pos.'" key="EditLocalMap" map="'.$map.'" src="/gamemaster/Application/View/img/textures/'.$world['vc_coord_'.$pos].'" width="35" height="35" border="0" alt="" title="" >';
 					}
+					if ($i % 10 == 0) {
+						$return	.= '</div>'.PHP_EOL;
+						$return	.= '<div class="map_row">'.PHP_EOL;
+					}
+				}
+				$return			.= '</div>'.PHP_EOL;
+			}
+			return $return;
+		}
+
+		public function map($map = false, $links = false) {
+			$return				= false;
+			if ($links) {
+				foreach ($links as $link) {
+					$id_target[$link['int_pos']]	= $link['id_map_target'];
+				}
+			}
+			if ($map) {
+				for ($i = 1; $i <= 100; $i++) {
+					if ($i == 1) {
+						$return	.= '<div class="map_row">'.PHP_EOL;
+					}
+					$pos		= sprintf('%03d', $i);
+					$target_map	= (isset($id_target[$i])) ? $id_target[$i] : false;
+					$return		.= '<img class="map_tile world_map_tile" pos="'.$pos.'" key="EditLocalMap" map="'.$target_map.'" src="/gamemaster/Application/View/img/textures/'.$map['vc_coord_'.$pos].'" width="35" height="35" border="0" alt="" title="" >';
 					if ($i % 10 == 0) {
 						$return	.= '</div>'.PHP_EOL;
 						$return	.= '<div class="map_row">'.PHP_EOL;
@@ -48,7 +80,7 @@
 						$return	.= '<div class="map_row">'.PHP_EOL;
 					}
 					$pos		= sprintf('%03d', $i);
-					$return		.= '<div class="map_tile local_map_tile" id="'.$pos.'" bkgrnd="'.$tiles[$tile_pos]['vc_path'].'" style="background-image:url(/gamemaster/Application/View/img/textures/'.$tiles[$tile_pos]['vc_path'].');"></div>';
+					$return		.= '<div class="map_tile local_map_tile" id="'.$pos.'" icon="" status="unselected" bkgrnd="'.$tiles[$tile_pos]['vc_path'].'" image="" style="background-image:url(/gamemaster/Application/View/img/textures/'.$tiles[$tile_pos]['vc_path'].');"></div>';
 					if ($i % 10 == 0) {
 						$return	.= '</div>'.PHP_EOL;
 						$return	.= '<div class="map_row">'.PHP_EOL;

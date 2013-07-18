@@ -36,7 +36,7 @@
 				$select_what			= 'id, vc_user, vc_email';
 				$conditions				= "vc_email = '{$email}' AND vc_password = '{$password}' AND boo_active = 1";
 				// Run query
-				$return					= $db->getRow($table, $conditions, $select_what);
+				$return					= $db->getRow($table, $select_what, $conditions);
 				// If user was found
 				if ($return) {
 					// Get user's permissions
@@ -61,7 +61,7 @@
 				$select_what	= 'id_game, id_profile';
 				$conditions		= "id_user = {$id}";
 				// Run query
-				$return			= $db->getRow($table, $conditions, $select_what);
+				$return			= $db->getRow($table, $select_what, $conditions);
 			}
 			return $return;
 		}

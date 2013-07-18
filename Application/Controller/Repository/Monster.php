@@ -34,7 +34,7 @@
 				$table			= 'tb_monster';
 				$select_what	= '*';
 				$conditions		= "id = '{$id}'";
-				$return			= $db->getRow($table, $conditions, $select_what);
+				$return			= $db->getRow($table, $select_what, $conditions);
 			}
 			// Return
 			return $return;

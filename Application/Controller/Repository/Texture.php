@@ -34,7 +34,7 @@
 				$table			= 'tb_tile';
 				$select_what	= '*';
 				$conditions		= "id = '{$id}'";
-				$return			= $db->getRow($table, $conditions, $select_what);
+				$return			= $db->getRow($table, $select_what, $conditions);
 			}
 			// Return
 			return $return;
@@ -102,7 +102,7 @@
 			$table			= 'tb_texturetype';
 			$select_what	= 'int_width, int_height';
 			$conditions		= "id = {$id_texturetype}";
-			$return			= $db->getRow($table, $conditions, $select_what);
+			$return			= $db->getRow($table, $select_what, $conditions);
 			// Return
 			return $return;
 		}

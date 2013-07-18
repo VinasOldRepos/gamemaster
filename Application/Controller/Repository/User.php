@@ -34,7 +34,7 @@
 				$table			= 'tb_user';
 				$select_what	= '*';
 				$conditions		= "id = '{$id}'";
-				$return			= $db->getRow($table, $conditions, $select_what);
+				$return			= $db->getRow($table, $select_what, $conditions);
 			}
 			// Return
 			return $return;
@@ -56,7 +56,7 @@
 				$table			= 'tb_user';
 				$select_what	= '*';
 				$conditions		= "vc_email = '{$email}'";
-				$return			= $db->getRow($table, $conditions, $select_what);
+				$return			= $db->getRow($table, $select_what, $conditions);
 			}
 			// Return
 			return $return;
@@ -146,7 +146,7 @@
 				$table			= 'tb_user';
 				$select_what	= 'id';
 				$conditions		= "id <> 1 AND vc_user = '{$user}'";
-				$user			= $db->getRow($table, $conditions, $select_what);
+				$user			= $db->getRow($table, $select_what, $conditions);
 				if ($user) {
 					$return		= true;
 				}
@@ -172,7 +172,7 @@
 				$table			= 'tb_user';
 				$select_what	= 'id';
 				$conditions		= "id <> 1 AND vc_email = '{$email}'";
-				$user			= $db->getRow($table, $conditions, $select_what);
+				$user			= $db->getRow($table, $select_what, $conditions);
 				if ($user) {
 					$return		= true;
 				}

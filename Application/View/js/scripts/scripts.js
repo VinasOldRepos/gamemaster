@@ -259,6 +259,20 @@ function openFancybox($url, $width, $height) {
 	});
 }
 
+// Similiar to the PHP one
+function sprintf($length, $char, $string) {
+	if (($length) && ($string)) {
+		$str_len	= $string.length;
+		if ($length > $str_len) {
+			for ($i = 0; $i < $length - $str_len; $i++) {
+				$string	= $char+$string;
+			}
+		}
+		return $string;
+	}
+}
+
+
 // Pause
 function pause($milisecs) {
 	if ($milisecs) {

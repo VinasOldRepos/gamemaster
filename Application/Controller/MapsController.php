@@ -89,6 +89,43 @@
  		}
 
 		/*
+		Edit A Local Map's first page - EditLocalMap()
+			@return format	- print
+		*/
+		public function EditLocalMap() {
+			// Declare classes
+			$RepMap					= new RepMap();
+			$ModMap					= new ModMap();
+			// Initialize variables
+			$id_area				= (isset($GLOBALS['params'][1])) ? trim(($GLOBALS['params'][1])) : false;
+			if (!$id_area) {
+				$id_area			= (isset($_POST['id_area'])) ? trim(($_POST['id_area'])) : false;
+			}
+			$return					= false;
+			// if area id was sent
+			if ($id_area) {
+				
+				// Load area information
+				$area				= $RepMap->getAreaById($id_area);
+				if ($area) {
+					$map			= $RepMap->getMapById($area['id_areamap']);
+					$link_icon		= $RepMap->getLinksIconsByAreaId($area['id_areamap']);
+					$map			= $ModMap->map($map, $link_icon);
+					$RepQuestion	= new RepQuestion();
+					$id_branch		= ($area['id_field']) ? $RepQuestion->getBranchIdByFieldId($area['id_field']) : false;
+					// Define sub menu selection
+					$GLOBALS['menu']['maps']['opt1_css'] = 'details_item_on';
+					// Prepare return values
+					View::set('map',		$map);
+	//				View::set('tiletypes',	$tiletypes);
+	//				View::set('branches',	$branches);
+					// Render view
+					View::render('mapsEdit');
+				}
+			}
+ 		}
+
+		/*
 		Prints out new Maps first page - NewMap()
 			@return format	- print
 		*/
@@ -114,7 +151,7 @@
  		}
 
 		/*
-		Prints out a world - Insert()
+		Prints out a world - loadWorldMap()
 			@return format	- print
 		*/
 		public function loadWorldMap() {
@@ -128,8 +165,10 @@
 			if ($id_world) {
 				// Load World Map info
 				$world	= $RepMap->getWorldMapById($id_world);
+				// Get linking info
+				$links	= $RepMap->getLinksIconsByAreaId($id_world);
 				// Model world
-				$return	= ($world) ? $ModMap->world($world) : false;
+				$return	= ($world) ? $ModMap->world($world, $links) : false;
 			}
 			// Return
 			echo $return;
@@ -173,7 +212,7 @@
 				// Load World Map info
 				$fields		= $RepQuestion->getFieldsBranchId($id_branch);
 				// Model world
-				$return		= ($fields) ? $ModMap->combo($fields) : false;
+				$return		= ($fields) ? $ModMap->combo($fields, true) : false;
 			}
 			// Return
 			echo $return;
@@ -194,5 +233,47 @@
 			echo $return;
 		}
 
+		/*
+		 Saves a Map - saveMap()
+			@return format	- print
+		*/
+		public function saveMap() {
+			// Declare Classes
+			$RepMap				= new RepMap();
+			$ModMap				= new ModMap();
+			// Initialize variables
+			$return				= false;
+			$id_areatype		= (isset($_POST['id_areatype'])) ? trim($_POST['id_areatype']) : false;
+			$world_pos			= (isset($_POST['world_pos'])) ? trim($_POST['world_pos']) : false;
+			$id_world			= (isset($_POST['id_world'])) ? trim($_POST['id_world']) : false;
+			$id_field			= (isset($_POST['id_field'])) ? trim($_POST['id_field']) : false;
+			$level				= (isset($_POST['level'])) ? trim($_POST['level']) : false;
+			if ($_POST['coords']) {
+				for ($i = 0; $i < 100; $i++) {
+					$coords[$i]	= $_POST['coords'][$i+1];
+				}
+			}
+			// If data was sent
+			if (($id_areatype) && ($world_pos) && ($id_world) && ($id_field) && ($coords) && ($level)) {
+				// Save map area
+				$id_areamap		= $RepMap->insertMap($id_areatype, $coords);
+				// If map area was saved
+				if ($id_areamap) {
+					// Save area info
+					$id_area	= $RepMap->insertArea($id_areatype, $id_field, $id_areamap, $level, 1);
+					// If info was saved
+					if ($id_area) {
+						// Create Link
+						$res	= $RepMap->addIconLink($id_world, $id_area, false, $world_pos);
+						if ($res) {
+							// Change world map and prepare return
+							$return	= ($RepMap->updateWorldMap($id_world, $world_pos, 'unveiled.gif')) ? $id_area : 'nok';
+						}
+					}
+				}
+			}
+			// Return
+			echo $return;
+		}
 
 	}

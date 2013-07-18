@@ -51,7 +51,7 @@
 	position:			absolute;
 	background-color:	#666;
 	margin-left:		520px;
-	margin-top:			100px;
+	margin-top:			0px;
 	width:				400px;
 	text-align:			center;
 }
@@ -85,4 +85,9 @@
 
 .result_icon {
 	width:	30px;
+}
+
+.newDungeon:hover {
+	cursor: 			pointer;
+	text-decoration:	underline;
 }

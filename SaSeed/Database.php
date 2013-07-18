@@ -9,7 +9,7 @@
 *					functions.														*
 *																					*
 * Creation Date:	22/09/2011														*
-* Version:			2.13.0219														*
+* Version:			2.13.0716														*
 * License:			http://www.opensource.org/licenses/bsd-license.php BSD			*
 *************************************************************************************/
 
@@ -193,14 +193,14 @@
 		}
 
 		/* Pega um único registro podendo-se utilizar condições e selecionar os campos
-		    - getRow($table, $conditions, $select_what)
+		    - getRow($table, $select_what, $conditions)
 		 *
 		 * @param string	- Tabela alvo
 		 * @param string	- quais as condições
 		 * @param string	- Que campos pegar. (mto útil ao se usar JOINs)
 		 *
 		 * @return mixed */
-		public function getRow($table, $conditions='1', $select_what='*') {
+		public function getRow($table, $select_what='*', $conditions='1') {
 			$query = 'SELECT '.$select_what.' FROM '.$table.' WHERE '.$conditions;
 			$res = $this->rq($query);
 			$row = $this->fetch($res);

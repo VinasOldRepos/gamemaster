@@ -89,7 +89,7 @@ class dbFunctions {
 		$count_table		= $table;
 		// Calcula paginação
 		$select_what		= 'count(*) AS total';
-		$tot_rows			= $db->getRow($count_table, $conditions, $select_what);
+		$tot_rows			= $db->getRow($count_table, $select_what, $conditions);
 		$tot_rows			= $tot_rows['total'];			// total de registros
 		$tot_pages			= ceil($tot_rows/$limit);		// Total de páginas
 		$offset				= $pg_num * $limit - $limit;	// Página atual

@@ -16,7 +16,7 @@
 			</div>
 			<br /><br /><br /><br /><br /><br /><br />
 			<div class="content_map">
-				<span class="title_01" id="main_title">New Map</span>
+				<span class="title_01" id="main_title">Edit Map</span>
 				<br />
 				<div class="formInsertCourse" id="formInsertCourse">
 					<div style="float: left;">
@@ -29,18 +29,18 @@
 								<input type="hidden" name="target_tile_id" id="target_tile_id" value="" />
 								<label for="id_world">World:</label>
 								<select name="id_world" id="id_world" class="main_text_input" style="width: 206px;">
-									<?php echo $worlds; ?>
+									<?php //echo $worlds; ?>
 								</select>
 								<div id="tiletype" class="not_shown">
 									<label for="id_tiletype">Background Type:</label>
 									<select name="id_tiletype" id="id_tiletype" class="main_text_input" style="width: 206px;">
-										<?php echo $tiletypes; ?>
+										<?php //echo $tiletypes; ?>
 									</select>
 								</div>
 								<div id="branch_field" class="not_shown">
 									<label for="id_branch">Select Branch:</label>
 									<select name="id_branch" id="id_branch" class="main_text_input" style="width: 206px;">
-										<?php echo $branches; ?>
+										<?php //echo $branches; ?>
 									</select>
 									<label for="id_field">Field:</label>
 									<select name="id_field" id="id_field" class="main_text_input" style="width: 206px;">
@@ -62,7 +62,9 @@
 							</form>
 						</fieldset>
 						<br />
-						<div class="map_area" id="map_area"></div>
+						<div class="map_area" id="map_area">
+							<?php echo $map; ?>
+						</div>
 					</div>
 					<div class="map_interaction not_shown" id="map_interaction" align="center">
 						<span class="title_01">What do you wanna do?</span>
@@ -70,7 +72,7 @@
 						<div class="tile_options" id="tile_options">
 							<div class="text_01 tile_opt" key="listIcons">Insert an icon</div><br /><br />
 							<div class="text_01 tile_opt" key="change_background">Change background tile</div><br /><br />
-							<div class="text_01 tile_opt" key="linkTile">Link this tile to another map</div><br /><br />
+							<!-- -div class="text_01 tile_opt" key="linkTile">Link this tile to another map</div><br /><br / -->
 							<div class="text_01 tile_opt" key="delete_tileinfo">Delete all info related (but background)</div><br /><br />
 						</div>
 						<div class="opt_details" id="listIcons">
