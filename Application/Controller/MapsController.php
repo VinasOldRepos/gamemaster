@@ -104,21 +104,32 @@
 			$return					= false;
 			// if area id was sent
 			if ($id_area) {
-				
 				// Load area information
 				$area				= $RepMap->getAreaById($id_area);
 				if ($area) {
+					// Load Area Related info
 					$map			= $RepMap->getMapById($area['id_areamap']);
 					$link_icon		= $RepMap->getLinksIconsByAreaId($area['id_areamap']);
+					$worlds			= $RepMap->getAllWorlds();
+					// Model Area Related info
 					$map			= $ModMap->map($map, $link_icon);
+					$worlds			= ($worlds) ? $ModMap->combo($worlds, false, $area['id_world']) : false;
+					// Load Field related info
 					$RepQuestion	= new RepQuestion();
 					$id_branch		= ($area['id_field']) ? $RepQuestion->getBranchIdByFieldId($area['id_field']) : false;
+					$branches		= $RepQuestion->getAllBranches();
+					$fields			= $RepQuestion->getAllFields();
+					// Model Field Related Info
+					$branches		= ($branches) ? $ModMap->combo($branches, false, $id_branch) : false;
+					$fields			= ($fields) ? $ModMap->combo($fields, false, $area['id_field']) : false;
 					// Define sub menu selection
 					$GLOBALS['menu']['maps']['opt1_css'] = 'details_item_on';
 					// Prepare return values
 					View::set('map',		$map);
-	//				View::set('tiletypes',	$tiletypes);
-	//				View::set('branches',	$branches);
+					View::set('worlds',		$worlds);
+					View::set('branches',	$branches);
+					View::set('fields',		$fields);
+					View::set('level',		$area['int_level']);
 					// Render view
 					View::render('mapsEdit');
 				}

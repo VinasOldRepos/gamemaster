@@ -28,27 +28,20 @@
 								<input type="hidden" name="id_areatype" id="id_areatype" value="1" /> <!-- 1 = Local Map -->
 								<input type="hidden" name="target_tile_id" id="target_tile_id" value="" />
 								<label for="id_world">World:</label>
-								<select name="id_world" id="id_world" class="main_text_input" style="width: 206px;">
-									<?php //echo $worlds; ?>
+								<select name="id_world" id="id_world" class="main_text_input" style="width: 206px;" disabled="disabled">
+									<?php echo $worlds; ?>
 								</select>
-								<div id="tiletype" class="not_shown">
-									<label for="id_tiletype">Background Type:</label>
-									<select name="id_tiletype" id="id_tiletype" class="main_text_input" style="width: 206px;">
-										<?php //echo $tiletypes; ?>
-									</select>
-								</div>
-								<div id="branch_field" class="not_shown">
-									<label for="id_branch">Select Branch:</label>
-									<select name="id_branch" id="id_branch" class="main_text_input" style="width: 206px;">
-										<?php //echo $branches; ?>
-									</select>
-									<label for="id_field">Field:</label>
-									<select name="id_field" id="id_field" class="main_text_input" style="width: 206px;">
-									</select>
-									<label for="level">Level:</label>
-									<input type="text" name="level" id="level" class="main_text_input"	 />
-									</select>
-								</div>
+								<label for="id_branch">Select Branch:</label>
+								<select name="id_branch" id="id_branch" class="main_text_input" style="width: 206px;">
+									<?php echo $branches; ?>
+								</select>
+								<label for="id_field">Field:</label>
+								<select name="id_field" id="id_field" class="main_text_input" style="width: 206px;">
+									<?php echo $fields; ?>
+								</select>
+								<label for="level">Level:</label>
+								<input type="text" name="level" id="level" class="main_text_input" value="<?php echo $level; ?>" />
+								</select>
 								<div class="form_buttons not_shown">
 									<div class="bt_cancel">
 										<img class="form_button" src="/gamemaster/Application/View/img/bt_cancel.png" width="41" height="41" border="0" /><br />

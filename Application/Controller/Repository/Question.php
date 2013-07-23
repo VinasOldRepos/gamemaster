@@ -29,7 +29,7 @@
 		}
 
 		/*
-		Get All Branches Status - getAllBranches()
+		Get All Branches - getAllBranches()
 			@return format	- Mixed array
 		*/
 		public function getAllBranches() {
@@ -41,6 +41,24 @@
 			$table			= 'tb_branch AS b';
 			$select_what	= 'b.id, b.vc_branch AS vc_name';
 			$conditions		= "1 ORDER BY vc_branch ASC";
+			$return			= $db->getAllRows_Arr($table, $select_what, $conditions);
+			// Return
+			return $return;
+		}
+
+		/*
+		Get All Fields  - getAllFields()
+			@return format	- Mixed array
+		*/
+		public function getAllFields() {
+			// Database Connection
+			$db				= $GLOBALS['db_q'];
+			// Initialize variables
+			$return			= false;
+			// Query set up	
+			$table			= 'tb_field';
+			$select_what	= 'id, vc_field AS vc_name';
+			$conditions		= "1 ORDER BY vc_field ASC";
 			$return			= $db->getAllRows_Arr($table, $select_what, $conditions);
 			// Return
 			return $return;
