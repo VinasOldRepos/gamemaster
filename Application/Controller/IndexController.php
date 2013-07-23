@@ -7,7 +7,7 @@
 * Description: 		This is the home page's controller.								*
 *																					*
 * Creation Date:	14/11/2012														*
-* Version:			1.12.1114														*
+* Version:			1.12.0723														*
 * License:			http://www.opensource.org/licenses/bsd-license.php BSD			*
 *************************************************************************************/
 
