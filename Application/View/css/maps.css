@@ -27,13 +27,13 @@
 }
 
 .map_row {
-	width:				382px;
-	height:				35px;
+	width:	382px;
+	height:	33px;
 }
 
 .map_tile {
-	width:			35px;
-	height:			35px;
+	width:			32px;
+	height:			32px;
 	border-width:	1px;
 }
 
@@ -57,13 +57,18 @@
 }
 
 .local_map_tile {
-	float:		 	left;
+	float:	left;
+	margin:	0.5px;
+}
+
+.dungeon_map_tile {
+	float:	left;
 	margin:	0.5px;
 }
 
 .tile_options {
-	width:		250px;
-	text-align:	left;
+	width:			250px;
+	text-align:		left;
 	margin-left:	50px;
 }
 
@@ -90,4 +95,44 @@
 .newDungeon:hover {
 	cursor: 			pointer;
 	text-decoration:	underline;
+}
+
+.tiles_return_row {
+	position:			absolute;
+	border-style:		solid;
+	border-color:		#000;
+	border-width:		1px;
+	margin-bottom:		2px;
+	background-color:	#FFF;
+	color:				#7A7A7A;
+}
+
+.tiles_return_row:hover {
+	cursor:				pointer;
+	background-color:	#7A7A7A;
+	color:				#FFF;
+}
+
+.map_name {
+	float:			left;
+	margin-top:		100px;
+	margin-left:	160px;
+}
+
+.back_button {
+	float:			left;
+	position:		absolute;
+	margin-top:		200px;
+	margin-left:	80px;
+}
+
+.delete_map {
+	position:		absolute;
+	margin-left:	100px;
+	margin-top:		-20px;
+}
+
+.delete_map:hover {
+	text-decoration:	underline;
+	cursor:				pointer;
 }

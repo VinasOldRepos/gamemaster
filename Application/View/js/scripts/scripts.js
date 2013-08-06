@@ -80,7 +80,6 @@ $('document').ready(function() {
 	// Click navigation next/previous buttons
 	$(".goto_page").live("click", function() {
 		document.body.style.cursor	= 'wait';
-		return false;
 		$key		= $(this).attr('key');
 		$ordering	= $('#ordering').val();
 		$offset		= $('#offset').val();

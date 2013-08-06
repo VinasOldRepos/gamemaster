@@ -24,13 +24,15 @@
 							<form class="form">
 								<input type="hidden" name="world_pos" id="world_pos" value="" />
 								<input type="hidden" name="action" id="action" value="" />
-								<input type="hidden" name="id_area" id="id_area" value="" />
+								<input type="hidden" name="id_areamap" id="id_areamap" value="<?php echo $id_areamap; ?>" />
 								<input type="hidden" name="id_areatype" id="id_areatype" value="1" /> <!-- 1 = Local Map -->
 								<input type="hidden" name="target_tile_id" id="target_tile_id" value="" />
-								<label for="id_world">World:</label>
+								<input type="hidden" name="selected_tile" id="selected_tile" value="" />
+								<input type="hidden" name="id_world" id="id_world" value="<?php echo $id_world; ?>" />
+								<!--label for="id_world">World:</label>
 								<select name="id_world" id="id_world" class="main_text_input" style="width: 206px;">
-									<?php echo $worlds; ?>
-								</select>
+									<?php //echo $worlds; ?>
+								</select -->
 								<div id="tiletype" class="not_shown">
 									<label for="id_tiletype">Background Type:</label>
 									<select name="id_tiletype" id="id_tiletype" class="main_text_input" style="width: 206px;">
@@ -47,30 +49,24 @@
 									</select>
 									<label for="level">Level:</label>
 									<input type="text" name="level" id="level" class="main_text_input"	 />
+									<label for="level">Map's name:</label>
+									<input type="text" name="vc_name" id="vc_name" class="main_text_input"	 />
 									</select>
-								</div>
-								<div class="form_buttons not_shown">
-									<div class="bt_cancel">
-										<img class="form_button" src="/gamemaster/Application/View/img/bt_cancel.png" width="41" height="41" border="0" /><br />
-										<span class="text_02">Cancel</span>
-									</div>
-									<div class="bt_ok new_user">
-										<img class="form_button" src="/gamemaster/Application/View/img/bt_ok.png" width="41" height="41" border="0" /><br />
-										<span class="text_02">OK</span>
-									</div>
 								</div>
 							</form>
 						</fieldset>
 						<br />
-						<div class="map_area" id="map_area"></div>
+						<div class="title_01 map_name" id="map_name"><?php echo '#'.$vc_id_areamap.' - '.$mapname; ?></div>
+						<div class="map_area" id="map_area">
+							<?php echo $world; ?>
+						</div>
 					</div>
 					<div class="map_interaction not_shown" id="map_interaction" align="center">
 						<span class="title_01">What do you wanna do?</span>
 						<br /><br /><br />
 						<div class="tile_options" id="tile_options">
 							<div class="text_01 tile_opt" key="listIcons">Insert an icon</div><br /><br />
-							<div class="text_01 tile_opt" key="change_background">Change background tile</div><br /><br />
-							<div class="text_01 tile_opt" key="linkTile">Link this tile to another map</div><br /><br />
+							<div class="text_01 tile_opt" key="changeTile">Change background tile</div><br /><br />
 							<div class="text_01 tile_opt" key="delete_tileinfo">Delete all info related (but background)</div><br /><br />
 						</div>
 						<div class="opt_details" id="listIcons">
@@ -80,7 +76,7 @@
 							<div class="text_01 link_opt newDungeon" key="newDungeon">a New Dungeon</div><br /><br />
 							<div class="text_01 link_opt" key="linkTile">Map ID: # <input type="text" name="id_target_map" id="id_target_map" class="sec_tiny_text_input" /></div><br /><br />
 						</div>
-						<div class="opt_details" id="change_background">
+						<div class="opt_details" id="changeTile">
 							change
 						</div>
 						<div class="opt_details" id="delete_tileinfo">

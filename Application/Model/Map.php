@@ -29,11 +29,10 @@
 					}
 					$pos		= sprintf('%03d', $i);
 					if ($world['vc_coord_'.$pos] == '0') {
-						$return	.= '<img class="map_tile world_map_tile" pos="'.$pos.'" key="NewLocalMap" src="/gamemaster/Application/View/img/textures/bk_veil_of_ignorance.gif" width="35" height="35" border="0" alt="" title="" >';
+						$return	.= '<img class="map_tile world_map_tile" pos="'.$pos.'" key="NewLocalMap" src="/gamemaster/Application/View/img/textures/bk_veil_of_ignorance.gif" width="32" height="32" border="0" alt="" title="" >';
 					} else {
-						
 						$map	= (isset($id_target[$i])) ? $id_target[$i] : false;
-						$return	.= '<img class="map_tile world_map_tile" pos="'.$pos.'" key="EditLocalMap" map="'.$map.'" src="/gamemaster/Application/View/img/textures/'.$world['vc_coord_'.$pos].'" width="35" height="35" border="0" alt="" title="" >';
+						$return	.= '<img class="map_tile world_map_tile" pos="'.$pos.'" key="EditLocalMap" map="'.$map.'" src="/gamemaster/Application/View/img/textures/'.$world['vc_coord_'.$pos].'" width="32" height="32" border="0" alt="" title="" >';
 					}
 					if ($i % 10 == 0) {
 						$return	.= '</div>'.PHP_EOL;
@@ -49,6 +48,38 @@
 			$return				= false;
 			if ($links) {
 				foreach ($links as $link) {
+					$targets[$link['int_pos']][0]	= $link['id_icon'];
+					$targets[$link['int_pos']][1]	= $link['vc_path'];
+					$targets[$link['int_pos']][2]	= ($link['id_map_target'] > 0) ? $link['id_map_target'] : false;
+				}
+			}
+			if ($map) {
+				for ($i = 1; $i <= 100; $i++) {
+					if ($i == 1) {
+						$return	.= '<div class="map_row">'.PHP_EOL;
+					}
+					$pos		= sprintf('%03d', $i);
+					if (isset($targets[$i])) {
+						$return		.= '<div class="map_tile local_map_tile" id="'.$pos.'" icon="'.$targets[$i][0].'" status="unselected" bkgrnd="'.$map['vc_coord_'.$pos].'" target="'.$targets[$i][2].'" image="" style="background-image:url(/gamemaster/Application/View/img/textures/'.$map['vc_coord_'.$pos].');">'.PHP_EOL;
+						$return		.= '	<img src="/gamemaster/Application/View/img/textures/'.$targets[$i][1].'" width="15" height="15" />'.PHP_EOL;
+						$return		.= '</div>'.PHP_EOL;
+					} else {
+						$return		.= '<div class="map_tile local_map_tile" id="'.$pos.'" icon="" status="unselected" bkgrnd="'.$map['vc_coord_'.$pos].'" image="" style="background-image:url(/gamemaster/Application/View/img/textures/'.$map['vc_coord_'.$pos].');"></div>'.PHP_EOL;
+					}
+					if ($i % 10 == 0) {
+						$return	.= '</div>'.PHP_EOL;
+						$return	.= '<div class="map_row">'.PHP_EOL;
+					}
+				}
+				$return			.= '</div>'.PHP_EOL;
+			}
+			return $return;
+		}
+
+		public function dungeon($map = false, $links = false) {
+			$return				= false;
+			if ($links) {
+				foreach ($links as $link) {
 					$id_target[$link['int_pos']]	= $link['id_map_target'];
 				}
 			}
@@ -59,7 +90,7 @@
 					}
 					$pos		= sprintf('%03d', $i);
 					$target_map	= (isset($id_target[$i])) ? $id_target[$i] : false;
-					$return		.= '<img class="map_tile world_map_tile" pos="'.$pos.'" key="EditLocalMap" map="'.$target_map.'" src="/gamemaster/Application/View/img/textures/'.$map['vc_coord_'.$pos].'" width="35" height="35" border="0" alt="" title="" >';
+					$return		.= '<div class="map_tile dungeon_map_tile" id="'.$pos.'" icon="" target="'.$target_map.'" status="unselected" bkgrnd="'.$map['vc_coord_'.$pos].'" image="" style="background-image:url(/gamemaster/Application/View/img/textures/'.$map['vc_coord_'.$pos].');"></div>'.PHP_EOL;
 					if ($i % 10 == 0) {
 						$return	.= '</div>'.PHP_EOL;
 						$return	.= '<div class="map_row">'.PHP_EOL;
@@ -88,6 +119,24 @@
 				}
 				$return			.= '</div>'.PHP_EOL;
 			}
+			return $return;
+		}
+
+		public function newDungeon() {
+			$return			= false;
+			for ($i = 1; $i <= 100; $i++) {
+				if ($i == 1) {
+					$return	.= '<div class="map_row">'.PHP_EOL;
+				}
+				$pos		= sprintf('%03d', $i);
+				//$return		.= '<div class="map_tile dungeon_map_tile" id="'.$pos.'" icon="" status="unselected" bkgrnd="bk_dungeon_01.gif" image="" style="background-image:url(/gamemaster/Application/View/img/textures/blank_01.gif);"></div>'.PHP_EOL;
+				$return		.= '<div class="map_tile dungeon_map_tile" id="'.$pos.'" icon="" status="unselected" bkgrnd="blank_01.png" image="" style="background-image:url(/gamemaster/Application/View/img/textures/blank_01.png);"></div>'.PHP_EOL;
+				if ($i % 10 == 0) {
+					$return	.= '</div>'.PHP_EOL;
+					$return	.= '<div class="map_row">'.PHP_EOL;
+				}
+			}
+			$return			.= '</div>'.PHP_EOL;
 			return $return;
 		}
 
@@ -120,6 +169,38 @@
 					$return		.= '	</div><br />'.PHP_EOL;
 				}
 				$return			.= '</div><br />'.PHP_EOL;
+			}
+			return $return;
+		}
+
+		public function listTiles($entries = false, $ordering = false, $direction = false) {
+			$return	= '<br />No icons found'.PHP_EOL;
+			if ($entries) {
+				$tot_entries	= count($entries);
+				$return			= '<div class="details_result_box" id="tiles_result_box">'.PHP_EOL;
+				$return			.= '	<span class="title_01">Choose a tile</span><br />'.PHP_EOL;
+				for ($i = 0; $i < $tot_entries; $i++) {
+					$return		.= '	<div class="tiles_return_row" key="'.$entries[$i]['id'].'" image="'.$entries[$i]['vc_path'].'">'.PHP_EOL;
+					$return		.= '		<div class="result_field result_id">'.$entries[$i]['id'].'</div>'.PHP_EOL;
+					$return		.= '		<div class="result_field result_iconname">'.$entries[$i]['vc_name'].'</div>'.PHP_EOL;
+					$return		.= '		<div class="result_field result_icon"><img src="/gamemaster/Application/View/img/textures/'.$entries[$i]['vc_path'].'" width="20" height="20" /></div>'.PHP_EOL;
+					$return		.= '	</div><br />'.PHP_EOL;
+				}
+				$return			.= '</div><br />'.PHP_EOL;
+			}
+			return $return;
+		}
+
+		public function changeTile($tiletypes = false, $tiles = false) {
+			$return	= false;
+			if (($tiletypes) && ($tiles)) {
+				$return	.= '<div>'.PHP_EOL;
+				$return	.= '	<select id="new_id_tiletype" name="new_id_tiletype">'.PHP_EOL;
+				$return	.= '		'.$tiletypes.PHP_EOL;
+				$return	.= '	</select>'.PHP_EOL;
+				$return	.= '<br /><br />'.PHP_EOL;
+				$return	.= $tiles.PHP_EOL;
+				$return	.= '</div>'.PHP_EOL;
 			}
 			return $return;
 		}

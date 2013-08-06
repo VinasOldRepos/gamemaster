@@ -34,6 +34,7 @@ $('document').ready(function() {
 			$(location).attr('href', '/gamemaster/Maps/EditLocalMap/'+$map);
 		} else {
 			if (($id_world > 0) && ($pos) && ($key)) {
+				$("#map_name").html('');
 				$("#action").val($key);
 				$("#world_pos").val($pos);
 				contentHide("#map_area");
@@ -50,9 +51,18 @@ $('document').ready(function() {
 		$(".opt_details").hide();
 		$last_id		= $("#target_tile_id").val();
 		$this_id		= $(this).attr('id');
+		$target_id		= $(this).attr('target');
+		$("#target_tile_id").val($this_id);
 		$last_content	= $("#"+$last_id).html();
 		$last_status	= $("#"+$last_id).attr('status');
 		$last_icon		= $("#"+$last_id).attr('icon');
+		if ($target_id > 0) {
+			$("#linkmap").attr('target', $target_id);
+			$("#linkmap").show();
+		} else {
+			$("#linkmap").attr('target', '');
+			$("#linkmap").hide();
+		}
 		if ($last_status == 'selected') {
 			$("#"+$last_id).attr('status', 'unselected');
 			if ($last_icon) {
@@ -62,7 +72,44 @@ $('document').ready(function() {
 			}
 		}
 		if (!$(this).html()) {
-			$html			= $(this).html('<img src="/gamemaster/Application/View/img/textures/selected.png" width="35" height="35" border="0" />');
+			$html			= $(this).html('<img src="/gamemaster/Application/View/img/textures/selected.png" width="32" height="32" border="0" />');
+		} else {
+			$html			= $(this).css("visibility", 'hidden');
+		}
+		$html				= $(this).attr('status', 'selected');
+		$("#target_tile_id").val($this_id);
+		contentShow("#map_interaction");
+		return false;
+	});
+
+	// What happens when user clickes a dungeon map tile
+	$(".dungeon_map_tile").live("click", function() {
+		$("#tile_options").show();
+		$(".opt_details").hide();
+		$last_id		= $("#target_tile_id").val();
+		$this_id		= $(this).attr('id');
+		$target_id		= $(this).attr('target');
+		$("#target_tile_id").val($this_id);
+		$last_content	= $("#"+$last_id).html();
+		$last_status	= $("#"+$last_id).attr('status');
+		$last_icon		= $("#"+$last_id).attr('icon');
+		if ($target_id > 0) {
+			$("#linkmap").attr('target', $target_id);
+			$("#linkmap").show();
+		} else {
+			$("#linkmap").attr('target', '');
+			$("#linkmap").hide();
+		}
+		if ($last_status == 'selected') {
+			$("#"+$last_id).attr('status', 'unselected');
+			if ($last_icon) {
+				$("#"+$last_id).css("visibility", 'visible');
+			} else {
+				$("#"+$last_id).html('');
+			}
+		}
+		if (!$(this).html()) {
+			$html			= $(this).html('<img src="/gamemaster/Application/View/img/textures/selected.png" width="32" height="32" border="0" />');
 		} else {
 			$html			= $(this).css("visibility", 'hidden');
 		}
@@ -113,14 +160,23 @@ $('document').ready(function() {
 
 	// What happens when user clicks on an action menu item
 	$(".tile_opt").live("click", function() {
-		$this_block	= $(this).attr('key');
-		$id_map		= $("#id_map").val();
+		$this_block		= $(this).attr('key');
+		$id_map			= $("#id_map").val();
+		$pos			= $("#target_tile_id").val();
+		$id_tiletype	= $("#id_tiletype").val();
 		if ($this_block) {
 			$(".tile_options").hide();
-			if ($this_block == 'linkTile') {
+			if (($this_block == 'linkTile') || ($this_block == 'changeTileDungeon')) {
 				contentShow("#"+$this_block);
+			} else if ($this_block == 'changeTile') {
+				$.post('/gamemaster/Maps/'+$this_block, {pos: $pos, id_tiletype: $id_tiletype}, function($return) {
+					if ($return) {
+						contentShowData("#"+$this_block, $return);
+					}
+					return false;
+				});
 			} else {
-				$.post('/gamemaster/Maps/'+$this_block, false, function($return) {
+				$.post('/gamemaster/Maps/'+$this_block, {pos: $pos}, function($return) {
 					if ($return) {
 						contentShowData("#"+$this_block, $return);
 					}
@@ -150,6 +206,28 @@ $('document').ready(function() {
 		return false;
 	});
 
+	// What happens when user clicks on a tile to be replaced
+	$(".tiles_return_row").live("click", function() {
+		$position	= $("#target_tile_id").val();
+		$id_tile	= $(this).attr('key');
+		if ($id_tile) {
+			$.post('/gamemaster/Maps/loadTile/', {
+				pos:		$position,
+				id_tile:	$id_tile
+			}, function($return) {
+				$return		= $return.trim();
+				if ($return) {
+					//contentHide("#"+$position);
+					$("#"+$position).attr('bkgrnd', $return);
+					$("#"+$position).css('background-image', 'url(/gamemaster/Application/View/img/textures/'+$return.trim()+')');
+					//contentShow("#"+$position);
+				}
+				return false;
+			});
+		}
+		return false;
+	});
+
 	// What happens when user enters a Map ID for linking
 	$("#id_map").live("keypress", function(e) {
 		if (e.keyCode == 13) {
@@ -160,6 +238,15 @@ $('document').ready(function() {
 
 	// What happens when user click on "link to a new dungeon"
 	$(".newDungeon").live("click", function() {
+		$pos		= $("#target_tile_id").val();
+		$id_areamap	= $("#id_areamap").val();
+		$id_world	= $("#id_world").val();
+		$id_field	= $("#id_field").val();
+		$int_level	= $("#level").val();
+		if (($pos) && ($id_areamap) && ($id_world) && ($id_field) && ($int_level)) {
+			$(location).attr('href', '/gamemaster/Maps/NewEncounterArea/'+$id_world+'/'+$id_field+'/'+$int_level+'/'+$id_areamap+'/'+$pos);
+		}
+		return false;
 	});
 
 	// What happens when user click on "Save Map"
@@ -170,6 +257,7 @@ $('document').ready(function() {
 		$id_world			= $("#id_world").val();
 		$id_field			= $("#id_field").val();
 		$level				= $("#level").val();
+		$vc_name			= $("#vc_name").val();
 		$coords				= getAllMapsCoords();
 		$.post('/gamemaster/Maps/saveMap', {
 			id_areatype:	$id_areatype,
@@ -177,6 +265,7 @@ $('document').ready(function() {
 			id_world:		$id_world,
 			id_field:		$id_field,
 			level:			$level,
+			vc_name:		$vc_name,
 			coords:			$coords
 		}, function($return) {
 			$return			= $return.trim();
@@ -189,6 +278,116 @@ $('document').ready(function() {
 		});
 		return false;
 	});
+
+	// What happens when user click on "Save Map" (edit map)
+	$(".update_map").live("click", function() {
+		$id_areamap			= $("#id_areamap").val();
+		$id_areatype		= $("#id_areatype").val();
+		$id_field			= $("#id_field").val();
+		$int_level			= $("#level").val();
+		$coords				= getAllMapsCoords();
+		if (($id_areamap) && ($id_areatype) && ($id_field) && ($int_level) && ($coords) ) {
+			$.post('/gamemaster/Maps/updateMap', {
+				id_areamap:		$id_areamap,
+				id_areatype:	$id_areatype,
+				id_field:		$id_field,
+				int_level:		$int_level,
+				coords:			$coords
+			}, function($return) {
+				$return			= $return.trim();
+				if ($return == 'ok') {
+					alert("Map was saved!");
+				} else {
+					alert("Sorry,\n\nbla bla bla.\n\nError: "+$return);
+				}
+				return false;
+			});
+		} else {
+			alert("Please,\n\nfill in all information.");
+		}
+		return false;
+	});
+
+	// What happens when user click on "Save Map" (dungeons)
+	$(".save_dungeon_map").live("click", function() {
+		$id_world				= $("#id_world").val();
+		$id_field				= $("#id_field").val();
+		$int_level				= $("#int_level").val();
+		$id_areatype			= $("#id_areatype").val();
+		$parent_pos				= $("#parent_pos").val();
+		$parent_id_areamap		= $("#parent_id_areamap").val();
+		$vc_name				= $("#vc_name").val();
+		$coords					= getAllMapsCoords();
+		$.post('/gamemaster/Maps/saveDungeon', {
+			id_world:			$id_world,
+			id_field:			$id_field,
+			int_level:			$int_level,
+			id_areatype:		$id_areatype,
+			parent_pos:			$parent_pos,
+			parent_id_areamap:	$parent_id_areamap,
+			vc_name:			$vc_name,
+			coords:				$coords
+		}, function($return) {
+			$return				= $return.trim();
+			if ($return) {
+				$(location).attr('href', '/gamemaster/Maps/EditDungeon/'+$return);
+			} else {
+				alert("Sorry,\n\nbla bla bla.\n\nError: "+$return);
+			}
+			return false;
+		});
+		return false;
+	});
+
+	// What happens when user changes tiletype
+	$("#new_id_tiletype").live("change", function() {
+		$id_tiletype	= $(this).val();
+		if ($id_tiletype) {
+			$.post('/gamemaster/Maps/loadTileList/', {
+				id_tiletype:	$id_tiletype
+			}, function($return) {
+				if ($return) {
+					contentShowData("#tiles_result_box", $return);
+				}
+				return false;
+			});
+		}
+	});
+
+	// What happens when clicks on "go to this location"
+	$("#linkmap").live("click", function() {
+		$target_id_areamap	= $(this).attr('target');
+		$id_areamap			= $("#id_areamap").val();
+		if ($id_areamap) {
+			$(location).attr('href', '/gamemaster/Maps/EditDungeon/'+$target_id_areamap+'/'+$id_areamap);
+		}
+		return false;
+	});
+
+	// What happens when user clicks on "Delete this map"
+	$(".delete_map").live("click", function() {
+		$id_areamap			= $("#id_areamap").val();
+		$parent_id_areamap	= $("#parent_id_areamap").val();
+		$res	= confirm("Atention\n\nWhen you delete a map, you'll be deleting all info related to it. That includes OTHER MAPS to which this map links to.\n\nAre you sure you want to continue?");
+		if ($res) {
+			if (($id_areamap) && ($parent_id_areamap)) {
+				$.post('/gamemaster/Maps/deleteMap/', {
+					id_areamap:			$id_areamap,
+					parent_id_areamap:	$parent_id_areamap
+				}, function($return) {
+					$return		= $return.trim();
+					if ($return) {
+						$(location).attr('href', $return);
+					} else {
+						alert("We regrettably inform you that this opetarion could not me completed due to a buggy malfunction.");
+					}
+					return false;
+				});
+			}
+			return false;
+		}
+	});
+
 });
 
 
