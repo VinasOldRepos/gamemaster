@@ -25,28 +25,39 @@
 								<input type="hidden" name="id_world" id="id_world" value="<?php echo $id_world; ?>" />
 								<input type="hidden" name="id_field" id="id_field" value="<?php echo $id_field; ?>" />
 								<input type="hidden" name="int_level" id="int_level" value="<?php echo $int_level; ?>" />
-								<input type="hidden" name="id_areatype" id="id_areatype" value="<?php echo $id_areatype; ?>" />
 								<input type="hidden" name="parent_pos" id="parent_pos" value="<?php echo $parent_pos; ?>" />
 								<input type="hidden" name="parent_id_areamap" id="parent_id_areamap" value="<?php echo $parent_id_areamap; ?>" />
 								<input type="hidden" name="target_tile_id" id="target_tile_id" value="" />
-								<label for="level">Map's name:</label>
-								<input type="text" name="vc_name" id="vc_name" class="main_text_input"	 />
+								<input type="hidden" name="action" id="action" value="NewEncounterMap" />
+								<input type="hidden" name="id_areatype" id="id_areatype" value="2" /> <!-- dungeon -->
+								<label for="id_tiletype">Background Type:</label>
+								<select name="encounter_id_tiletype" id="encounter_id_tiletype" class="main_text_input" style="width: 206px;">
+									<?php echo $tiletypes; ?>
+								</select>
+								<div class="not_shown" id="map_name">
+									<br />
+									<label for="level">Area's name:</label>
+									<input type="text" name="vc_name" id="vc_name" class="main_text_input"	 />
+								</div>
 							</form>
 						</fieldset>
 						<br />
 						<div class="map_area" id="map_area">
-							<?php echo $map; ?>
 						</div>
 					</div>
 					<div class="map_interaction not_shown" id="map_interaction" align="center">
 						<span class="title_01">What do you wanna do?</span>
 						<br /><br /><br />
 						<div class="tile_options" id="tile_options">
-							<div class="text_01 tile_opt" key="changeTileDungeon">Change background tile</div><br /><br />
+							<div class="text_01 tile_opt" key="changeBkgTileDungeon">Background tile</div><br /><br />
+							<div class="text_01 tile_opt" key="changeDtlTileDungeon">Detail tile</div><br /><br />
 							<div class="text_01 tile_opt" key="delete_tileinfo">Delete all info related (but background)</div><br /><br />
 						</div>
-						<div class="opt_details" id="changeTileDungeon">
-							<?php echo $tiles; ?>
+						<div class="opt_details" id="changeBkgTileDungeon">
+							bkg
+						</div>
+						<div class="opt_details" id="changeDtlTileDungeon">
+							dtl
 						</div>
 						<div class="opt_details" id="delete_tileinfo">
 							delete

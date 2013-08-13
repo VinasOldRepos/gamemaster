@@ -25,11 +25,18 @@
 								<input type="hidden" name="id_world" id="id_world" value="<?php echo $id_world; ?>" />
 								<input type="hidden" name="id_field" id="id_field" value="<?php echo $id_field; ?>" />
 								<input type="hidden" name="id_areamap" id="id_areamap" value="<?php echo $id_areamap; ?>" />
+								<input type="hidden" name="id_areatype" id="id_areatype" value="<?php echo $id_areatype; ?>" />
+								<input type="hidden" name="id_tiletype" id="id_tiletype" value="<?php echo $id_tiletype; ?>" />
+								<input type="hidden" name="level" id="level" value="<?php echo $int_level; ?>" />
 								<input type="hidden" name="parent_id_areamap" id="parent_id_areamap" value="<?php echo $parent_id_areamap; ?>" />
-								<input type="hidden" name="id_areatype" id="id_areatype" value="2" /> <!-- 2 = Dungeon -->
 								<input type="hidden" name="target_tile_id" id="target_tile_id" value="" />
-								<label for="level">Level:</label>
-								<input type="text" name="level" id="level" class="main_text_input" value="<?php echo $int_level; ?>" />
+								<label for="id_tiletype">Background Type:</label>
+								<select name="encounter_id_tiletype" id="encounter_id_tiletype" class="main_text_input" style="width: 206px;">
+									<?php echo $tiletypes; ?>
+								</select>
+								<br />
+								<label for="level">Area's name:</label>
+								<input type="text" name="vc_name" id="vc_name" class="main_text_input" value="<?php echo $mapname; ?>" />
 							</form>
 						</fieldset>
 						<div class="title_01 map_name" id="map_name"><?php echo '#'.$vc_id_areamap.' - '.$mapname; ?></div>
@@ -48,7 +55,8 @@
 						<div class="tile_options" id="tile_options">
 							<div class="text_01 tile_opt" key="listIcons" id="linkmap" target="">Go to this location</div><br /><br />
 							<div class="text_01 tile_opt" key="linkTile">Link this to map</div><br /><br />
-							<div class="text_01 tile_opt" key="changeTileDungeon">Change background tile</div><br /><br />
+							<div class="text_01 tile_opt" key="changeBkgTileDungeon">Background tile</div><br /><br />
+							<div class="text_01 tile_opt" key="changeDtlTileDungeon">Detail tile</div><br /><br />
 							<div class="text_01 tile_opt" key="delete_tileinfo">Delete all info related (but background)</div><br /><br />
 						</div>
 						<div class="opt_details" id="linkTile">
@@ -56,8 +64,11 @@
 							<div class="text_01 link_opt newDungeon" key="newDungeon">Another floor</div><br /><br />
 							<div class="text_01 link_opt" key="linkTile">Map ID: # <input type="text" name="id_target_map" id="id_target_map" class="sec_tiny_text_input" /></div><br /><br />
 						</div>
-						<div class="opt_details" id="changeTileDungeon">
+						<div class="opt_details" id="changeBkgTileDungeon">
 							<?php echo $tiles; ?>
+						</div>
+						<div class="opt_details" id="changeDtlTileDungeon">
+							<?php echo $detail_tiles; ?>
 						</div>
 						<div class="opt_details" id="delete_tileinfo">
 							delete

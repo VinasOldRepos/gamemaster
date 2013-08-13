@@ -65,20 +65,23 @@
 		*/
 		public function uploadImage() {
 			// Declare classes
-			$Upload			= new Upload();
-			$RepTexture		= new RepTexture();
+			$Upload					= new Upload();
+			$RepTexture				= new RepTexture();
 			// Initialize variables
-			$return			= false;
-			$filename		= false;
-			$id_texturetype	= (isset($_POST['id_texturetype'])) ? trim($_POST['id_texturetype']) : false;
-			$id_tiletype	= (isset($_POST['id_tiletype'])) ? trim($_POST['id_tiletype']) : false;
-			$tile_name		= (isset($_POST['tile_name'])) ? trim($_POST['tile_name']) : false;
-			$icon_name		= (isset($_POST['icon_name'])) ? trim($_POST['icon_name']) : false;
-			$image_name		= (isset($_POST['image_name'])) ? trim($_POST['image_name']) : false;
-			$img_type		= (isset($_FILES['image']['type'])) ? $_FILES['image']['type'] : false;
-			$image			= (isset($_FILES['image']['tmp_name'])) ? $_FILES['image']['tmp_name'] : false;
-			$img_error		= (isset($_FILES['image']['error'])) ? $_FILES['image']['error'] : false;
-			$img_size		= (isset($_FILES['image']['size'])) ? $_FILES['image']['size'] : false;
+			$return					= false;
+			$filename				= false;
+			$id_texturetype			= (isset($_POST['id_texturetype'])) ? trim($_POST['id_texturetype']) : false;
+			$id_tiletype			= (isset($_POST['id_tiletype'])) ? trim($_POST['id_tiletype']) : false;
+			$id_localarea_tiletype	= (isset($_POST['id_localarea_tiletype'])) ? trim($_POST['id_localarea_tiletype']) : false;
+			$id_encounter_tiletype	= (isset($_POST['id_encounter_tiletype'])) ? trim($_POST['id_encounter_tiletype']) : false;
+			$id_use					= (isset($_POST['id_use'])) ? trim($_POST['id_use']) : false;
+			$tile_name				= (isset($_POST['tile_name'])) ? trim($_POST['tile_name']) : false;
+			$icon_name				= (isset($_POST['icon_name'])) ? trim($_POST['icon_name']) : false;
+			$image_name				= (isset($_POST['image_name'])) ? trim($_POST['image_name']) : false;
+			$img_type				= (isset($_FILES['image']['type'])) ? $_FILES['image']['type'] : false;
+			$image					= (isset($_FILES['image']['tmp_name'])) ? $_FILES['image']['tmp_name'] : false;
+			$img_error				= (isset($_FILES['image']['error'])) ? $_FILES['image']['error'] : false;
+			$img_size				= (isset($_FILES['image']['size'])) ? $_FILES['image']['size'] : false;
 			// If values were sent
 			if (($id_texturetype) && ($img_type) && ($image) && ($img_error == 0) && ($img_size)) {
 				// If image if jpeg, gif or png
@@ -90,7 +93,19 @@
 				if ($filename) {
 					// Check Texture type and save info into DB
 					if ($id_texturetype == 1) { // TILE
-						$res	= $RepTexture->insertTile(array($id_tiletype, $tile_name, $filename));
+						if ($id_use == 1) { // BACKGROUND TILE
+							if ($id_tiletype == 1) { // LOCAL AREA
+								$res	= $RepTexture->insertLocalAreaBkgTile(array($id_localarea_tiletype, $tile_name, $filename));
+							} else if ($id_tiletype == 2) { // ENCOUNTER AREA
+								$res	= $RepTexture->insertEncounterBkgTile(array($id_encounter_tiletype, $tile_name, $filename));
+							}
+						} else if ($id_use == 2) { // DETAIL TILE
+							if ($id_tiletype == 1) { // LOCAL AREA
+								$res	= $RepTexture->insertLocalAreaDtlTile(array($tile_name, $filename));
+							} else if ($id_tiletype == 2) { // ENCOUNTER AREA
+								$res	= $RepTexture->insertEncounterDtlTile(array($tile_name, $filename));
+							}
+						}
 					} else if ($id_texturetype == 2) { // MAP ICON
 					} else if ($id_texturetype == 3) { // IMAGE
 					}
@@ -109,30 +124,38 @@
 		*/
 		public function Insert() {
 			// Declare classes
-			$RepTexture		= new RepTexture();
-			$ModTexture		= new ModTexture();
+			$RepTexture			= new RepTexture();
+			$ModTexture			= new ModTexture();
 			// Initialize variables
-			$branches		= false;
+			$branches			= false;
 			// Fetch and Model Texture Types
-			$textureTypes	= $RepTexture->getAllTextureTypes();
-			$textureTypes	= ($textureTypes) ? $ModTexture->comboTextureTypes($textureTypes) : false;
+			$textureTypes		= $RepTexture->getAllTextureTypes();
+			$textureTypes		= ($textureTypes) ? $ModTexture->comboTextureTypes($textureTypes) : false;
 			// Fetch and Model Tile Types
-			$tileTypes		= $RepTexture->getAllTileTypes('vc_name');
-			$tileTypes		= $ModTexture->comboTileTypes($tileTypes);
+			$tileTypes			= $RepTexture->getAllTileTypes('vc_name');
+			$tileTypes			= $ModTexture->comboTileTypes($tileTypes);
+			// Fetch and Model Local Area Tile Types
+			$localTileTypes		= $RepTexture->getAllLocalAreaTileTypes('vc_name');
+			$localTileTypes		= $ModTexture->combo($localTileTypes, true);
+			// Fetch and Model Encounter Area Tile Types
+			$encounterTileTypes	= $RepTexture->getAllEncounterTileTypes('vc_name');
+			$encounterTileTypes	= $ModTexture->combo($encounterTileTypes, true);
 			// Define sub menu selection
 			$GLOBALS['menu']['textures']['opt1_css'] = 'details_item_on';
 			// Prepare return values
-			View::set('textureTypes',	$textureTypes);
-			View::set('tileTypes',		$tileTypes);
+			View::set('textureTypes',		$textureTypes);
+			View::set('tileTypes',			$tileTypes);
+			View::set('localTileTypes',		$localTileTypes);
+			View::set('encounterTileTypes',	$encounterTileTypes);
 			// Render view
 			View::render('texturesInsert');
  		}
 
 		/*
-		Prints out search tiles page - Search()
+		Prints out search for local background tiles page - SearchLocalBkgTiles()
 			@return format	- render view
 		*/
-		public function SearchTiles() {
+		public function SearchLocalBkgTiles() {
 			// Declare Classes
 			$RepTexture			= new RepTexture();
 			$ModTexture			= new ModTexture();
@@ -143,29 +166,128 @@
 			$search				= (isset($_POST['search'])) ? trim($_POST['search']) : false;
 			$search				= ((!$search) && (isset($GLOBALS['params'][1]))) ? trim($GLOBALS['params'][1]) : false;
 			// Get first 20 entries
-			$result				= $RepTexture->getAllTiles(20);
+			$result				= $RepTexture->getAllLocalBkgTiles(20);
 			// If there are entries
 			if ($result) {
 				// Separate returned data an paging info
 				$rows			= $result[0];
 				$paging_info	= $result[1];
 				// Model Result
-				$return			= $ModTexture->listTiles($rows, 't.id', 'ASC');
+				$return			= $ModTexture->listBkgTiles($rows, 'b.id', 'ASC');
 				// Define Pager info
-				$pager			= Pager::pagerOptions($paging_info, 'textures', 'partialResultTiles');
+				$pager			= Pager::pagerOptions($paging_info, 'textures', 'partLocalBkgResultTiles');
 			}
 			// Prepare info to be displayed
-			View::set('pager', $pager);
-			View::set('return', $return);
+			View::set('pager',	$pager);
+			View::set('return',	$return);
 			// render view
 			View::render('tilesSearch');
  		}
 
 		/*
-		Prints partial results - partialResult()
+		Prints out search for encounter background tiles page - SearchEncounterBkgTiles()
 			@return format	- render view
 		*/
-		public function partialResultTiles() {
+		public function SearchEncounterBkgTiles() {
+			// Declare Classes
+			$RepTexture			= new RepTexture();
+			$ModTexture			= new ModTexture();
+			// Define sub menu selection
+			$GLOBALS['menu']['textures']['opt4_css'] = 'details_item_on';
+			// Intialize variables
+			$return				= '<br />(no tiles found)';
+			$search				= (isset($_POST['search'])) ? trim($_POST['search']) : false;
+			$search				= ((!$search) && (isset($GLOBALS['params'][1]))) ? trim($GLOBALS['params'][1]) : false;
+			// Get first 20 entries
+			$result				= $RepTexture->getAllEncounterBkgTiles(20);
+			// If there are entries
+			if ($result) {
+				// Separate returned data an paging info
+				$rows			= $result[0];
+				$paging_info	= $result[1];
+				// Model Result
+				$return			= $ModTexture->listBkgTiles($rows, 'b.id', 'ASC');
+				// Define Pager info
+				$pager			= Pager::pagerOptions($paging_info, 'textures', 'partEncounterBkgResultTiles');
+			}
+			// Prepare info to be displayed
+			View::set('pager',	$pager);
+			View::set('return',	$return);
+			// render view
+			View::render('tilesSearch');
+ 		}
+
+		/*
+		Prints out search for local detail tiles page - SearchLocalDtlTiles()
+			@return format	- render view
+		*/
+		public function SearchLocalDtlTiles() {
+			// Declare Classes
+			$RepTexture			= new RepTexture();
+			$ModTexture			= new ModTexture();
+			// Define sub menu selection
+			$GLOBALS['menu']['textures']['opt3_css'] = 'details_item_on';
+			// Intialize variables
+			$return				= '<br />(no tiles found)';
+			$search				= (isset($_POST['search'])) ? trim($_POST['search']) : false;
+			$search				= ((!$search) && (isset($GLOBALS['params'][1]))) ? trim($GLOBALS['params'][1]) : false;
+			// Get first 20 entries
+			$result				= $RepTexture->getAllLocalDtlTiles(20);
+			// If there are entries
+			if ($result) {
+				// Separate returned data an paging info
+				$rows			= $result[0];
+				$paging_info	= $result[1];
+				// Model Result
+				$return			= $ModTexture->listDtlTiles($rows, 'id', 'ASC');
+				// Define Pager info
+				$pager			= Pager::pagerOptions($paging_info, 'textures', 'partLocalDtlResultTiles');
+			}
+			// Prepare info to be displayed
+			View::set('pager',	$pager);
+			View::set('return',	$return);
+			// render view
+			View::render('tilesSearch');
+ 		}
+
+		/*
+		Prints out search for encounter detail tiles page - SearchEncounterDtlTiles()
+			@return format	- render view
+		*/
+		public function SearchEncounterDtlTiles() {
+			// Declare Classes
+			$RepTexture			= new RepTexture();
+			$ModTexture			= new ModTexture();
+			// Define sub menu selection
+			$GLOBALS['menu']['textures']['opt5_css'] = 'details_item_on';
+			// Intialize variables
+			$return				= '<br />(no tiles found)';
+			$search				= (isset($_POST['search'])) ? trim($_POST['search']) : false;
+			$search				= ((!$search) && (isset($GLOBALS['params'][1]))) ? trim($GLOBALS['params'][1]) : false;
+			// Get first 20 entries
+			$result				= $RepTexture->getAllEncounterDtlTiles(20);
+			// If there are entries
+			if ($result) {
+				// Separate returned data an paging info
+				$rows			= $result[0];
+				$paging_info	= $result[1];
+				// Model Result
+				$return			= $ModTexture->listDtlTiles($rows, 'id', 'ASC');
+				// Define Pager info
+				$pager			= Pager::pagerOptions($paging_info, 'textures', 'partEncounterDtlResultTiles');
+			}
+			// Prepare info to be displayed
+			View::set('pager',	$pager);
+			View::set('return',	$return);
+			// render view
+			View::render('tilesSearch');
+ 		}
+
+		/*
+		Prints partial results - partLocalBkgResultTiles()
+			@return format	- render view
+		*/
+		public function partLocalBkgResultTiles() {
 			// Declare Classes
 			$RepTexture				= new RepTexture();
 			$ModTexture				= new ModTexture();
@@ -183,9 +305,9 @@
 			if (($num_page) && ($ordering) && ($limit) && ($direction)) {
 				// Get searched data
 				if ($str_search) {
-					$result			= $RepTexture->getSearchedTiles($str_search, $limit, $num_page, $ordering, $direction);
+					$result			= $RepTexture->getSearchedLocalBkgTiles($str_search, $limit, $num_page, $ordering, $direction);
 				} else {
-					$result			= $RepTexture->getAllTiles($limit, $num_page, $ordering, $direction);
+					$result			= $RepTexture->getAllLocalBkgTiles($limit, $num_page, $ordering, $direction);
 				}
 				// If there are entries
 				if ($result) {
@@ -193,8 +315,128 @@
 					$rows			= $result[0];
 					$paging_info	= $result[1];
 					// Model Result
-					$pager			= Pager::pagerOptions($paging_info, 'textures', 'partialResultTiles');
-					$return			= $ModTexture->jqueryTiles($rows, $pager, $ordering, $direction);
+					$pager			= Pager::pagerOptions($paging_info, 'textures', 'partLocalBkgResultTiles');
+					$return			= $ModTexture->jqueryLocalBkgTiles($rows, $pager, $ordering, $direction);
+				}
+			}
+			// Print out result
+			echo $return;
+ 		}
+
+		/*
+		Prints partial results - partEncounterBkgResultTiles()
+			@return format	- render view
+		*/
+		public function partEncounterBkgResultTiles() {
+			// Declare Classes
+			$RepTexture				= new RepTexture();
+			$ModTexture				= new ModTexture();
+			// Intialize variables
+			$return					= '<br />(no tiles found)';
+			$num_page				= (isset($_POST['num_page'])) ? trim($_POST['num_page']) : false;
+			$ordering				= (isset($_POST['ordering'])) ? trim($_POST['ordering']) : false;
+			$offset					= (isset($_POST['offset'])) ? trim($_POST['offset']) : false;
+			$limit					= (isset($_POST['limit'])) ? trim($_POST['limit']) : false;
+			$direction				= (isset($_POST['direction'])) ? trim($_POST['direction']) : false;
+			$str_search				= (isset($_POST['str_search'])) ? trim($_POST['str_search']) : false;
+			$pager					= '';
+			// If data was sent
+			//if (($num_page) && ($ordering) && ($offset) && ($limit) && ($direction)) {
+			if (($num_page) && ($ordering) && ($limit) && ($direction)) {
+				// Get searched data
+				if ($str_search) {
+					$result			= $RepTexture->getSearchedEncounterBkgTiles($str_search, $limit, $num_page, $ordering, $direction);
+				} else {
+					$result			= $RepTexture->getAllEncounterBkgTiles($limit, $num_page, $ordering, $direction);
+				}
+				// If there are entries
+				if ($result) {
+					// Separate returned data and paging info
+					$rows			= $result[0];
+					$paging_info	= $result[1];
+					// Model Result
+					$pager			= Pager::pagerOptions($paging_info, 'textures', 'partEncounterBkgResultTiles');
+					$return			= $ModTexture->jqueryBkgTiles($rows, $pager, $ordering, $direction);
+				}
+			}
+			// Print out result
+			echo $return;
+ 		}
+
+		/*
+		Prints partial results - partLocalDtlResultTiles()
+			@return format	- render view
+		*/
+		public function partLocalDtlResultTiles() {
+			// Declare Classes
+			$RepTexture				= new RepTexture();
+			$ModTexture				= new ModTexture();
+			// Intialize variables
+			$return					= '<br />(no tiles found)';
+			$num_page				= (isset($_POST['num_page'])) ? trim($_POST['num_page']) : false;
+			$ordering				= (isset($_POST['ordering'])) ? trim($_POST['ordering']) : false;
+			$offset					= (isset($_POST['offset'])) ? trim($_POST['offset']) : false;
+			$limit					= (isset($_POST['limit'])) ? trim($_POST['limit']) : false;
+			$direction				= (isset($_POST['direction'])) ? trim($_POST['direction']) : false;
+			$str_search				= (isset($_POST['str_search'])) ? trim($_POST['str_search']) : false;
+			$pager					= '';
+			// If data was sent
+			//if (($num_page) && ($ordering) && ($offset) && ($limit) && ($direction)) {
+			if (($num_page) && ($ordering) && ($limit) && ($direction)) {
+				// Get searched data
+				if ($str_search) {
+					$result			= $RepTexture->getSearchedLocalDtlTiles($str_search, $limit, $num_page, $ordering, $direction);
+				} else {
+					$result			= $RepTexture->getAllLocalDtlTiles($limit, $num_page, $ordering, $direction);
+				}
+				// If there are entries
+				if ($result) {
+					// Separate returned data and paging info
+					$rows			= $result[0];
+					$paging_info	= $result[1];
+					// Model Result
+					$pager			= Pager::pagerOptions($paging_info, 'textures', 'partLocalDtlResultTiles');
+					$return			= $ModTexture->jqueryDtlTiles($rows, $pager, $ordering, $direction);
+				}
+			}
+			// Print out result
+			echo $return;
+ 		}
+
+		/*
+		Prints partial results - partEncounterDtlResultTiles()
+			@return format	- render view
+		*/
+		public function partEncounterDtlResultTiles() {
+			// Declare Classes
+			$RepTexture				= new RepTexture();
+			$ModTexture				= new ModTexture();
+			// Intialize variables
+			$return					= '<br />(no tiles found)';
+			$num_page				= (isset($_POST['num_page'])) ? trim($_POST['num_page']) : false;
+			$ordering				= (isset($_POST['ordering'])) ? trim($_POST['ordering']) : false;
+			$offset					= (isset($_POST['offset'])) ? trim($_POST['offset']) : false;
+			$limit					= (isset($_POST['limit'])) ? trim($_POST['limit']) : false;
+			$direction				= (isset($_POST['direction'])) ? trim($_POST['direction']) : false;
+			$str_search				= (isset($_POST['str_search'])) ? trim($_POST['str_search']) : false;
+			$pager					= '';
+			// If data was sent
+			//if (($num_page) && ($ordering) && ($offset) && ($limit) && ($direction)) {
+			if (($num_page) && ($ordering) && ($limit) && ($direction)) {
+				// Get searched data
+				if ($str_search) {
+					$result			= $RepTexture->getSearchedEncounterDtlTiles($str_search, $limit, $num_page, $ordering, $direction);
+				} else {
+					$result			= $RepTexture->getAllEncounterDtlTiles($limit, $num_page, $ordering, $direction);
+				}
+				// If there are entries
+				if ($result) {
+					// Separate returned data and paging info
+					$rows			= $result[0];
+					$paging_info	= $result[1];
+					// Model Result
+					$pager			= Pager::pagerOptions($paging_info, 'textures', 'partEncounterDtlResultTiles');
+					$return			= $ModTexture->jqueryDtlTiles($rows, $pager, $ordering, $direction);
 				}
 			}
 			// Print out result

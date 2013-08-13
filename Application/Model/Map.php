@@ -155,7 +155,7 @@
 			return $return;
 		}
 
-		public function listIcons($entries = false, $ordering = false, $direction = false) {
+		public function listIcons($entries = false) {
 			$return	= '<br />No icons found'.PHP_EOL;
 			if ($entries) {
 				$tot_entries	= count($entries);
@@ -173,7 +173,7 @@
 			return $return;
 		}
 
-		public function listTiles($entries = false, $ordering = false, $direction = false) {
+		public function listTiles($entries = false) {
 			$return	= '<br />No icons found'.PHP_EOL;
 			if ($entries) {
 				$tot_entries	= count($entries);
@@ -191,14 +191,70 @@
 			return $return;
 		}
 
-		public function changeTile($tiletypes = false, $tiles = false) {
+		public function listDtlTiles($entries = false) {
+			$return	= '<br />No icons found'.PHP_EOL;
+			if ($entries) {
+				$tot_entries	= count($entries);
+				$return			= '<div class="details_result_box" id="tiles_result_box">'.PHP_EOL;
+				$return			.= '	<span class="title_01">Choose a tile</span><br />'.PHP_EOL;
+				for ($i = 0; $i < $tot_entries; $i++) {
+					$return		.= '	<div class="dtl_tiles_return_row" key="'.$entries[$i]['id'].'" image="'.$entries[$i]['vc_path'].'">'.PHP_EOL;
+					$return		.= '		<div class="result_field result_id">'.$entries[$i]['id'].'</div>'.PHP_EOL;
+					$return		.= '		<div class="result_field result_iconname">'.$entries[$i]['vc_name'].'</div>'.PHP_EOL;
+					$return		.= '		<div class="result_field result_icon"><img src="/gamemaster/Application/View/img/textures/'.$entries[$i]['vc_path'].'" width="20" height="20" /></div>'.PHP_EOL;
+					$return		.= '	</div><br />'.PHP_EOL;
+				}
+				$return			.= '</div><br />'.PHP_EOL;
+			}
+			return $return;
+		}
+
+		public function listEncounterBkgTiles($entries = false) {
+			$return	= '<br />No icons found'.PHP_EOL;
+			if ($entries) {
+				$tot_entries	= count($entries);
+				$return			= '<div class="details_result_box" id="tiles_result_box">'.PHP_EOL;
+				$return			.= '	<span class="title_01">Choose a tile</span><br />'.PHP_EOL;
+				for ($i = 0; $i < $tot_entries; $i++) {
+					$return		.= '	<div class="encounterbkg_tiles_return_row" key="'.$entries[$i]['id'].'" image="'.$entries[$i]['vc_path'].'">'.PHP_EOL;
+					$return		.= '		<div class="result_field result_id">'.$entries[$i]['id'].'</div>'.PHP_EOL;
+					$return		.= '		<div class="result_field result_iconname">'.$entries[$i]['vc_name'].'</div>'.PHP_EOL;
+					$return		.= '		<div class="result_field result_icon"><img src="/gamemaster/Application/View/img/textures/'.$entries[$i]['vc_path'].'" width="20" height="20" /></div>'.PHP_EOL;
+					$return		.= '	</div><br />'.PHP_EOL;
+				}
+				$return			.= '</div><br />'.PHP_EOL;
+			}
+			return $return;
+		}
+
+		public function listEncounterDtlTiles($entries = false) {
+			$return	= '<br />No icons found'.PHP_EOL;
+			if ($entries) {
+				$tot_entries	= count($entries);
+				$return			= '<div class="details_result_box" id="tiles_result_box">'.PHP_EOL;
+				$return			.= '	<span class="title_01">Choose a tile</span><br />'.PHP_EOL;
+				for ($i = 0; $i < $tot_entries; $i++) {
+					$return		.= '	<div class="encounterdtl_tiles_return_row" key="'.$entries[$i]['id'].'" image="'.$entries[$i]['vc_path'].'">'.PHP_EOL;
+					$return		.= '		<div class="result_field result_id">'.$entries[$i]['id'].'</div>'.PHP_EOL;
+					$return		.= '		<div class="result_field result_iconname">'.$entries[$i]['vc_name'].'</div>'.PHP_EOL;
+					$return		.= '		<div class="result_field result_icon"><img src="/gamemaster/Application/View/img/textures/'.$entries[$i]['vc_path'].'" width="20" height="20" /></div>'.PHP_EOL;
+					$return		.= '	</div><br />'.PHP_EOL;
+				}
+				$return			.= '</div><br />'.PHP_EOL;
+			}
+			return $return;
+		}
+
+		public function changeTile($tiles = false, $tiletypes = false) {
 			$return	= false;
-			if (($tiletypes) && ($tiles)) {
+			if ($tiles) {
 				$return	.= '<div>'.PHP_EOL;
-				$return	.= '	<select id="new_id_tiletype" name="new_id_tiletype">'.PHP_EOL;
-				$return	.= '		'.$tiletypes.PHP_EOL;
-				$return	.= '	</select>'.PHP_EOL;
-				$return	.= '<br /><br />'.PHP_EOL;
+				if ($tiletypes) {
+					$return	.= '	<select id="new_id_tiletype" name="new_id_tiletype">'.PHP_EOL;
+					$return	.= '		'.$tiletypes.PHP_EOL;
+					$return	.= '	</select>'.PHP_EOL;
+					$return	.= '<br /><br />'.PHP_EOL;
+				}
 				$return	.= $tiles.PHP_EOL;
 				$return	.= '</div>'.PHP_EOL;
 			}

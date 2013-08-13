@@ -7,25 +7,22 @@ $('document').ready(function() {
 	});
 
 	// What happens when user changes Texture Type on Insert Form
-	$("#id_texturetype").live("click", function() {
+	$("#id_texturetype").live("change", function() {
 		$id_texturetype	= $(this).val();
+		$(".not_shown").hide();
 		if ($id_texturetype == 1) {
-			$(".not_shown").hide();
 			$("#image").val('');
 			contentShow("#map_tile");
 			contentShow(".img_input");
 		} else if ($id_texturetype == 2) {
-			$(".not_shown").hide();
 			$("#image").val('');
 			contentShow("#map_icon");
 			contentShow(".img_input");
 		} else if ($id_texturetype == 3) {
-			$(".not_shown").hide();
 			$("#image").val('');
 			contentShow("#image");
 			contentShow(".img_input");
 		} else {
-			$(".not_shown").hide();
 			$(".img_input").hide();
 		}
 	});
@@ -36,7 +33,7 @@ $('document').ready(function() {
 		return false;
 	});
 
-	// What happens when user clicks the "upload texure" button
+	// What happens when user clicks the "upload texture" button
 	$(".new_texture").live("click", function() {
 		$("#file_upload_form").submit();
 		return false;
@@ -94,7 +91,7 @@ $('document').ready(function() {
 		document.body.style.cursor	= 'default';
 	});
 
-	// What happens when a user is updated
+	// What happens when a tile is updated
 	$(".updt_tile").live("click", function() {
 		$id_tile		= $("#id_tile").val();
 		$id_tiletype	= $("#id_tiletype").val();
@@ -121,6 +118,41 @@ $('document').ready(function() {
 		} else {
 			alert("Please\n\nFill all the fields.");
 		}
+		return false;
+	});
+
+	$("#id_tiletype").live("change", function() {
+		$(".minor_maptile").hide();
+		$("#id_use").val('');
+		contentShow("#wilbeused");
+		return false;
+	});
+
+	$("#id_use").live("change", function() {
+		$id_use			= $(this).val();
+		$id_tiletype	= $("#id_tiletype").val();
+		if ($id_use == 1) {
+			if ($id_tiletype == 1) {
+				$("#id_encounter_tiletype").val(0);
+				contentShow("#localArea");
+			} else if ($id_tiletype == 2) {
+				$("#id_localarea_tiletype").val(0);
+				contentShow("#encounterArea");
+			}
+		} else if ($id_use == 2) {
+			$("#id_encounter_tiletype").val(0);
+			$("#id_localarea_tiletype").val(0);
+			$("#localArea").hide();
+			$("#encounterArea").hide();
+			$("#tile_name").val('');
+			contentShow("#tileName");
+		}
+		return false;
+	});
+
+	$("#id_encounter_tiletype, #id_localarea_tiletype").live("change", function() {
+		$("#tile_name").val('');
+		contentShow("#tileName");
 		return false;
 	});
 

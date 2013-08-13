@@ -89,7 +89,7 @@
 			$world			= ($world) ? $ModMap->world($world, $links) : false;
 
 			// Fetch and model tile types for combo
-			$tiletypes		= $RepMap->getAllTileTypes();
+			$tiletypes		= $RepMap->getAllLocalAreaTileTypes();
 			$tiletypes		= ($tiletypes) ? $ModMap->combo($tiletypes, true) : false;
 			// Fetch and model Branches for combo
 			$RepQuestion	= new RepQuestion();
@@ -115,41 +115,44 @@
 		*/
 		public function EditLocalMap() {
 			// Declare classes
-			$RepMap					= new RepMap();
-			$ModMap					= new ModMap();
+			$RepMap						= new RepMap();
+			$ModMap						= new ModMap();
 			// Initialize variables
-			$id_areamap				= (isset($GLOBALS['params'][1])) ? trim(($GLOBALS['params'][1])) : false;
+			$id_areamap					= (isset($GLOBALS['params'][1])) ? trim(($GLOBALS['params'][1])) : false;
 			if (!$id_areamap) {
-				$id_areamap			= (isset($_POST['id_areamap'])) ? trim(($_POST['id_areamap'])) : false;
+				$id_areamap				= (isset($_POST['id_areamap'])) ? trim(($_POST['id_areamap'])) : false;
 			}
-			$return					= false;
+			$return						= false;
 			// if area map id was sent
 			if ($id_areamap) {
 				// Load area information
-				$area				= $RepMap->getAreaByAreaMapId($id_areamap);
+				$area					= $RepMap->getAreaByAreaMapId($id_areamap);
 				if ($area) {
 					// Load Area Related info
-					$map			= $RepMap->getMapById($area['id_areamap']);
-					$parent_areamap	= $RepMap->getParentMapIdTypeByMapId($area['id_areamap']);
+					$map				= $RepMap->getMapById($area['id_areamap']);
+					$id_areatype		= ($map) ? $map['id_areatype'] : false;
+					$parent_areamap		= $RepMap->getParentMapIdTypeByMapId($area['id_areamap']);
 					$parent_id_areamap	= $parent_areamap['id_map_orign'];
-					$mapname		= $map['vc_name'];
-					$link_icon		= $RepMap->getLinksIconsByAreaId($area['id_areamap']);
-					$worlds			= $RepMap->getAllWorlds();
+					$mapname			= $map['vc_name'];
+					$link_icon			= $RepMap->getLinksIconsByAreaId($area['id_areamap']);
+					$worlds				= $RepMap->getAllWorlds();
 					// Model Area Related info
-					$map			= $ModMap->map($map, $link_icon);
-					$worlds			= ($worlds) ? $ModMap->combo($worlds, false, $area['id_world']) : false;
+					$map				= $ModMap->map($map, $link_icon);
+					$worlds				= ($worlds) ? $ModMap->combo($worlds, false, $area['id_world']) : false;
 					// Load Field related info
-					$RepQuestion	= new RepQuestion();
-					$id_branch		= ($area['id_field']) ? $RepQuestion->getBranchIdByFieldId($area['id_field']) : false;
-					$branches		= $RepQuestion->getAllBranches();
-					$fields			= $RepQuestion->getAllFields();
+					$RepQuestion		= new RepQuestion();
+					$id_branch			= ($area['id_field']) ? $RepQuestion->getBranchIdByFieldId($area['id_field']) : false;
+					$branches			= $RepQuestion->getAllBranches();
+					$fields				= $RepQuestion->getAllFields();
 					// Model Field Related Info
-					$branches		= ($branches) ? $ModMap->combo($branches, false, $id_branch) : false;
-					$fields			= ($fields) ? $ModMap->combo($fields, false, $area['id_field']) : false;
+					$branches			= ($branches) ? $ModMap->combo($branches, false, $id_branch) : false;
+					$fields				= ($fields) ? $ModMap->combo($fields, false, $area['id_field']) : false;
 					// Define sub menu selection
 					$GLOBALS['menu']['maps']['opt1_css'] = 'details_item_on';
 					// Prepare return values
 					View::set('id_areamap',			$area['id_areamap']);
+					View::set('id_areatype',		$area['id_areatype']);
+					View::set('id_tiletype',		$area['id_areatype']);
 					View::set('map',				$map);
 					View::set('worlds',				$worlds);
 					View::set('branches',			$branches);
@@ -181,17 +184,22 @@
 			}
 			$return						= false;
 			$link						= false;
-			$id_tiletype				= 9; // Dungeon
 			// if area map id was sent
 			if ($id_areamap) {
 				// Load area information
 				$area					= $RepMap->getAreaByAreaMapId($id_areamap);
-				// Get and model all tiles
-				$tiles					= $RepMap->getAllTilesByTileTypeId($id_tiletype);
-				$tiles					= ($tiles) ? $ModMap->listTiles($tiles) : false;
+				// Get and model detail tiles
+				$detail_tiles			= $RepMap->getAllEncounterDtlTilesByTileTypeId();
+				$detail_tiles			= ($detail_tiles) ? $ModMap->listEncounterDtlTiles($detail_tiles) : false;
 				if ($area) {
+					// Get and model tile types
+					$tiletypes			= $RepMap->getAllEncounterTileTypes();
+					$tiletypes			= $ModMap->combo($tiletypes, false, $area['id_areatype']);
 					// Load Area Related info
 					$map				= $RepMap->getMapById($area['id_areamap']);
+					$id_tiletype		= ($map) ? $map['id_areatype'] : false;
+					$id_areatype		= $map['id_areatype'];
+					$tiles				= $RepMap->getAllEncounterBkgTilesByTileTypeId($id_tiletype);
 					$link_icon			= $RepMap->getLinksIconsByAreaId($area['id_areamap']);
 					$parent_areamap		= ($parent_id_areamap) ? $RepMap->getMapInfoById($parent_id_areamap) : false;
 					$parent_areamap		= (!$parent_areamap) ? $RepMap->getParentMapIdTypeByMapId($area['id_areamap']) : $parent_areamap;
@@ -200,8 +208,9 @@
 					$mapname			= $map['vc_name'];
 					// Model Area Related info
 					$map				= $ModMap->dungeon($map, $link_icon);
+					$tiles				= ($tiles) ? $ModMap->listEncounterBkgTiles($tiles) : false;
 					// Select "Back" link
-					if ($parent_areamap['id_areatype'] == 2) {
+					if ($parent_areamap['boo_encounter'] == 1) {
 						$link			= '/gamemaster/Maps/EditDungeon/'.$parent_id_areamap;
 					} else {
 						$link			= '/gamemaster/Maps/EditLocalMap/'.$parent_id_areamap;
@@ -210,6 +219,8 @@
 					$GLOBALS['menu']['maps']['opt1_css'] = 'details_item_on';
 					// Prepare return values
 					View::set('id_areamap',			$area['id_areamap']);
+					View::set('id_tiletype',		$id_tiletype);
+					View::set('id_areatype',		$area['id_areatype']);
 					View::set('back_link',			$link);
 					View::set('vc_id_areamap',		sprintf('%04d', $area['id_areamap']));
 					View::set('mapname',			$mapname);
@@ -218,11 +229,13 @@
 					View::set('int_level',			$area['int_level']);
 					View::set('map',				$map);
 					View::set('tiles',				$tiles);
+					View::set('detail_tiles',		$detail_tiles);
+					View::set('tiletypes',			$tiletypes);
 					View::set('parent_id_areamap',	$parent_id_areamap);
 					// Render view
 					View::render('dungeonsEdit');
 				}
-				}
+			}
  		}
 
 		/*
@@ -235,17 +248,33 @@
 			$ModMap			= new ModMap();
 			// Initialize variables
 			$return			= false;
-			$id_world		= (isset($_POST['id_world'])) ? trim($_POST['id_world']) : false;
-			$position		= (isset($_POST['position'])) ? trim($_POST['position']) : false;
 			$id_tiletype	= (isset($_POST['id_tiletype'])) ? trim($_POST['id_tiletype']) : false;
-			$id_areatype	= 1;
 			// Get all tiles
-			$tiles			= $RepMap->getAllTilesByTileTypeId($id_tiletype);
+			$tiles			= $RepMap->getAllLocalBkgTilesByTileTypeId($id_tiletype);
 			// if tiles were found
 			if ($tiles) {
 				// Model map
 				$return	= $ModMap->newMap($tiles);
 			}
+			// Return
+			echo $return;
+ 		}
+
+		/*
+		Prints out new Dungeon first Map  page - NewEncounterMap()
+			@return format	- print
+		*/
+		public function NewEncounterMap() {
+			// Declare classes
+			$RepMap			= new RepMap();
+			$ModMap			= new ModMap();
+			// Initialize variables
+			$return			= false;
+			$id_tiletype	= (isset($_POST['id_tiletype'])) ? trim($_POST['id_tiletype']) : false;
+			// Define background
+			$tiles[]['vc_path']	= 'blank_01.png';
+			// Model map
+			$return	= $ModMap->newMap($tiles);
 			// Return
 			echo $return;
  		}
@@ -269,28 +298,20 @@
 			$id_tiletype	= 9; // Dungeon
 			// If values were sent
 			if (($parent_pos) && ($id_areamap)) {
-				// Get and model all tiles
-				$tiles		= $RepMap->getAllTilesByTileTypeId($id_tiletype);
-				$tiles		= ($tiles) ? $ModMap->listTiles($tiles) : false;
-				//$tiles		= $ModMap->list($tiles, true);
-				// if tiles were found
-				if ($tiles) {
-					// Model map
-					$map	= $ModMap->newDungeon();
-					// Define sub menu selection
-					$GLOBALS['menu']['maps']['opt1_css'] = 'details_item_on';
-					// Prepare return values
-					View::set('map',				$map);
-					View::set('parent_pos',			$parent_pos);
-					View::set('parent_id_areamap',	$id_areamap);
-					View::set('tiles',				$tiles);
-					View::set('id_areatype',		$id_areatype);
-					View::set('id_world',			$id_world);
-					View::set('id_field',			$id_field);
-					View::set('int_level',			$int_level);
-					// Render view
-					View::render('dungeonsNew');
-				}
+				// Get and model all encounter tiles types
+				$tiletypes	= $RepMap->getAllEncounterTileTypes();
+				$tiletypes	= ($tiletypes) ? $ModMap->combo($tiletypes, true) : false;
+				// Define sub menu selection
+				$GLOBALS['menu']['maps']['opt1_css'] = 'details_item_on';
+				// Prepare return values
+				View::set('parent_pos',			$parent_pos);
+				View::set('parent_id_areamap',	$id_areamap);
+				View::set('id_world',			$id_world);
+				View::set('id_field',			$id_field);
+				View::set('int_level',			$int_level);
+				View::set('tiletypes',			$tiletypes);
+				// Render view
+				View::render('dungeonsNew');
 			}
  		}
 
@@ -314,6 +335,50 @@
 				// Model world
 				$return	= ($world) ? $ModMap->world($world, $links) : false;
 			}
+			// Return
+			echo $return;
+		}
+
+		/*
+		Loads Background Tile List - loadBackgroundTiles()
+			@return format	- print
+		*/
+		public function loadBackgroundTiles() {
+			// Declare Classes
+			$RepMap			= new RepMap();
+			$ModMap			= new ModMap();
+			// Initialize variables
+			$return			= false;
+			$id_tiletype	= (isset($GLOBALS['params'][1])) ? trim(($GLOBALS['params'][1])) : false;
+			// If values were sent
+			if ($id_tiletype) {
+				// Get tiles
+				$tiles		= $RepMap->getAllEncounterBkgTilesByTileTypeId($id_tiletype);
+				// Model tiles and prepare return
+				$return		= ($tiles) ? $ModMap->listEncounterBkgTiles($tiles) : false;
+			}
+			// Return
+			echo $return;
+		}
+
+		/*
+		Loads Details Tile List - loadDetailTiles()
+			@return format	- print
+		*/
+		public function loadDetailTiles() {
+			// Declare Classes
+			$RepMap			= new RepMap();
+			$ModMap			= new ModMap();
+			// Initialize variables
+			$return			= false;
+			//$id_tiletype	= (isset($GLOBALS['params'][1])) ? trim(($GLOBALS['params'][1])) : false;
+			// If values were sent
+			//if ($id_tiletype) {
+				// Get tiles
+				$tiles		= $RepMap->getAllEncounterDtlTilesByTileTypeId();
+				// Model tiles and prepare return
+				$return		= ($tiles) ? $ModMap->listEncounterDtlTiles($tiles) : false;
+			//}
 			// Return
 			echo $return;
 		}
@@ -401,7 +466,7 @@
 			// If data was sent
 			if (($id_areatype) && ($world_pos) && ($id_world) && ($id_field) && ($coords) && ($level) && ($vc_name)) {
 				// Save map area
-				$id_areamap		= $RepMap->insertMap($id_areatype, $vc_name, $coords);
+				$id_areamap		= $RepMap->insertMap(0, $id_areatype, $vc_name, $coords);
 				// If map area was saved
 				if ($id_areamap) {
 					// Save area info
@@ -446,7 +511,7 @@
 			// If data was sent
 			if (($id_world) && ($id_field) && ($int_level) && ($id_areatype) && ($parent_pos) && ($vc_name) && ($parent_id_areamap) && ($coords)) {
 				// Save dungeon area
-				$id_areamap		= $RepMap->insertMap($id_areatype, $vc_name, $coords);
+				$id_areamap		= $RepMap->insertMap(1, $id_areatype, $vc_name, $coords);
 				// If map area was saved
 				if ($id_areamap) {
 					// Save area info
@@ -475,6 +540,7 @@
 			// Initialize variables
 			$return				= false;
 			$id_areamap			= (isset($_POST['id_areamap'])) ? trim($_POST['id_areamap']) : false;
+			$id_tiletype		= (isset($_POST['id_tiletype'])) ? trim($_POST['id_tiletype']) : false;
 			$id_areatype		= (isset($_POST['id_areatype'])) ? trim($_POST['id_areatype']) : false;
 			$id_field			= (isset($_POST['id_field'])) ? trim($_POST['id_field']) : false;
 			$int_level			= (isset($_POST['int_level'])) ? trim($_POST['int_level']) : false;
@@ -484,9 +550,9 @@
 				}
 			}
 			// If data was sent
-			if (($id_areamap) && ($coords) && ($id_areatype) && ($id_field) && ($int_level)) {
+			if (($id_areamap) && ($coords) && ($id_tiletype) && ($id_field) && ($int_level)) {
 				// Update map and area info
-				$id_areamap		= $RepMap->updateMap($id_areamap, $id_areatype, $coords);
+				$id_areamap		= $RepMap->updateMap($id_areamap, $id_tiletype, $coords);
 				$return			= ($RepMap->updateArea($id_areatype, $id_field, $id_areamap, $int_level, 1)) ? 'ok' : false;
 			}
 			// Return
@@ -551,21 +617,44 @@
 			// If values were sent
 			if ($pos) {
 				// Get and model Tile Types
-				$tiletypes		= $RepMap->getAllTileTypes();
-				$id_tiletype	= (!$id_tiletype) ? $tiletypes[0]['id'] : $id_tiletype;
+				$tiletypes		= $RepMap->getAllLocalAreaTileTypes();
 				$tiletypes		= ($tiletypes) ? $ModMap->combo($tiletypes, false, $id_tiletype) : false;
 				// Get and model tiles
-				$tiles			= $RepMap->getTilesByTileTypeId($id_tiletype);
+				$tiles			= $RepMap->getAllLocalBkgTilesByTileTypeId($id_tiletype);
 				$tiles			= ($tiles) ? $ModMap->listTiles($tiles) : false;
 				// Model return
-				$return			= $ModMap->changeTile($tiletypes, $tiles);
+				$return			= $ModMap->changeTile($tiles, $tiletypes);
 			}
 			// Return
 			echo $return;
 		}
 
 		/*
-		 Load map background tile - loadTile()
+		 Changes map detail tile - changeDtlTile()
+			@return format	- print
+		*/
+		public function changeDtlTile() {
+			// Declare Classes
+			$RepMap				= new RepMap();
+			$ModMap				= new ModMap();
+			// Initialize variables
+			$return				= false;
+			$pos				= (isset($_POST['pos'])) ? trim($_POST['pos']) : false;
+			$id_tiletype		= (isset($_POST['id_tiletype'])) ? trim($_POST['id_tiletype']) : false;
+			// If values were sent
+			if ($pos) {
+				// Get and model tiles
+				$tiles			= $RepMap->getAllLocalDtlTilesByTileTypeId($id_tiletype);
+				$tiles			= ($tiles) ? $ModMap->listDtlTiles($tiles) : false;
+				// Model return
+				$return			= $ModMap->changeTile($tiles);
+			}
+			// Return
+			echo $return;
+		}
+
+		/*
+		 Load Local Area background tile - loadTile()
 			@return format	- print
 		*/
 		public function loadTile() {
@@ -578,7 +667,70 @@
 			// If values were sent
 			if ($id_tile) {
 				// Load and Model Tile
-				$tile		= $RepMap->getTileById($id_tile);
+				$tile		= $RepMap->getLocalBkgTileById($id_tile);
+				$return		= ($tile) ? $tile['vc_path'] : false;
+			}
+			// Return
+			echo $return;
+		}
+
+		/*
+		 Load Local area detail tile - loadDtlTile()
+			@return format	- print
+		*/
+		public function loadDtlTile() {
+			// Declare Classes
+			$RepMap			= new RepMap();
+			$ModMap			= new ModMap();
+			// Initialize variables
+			$return			= false;
+			$id_tile		= (isset($_POST['id_tile'])) ? trim($_POST['id_tile']) : false;
+			// If values were sent
+			if ($id_tile) {
+				// Load and Model Tile
+				$tile		= $RepMap->getLocalDtlTileById($id_tile);
+				$return		= ($tile) ? $tile['vc_path'] : false;
+			}
+			// Return
+			echo $return;
+		}
+
+		/*
+		 Load Encounter map background tile - loadEncounterBkgTile()
+			@return format	- print
+		*/
+		public function loadEncounterBkgTile() {
+			// Declare Classes
+			$RepMap			= new RepMap();
+			$ModMap			= new ModMap();
+			// Initialize variables
+			$return			= false;
+			$id_tile		= (isset($_POST['id_tile'])) ? trim($_POST['id_tile']) : false;
+			// If values were sent
+			if ($id_tile) {
+				// Load and Model Tile
+				$tile		= $RepMap->getEncounterBkgTileById($id_tile);
+				$return		= ($tile) ? $tile['vc_path'] : false;
+			}
+			// Return
+			echo $return;
+		}
+
+		/*
+		 Load Encounter map background tile - loadEncounterDtlTile()
+			@return format	- print
+		*/
+		public function loadEncounterDtlTile() {
+			// Declare Classes
+			$RepMap			= new RepMap();
+			$ModMap			= new ModMap();
+			// Initialize variables
+			$return			= false;
+			$id_tile		= (isset($_POST['id_tile'])) ? trim($_POST['id_tile']) : false;
+			// If values were sent
+			if ($id_tile) {
+				// Load and Model Tile
+				$tile		= $RepMap->getEncounterDtlTileById($id_tile);
 				$return		= ($tile) ? $tile['vc_path'] : false;
 			}
 			// Return
@@ -599,8 +751,8 @@
 			// If values were sent
 			if ($id_tiletype) {
 				// Load and Model Tile
-				$tiles		= $RepMap->getTilesByTileTypeId($id_tiletype);
-				$return		= ($tiles) ? $ModMap->listTiles($tiles) : false;
+				$tiles		= $RepMap->getAllLocalBkgTilesByTileTypeId($id_tiletype);
+				$return		= ($tiles) ? $ModMap->listTiles($tiles) : 'No Tiles found.';
 			}
 			// Return
 			echo $return;

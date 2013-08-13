@@ -125,8 +125,6 @@ $('document').ready(function() {
 		$id_tiletype	= $(this).val();
 		if (($action) && ($id_tiletype)) {
 			$.post('/gamemaster/Maps/'+$action, {
-				id_world:	$id_world,
-				position:	$pos,
 				id_tiletype: $id_tiletype
 			}, function($return) {
 				if ($return) {
@@ -135,6 +133,48 @@ $('document').ready(function() {
 					alert("Sorry,\n\nThere was a problem when loading the selected area.\n\nError: ");
 				}
 				return false;
+			});
+		}
+		return false;
+	});
+
+	// What happens when user selects tile type (encounter map)
+	$("#encounter_id_tiletype").live("change", function() {
+		$action			= $("#action").val();
+		$id_tiletype	= $(this).val();
+		$id_areamap		= $("#id_areamap").val();
+		if (($action) && ($id_tiletype)) {
+			$.post('/gamemaster/Maps/'+$action, {
+				id_tiletype: $id_tiletype
+			}, function($return) {
+				if ($return) {
+					contentShow("#map_name");
+					contentShowData("#map_area", $return);
+					$.post('/gamemaster/Maps/loadBackgroundTiles/'+$id_tiletype, {
+						id_tiletype: $id_tiletype
+					}, function($return) {
+						$("#changeBkgTileDungeon").html($return);
+					});
+					$.post('/gamemaster/Maps/loadDetailTiles/'+$id_tiletype, {
+						id_tiletype: $id_tiletype
+					}, function($return) {
+						$("#changeDtlTileDungeon").html($return);
+					});
+				} else {
+					alert("Sorry,\n\nThere was a problem when loading the selected area.\n\nError: ");
+				}
+				return false;
+			});
+		} else if ($id_areamap) {
+			$.post('/gamemaster/Maps/loadBackgroundTiles/'+$id_tiletype, {
+				id_tiletype: $id_tiletype
+			}, function($return) {
+				$("#changeBkgTileDungeon").html($return);
+			});
+			$.post('/gamemaster/Maps/loadDetailTiles/'+$id_tiletype, {
+				id_tiletype: $id_tiletype
+			}, function($return) {
+				$("#changeDtlTileDungeon").html($return);
 			});
 		}
 		return false;
@@ -166,7 +206,7 @@ $('document').ready(function() {
 		$id_tiletype	= $("#id_tiletype").val();
 		if ($this_block) {
 			$(".tile_options").hide();
-			if (($this_block == 'linkTile') || ($this_block == 'changeTileDungeon')) {
+			if (($this_block == 'linkTile') || ($this_block == 'changeBkgTileDungeon') || ($this_block == 'changeDtlTileDungeon')) {
 				contentShow("#"+$this_block);
 			} else if ($this_block == 'changeTile') {
 				$.post('/gamemaster/Maps/'+$this_block, {pos: $pos, id_tiletype: $id_tiletype}, function($return) {
@@ -212,6 +252,72 @@ $('document').ready(function() {
 		$id_tile	= $(this).attr('key');
 		if ($id_tile) {
 			$.post('/gamemaster/Maps/loadTile/', {
+				pos:		$position,
+				id_tile:	$id_tile
+			}, function($return) {
+				$return		= $return.trim();
+				if ($return) {
+					//contentHide("#"+$position);
+					$("#"+$position).attr('bkgrnd', $return);
+					$("#"+$position).css('background-image', 'url(/gamemaster/Application/View/img/textures/'+$return.trim()+')');
+					//contentShow("#"+$position);
+				}
+				return false;
+			});
+		}
+		return false;
+	});
+
+	// What happens when user clicks on a tile to be replaced
+	$(".dtl_tiles_return_row").live("click", function() {
+		$position	= $("#target_tile_id").val();
+		$id_tile	= $(this).attr('key');
+		if ($id_tile) {
+			$.post('/gamemaster/Maps/loadDtlTile/', {
+				pos:		$position,
+				id_tile:	$id_tile
+			}, function($return) {
+				$return		= $return.trim();
+				if ($return) {
+					//contentHide("#"+$position);
+					$("#"+$position).attr('bkgrnd', $return);
+					$("#"+$position).css('background-image', 'url(/gamemaster/Application/View/img/textures/'+$return.trim()+')');
+					//contentShow("#"+$position);
+				}
+				return false;
+			});
+		}
+		return false;
+	});
+
+	// What happens when user clicks on a tile to be replaced
+	$(".encounterbkg_tiles_return_row").live("click", function() {
+		$position	= $("#target_tile_id").val();
+		$id_tile	= $(this).attr('key');
+		if ($id_tile) {
+			$.post('/gamemaster/Maps/loadEncounterBkgTile/', {
+				pos:		$position,
+				id_tile:	$id_tile
+			}, function($return) {
+				$return		= $return.trim();
+				if ($return) {
+					//contentHide("#"+$position);
+					$("#"+$position).attr('bkgrnd', $return);
+					$("#"+$position).css('background-image', 'url(/gamemaster/Application/View/img/textures/'+$return.trim()+')');
+					//contentShow("#"+$position);
+				}
+				return false;
+			});
+		}
+		return false;
+	});
+
+	// What happens when user clicks on a tile to be replaced
+	$(".encounterdtl_tiles_return_row").live("click", function() {
+		$position	= $("#target_tile_id").val();
+		$id_tile	= $(this).attr('key');
+		if ($id_tile) {
+			$.post('/gamemaster/Maps/loadEncounterDtlTile/', {
 				pos:		$position,
 				id_tile:	$id_tile
 			}, function($return) {
@@ -282,14 +388,16 @@ $('document').ready(function() {
 	// What happens when user click on "Save Map" (edit map)
 	$(".update_map").live("click", function() {
 		$id_areamap			= $("#id_areamap").val();
+		$id_tiletype		= $("#id_tiletype").val();
 		$id_areatype		= $("#id_areatype").val();
 		$id_field			= $("#id_field").val();
 		$int_level			= $("#level").val();
 		$coords				= getAllMapsCoords();
-		if (($id_areamap) && ($id_areatype) && ($id_field) && ($int_level) && ($coords) ) {
+		if (($id_areamap) && ($id_tiletype) && ($id_field) && ($int_level) && ($coords) ) {
 			$.post('/gamemaster/Maps/updateMap', {
 				id_areamap:		$id_areamap,
 				id_areatype:	$id_areatype,
+				id_tiletype:	$id_tiletype,
 				id_field:		$id_field,
 				int_level:		$int_level,
 				coords:			$coords
@@ -313,7 +421,7 @@ $('document').ready(function() {
 		$id_world				= $("#id_world").val();
 		$id_field				= $("#id_field").val();
 		$int_level				= $("#int_level").val();
-		$id_areatype			= $("#id_areatype").val();
+		$id_areatype			= $("#encounter_id_tiletype").val();
 		$parent_pos				= $("#parent_pos").val();
 		$parent_id_areamap		= $("#parent_id_areamap").val();
 		$vc_name				= $("#vc_name").val();

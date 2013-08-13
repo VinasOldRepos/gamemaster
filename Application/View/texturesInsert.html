@@ -26,23 +26,62 @@
 							<select name="id_texturetype" id="id_texturetype" class="main_text_input" style="width: 206px;">
 								<?php echo $textureTypes; ?>
 							</select>
+
 							<div class="not_shown" id="map_tile">
 								<br />
-								<label for="course">Tile Type:</label>
+								<label for="id_tiletype">Tile Type:</label>
 								<select name="id_tiletype" id="id_tiletype" class="main_text_input" style="width: 206px;">
 									<?php echo $tileTypes; ?>
 								</select>
-								<label for="course">Tile name:</label> <input type="text" name="tile_name" id="tile_name" maxlength="100" class="main_text_input" />
 							</div>
+
+							<!-- TILES -->
+							<div class="not_shown name_maptile" id="wilbeused">
+								<br />
+								<label for="id_use">Will be used as a:</label>
+								<select name="id_use" id="id_use" class="main_text_input" style="width: 206px;">
+									<option value="0">Select...</option>
+									<option value="1">Background Tile</option>
+									<option value="2">Detail Tile</option>
+								</select>
+							</div>
+							<div class="not_shown minor_maptile" id="localArea">
+								<br />
+								<label for="id_localarea_tiletype">Style:</label>
+								<select name="id_localarea_tiletype" id="id_localarea_tiletype" class="main_text_input" style="width: 206px;">
+									<?php echo $localTileTypes; ?>
+								</select>
+							</div>
+							<div class="not_shown minor_maptile" id="encounterArea">
+								<br />
+								<label for="id_encounter_tiletype">Style:</label>
+								<select name="id_encounter_tiletype" id="id_encounter_tiletype" class="main_text_input" style="width: 206px;">
+									<?php echo $encounterTileTypes; ?>
+								</select>
+							</div>
+							<div class="not_shown minor_maptile" id="tileName">
+								<br />
+								<label for="tile_name">Tile name:</label> <input type="text" name="tile_name" id="tile_name" maxlength="100" class="main_text_input" />
+							</div>
+							<!-- /TILES -->
+
+
+							<!-- ICONS -->
 							<div class="not_shown" id="map_icon">
 								<br />
-								<label for="course">Icon:</label> <input type="text" name="icon_name" id="icon_name" maxlength="100" class="main_text_input" />
+								<label for="icon_name">Icon:</label> <input type="text" name="icon_name" id="icon_name" maxlength="100" class="main_text_input" />
 							</div>
+							<!-- /ICONS -->
+
+							<!-- IMAGES -->
 							<div class="not_shown" id="image">
 								<br />
-								<label for="course">Image:</label> <input type="text" name="image_name" id="image_name" maxlength="100" class="main_text_input" />
+								<label for="image_name">Image:</label> <input type="text" name="image_name" id="image_name" maxlength="100" class="main_text_input" />
 							</div>
-							<label class="img_input" for="course">File:</label> <input type="file" name="image" id="image" maxlength="100" class="img_input main_image_input" />
+							<!-- /IMAGES -->
+
+							<br /><br />
+							<label class="img_input" for="image">File:</label> <input type="file" name="image" id="image" maxlength="100" class="img_input main_image_input" />
 							<div class="not_shown form_buttons" id="form_buttons">
 								<div class="bt_cancel">
 									<img class="form_button" src="/gamemaster/Application/View/img/bt_cancel.png" width="41" height="41" border="0" /><br />

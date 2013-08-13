@@ -32,6 +32,7 @@
 					$GLOBALS['menu']['textures']['opt2_css']	= 'details_item_off';
 					$GLOBALS['menu']['textures']['opt3_css']	= 'details_item_off';
 					$GLOBALS['menu']['textures']['opt4_css']	= 'details_item_off';
+					$GLOBALS['menu']['textures']['opt5_css']	= 'details_item_off';
 
 					$GLOBALS['menu']['monsters']['css']			= 'item_off';
 					$GLOBALS['menu']['monsters']['display']		= 'none';
@@ -55,6 +56,7 @@
 					$GLOBALS['menu']['textures']['opt2_css']	= 'details_item_off';
 					$GLOBALS['menu']['textures']['opt3_css']	= 'details_item_off';
 					$GLOBALS['menu']['textures']['opt4_css']	= 'details_item_off';
+					$GLOBALS['menu']['textures']['opt5_css']	= 'details_item_off';
 
 					$GLOBALS['menu']['monsters']['css']			= 'item_off';
 					$GLOBALS['menu']['monsters']['display']		= 'none';
@@ -78,6 +80,7 @@
 					$GLOBALS['menu']['textures']['opt2_css']	= 'details_item_off';
 					$GLOBALS['menu']['textures']['opt3_css']	= 'details_item_off';
 					$GLOBALS['menu']['textures']['opt4_css']	= 'details_item_off';
+					$GLOBALS['menu']['textures']['opt5_css']	= 'details_item_off';
 
 					$GLOBALS['menu']['monsters']['css']			= 'item_on';
 					$GLOBALS['menu']['monsters']['display']		= 'block';
@@ -101,6 +104,7 @@
 					$GLOBALS['menu']['textures']['opt2_css']	= 'details_item_off';
 					$GLOBALS['menu']['textures']['opt3_css']	= 'details_item_off';
 					$GLOBALS['menu']['textures']['opt4_css']	= 'details_item_off';
+					$GLOBALS['menu']['textures']['opt5_css']	= 'details_item_off';
 
 					$GLOBALS['menu']['monsters']['css']			= 'item_off';
 					$GLOBALS['menu']['monsters']['display']		= 'none';
@@ -126,6 +130,7 @@
 					$GLOBALS['menu']['textures']['opt2_css']	= 'details_item_off';
 					$GLOBALS['menu']['textures']['opt3_css']	= 'details_item_off';
 					$GLOBALS['menu']['textures']['opt4_css']	= 'details_item_off';
+					$GLOBALS['menu']['textures']['opt5_css']	= 'details_item_off';
 
 					$GLOBALS['menu']['monsters']['css']			= 'item_off';
 					$GLOBALS['menu']['monsters']['display']		= 'none';

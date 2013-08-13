@@ -113,6 +113,54 @@
 	color:				#FFF;
 }
 
+.dtl_tiles_return_row {
+	position:			absolute;
+	border-style:		solid;
+	border-color:		#000;
+	border-width:		1px;
+	margin-bottom:		2px;
+	background-color:	#FFF;
+	color:				#7A7A7A;
+}
+
+.dtl_tiles_return_row:hover {
+	cursor:				pointer;
+	background-color:	#7A7A7A;
+	color:				#FFF;
+}
+
+.encounterbkg_tiles_return_row {
+	position:			absolute;
+	border-style:		solid;
+	border-color:		#000;
+	border-width:		1px;
+	margin-bottom:		2px;
+	background-color:	#FFF;
+	color:				#7A7A7A;
+}
+
+.encounterbkg_tiles_return_row:hover {
+	cursor:				pointer;
+	background-color:	#7A7A7A;
+	color:				#FFF;
+}
+
+.encounterdtl_tiles_return_row {
+	position:			absolute;
+	border-style:		solid;
+	border-color:		#000;
+	border-width:		1px;
+	margin-bottom:		2px;
+	background-color:	#FFF;
+	color:				#7A7A7A;
+}
+
+.encounterdtl_tiles_return_row:hover {
+	cursor:				pointer;
+	background-color:	#7A7A7A;
+	color:				#FFF;
+}
+
 .map_name {
 	float:			left;
 	margin-top:		100px;

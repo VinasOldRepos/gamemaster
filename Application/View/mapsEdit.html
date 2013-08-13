@@ -25,10 +25,10 @@
 								<input type="hidden" name="world_pos" id="world_pos" value="" />
 								<input type="hidden" name="action" id="action" value="" />
 								<input type="hidden" name="id_areamap" id="id_areamap" value="<?php echo $id_areamap; ?>" />
-								<input type="hidden" name="id_areatype" id="id_areatype" value="1" /> <!-- 1 = Local Map -->
+								<input type="hidden" name="id_areatype" id="id_areatype" value="<?php echo $id_areatype; ?>" /> <!-- 1 = Local Map -->
+								<input type="hidden" name="id_tiletype" id="id_tiletype" value="<?php echo $id_tiletype; ?>" /> <!-- 1 = Local Map -->
 								<input type="hidden" name="parent_id_areamap" id="parent_id_areamap" value="<?php echo $parent_id_areamap; ?>" />
 								<input type="hidden" name="target_tile_id" id="target_tile_id" value="" />
-								<input type="hidden" name="id_tiletype" id="id_tiletype" value="" />
 								<label for="id_world">World:</label>
 								<select name="id_world" id="id_world" class="main_text_input" style="width: 206px;" disabled="disabled">
 									<?php echo $worlds; ?>
@@ -70,7 +70,7 @@
 						</div>
 						<div class="opt_details" id="linkTile">
 							<span class="title_01">Link to:</span><br /><br />
-							<div class="text_01 link_opt newDungeon" key="newDungeon">a Dungeon</div><br /><br />
+							<div class="text_01 link_opt newDungeon" key="newDungeon">an Encounter Area</div><br /><br />
 							<div class="text_01 link_opt" key="linkTile">Map ID: # <input type="text" name="id_target_map" id="id_target_map" class="sec_tiny_text_input" /></div><br /><br />
 						</div>
 						<div class="opt_details" id="changeTile">

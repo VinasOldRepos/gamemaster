@@ -41,22 +41,22 @@
 		}
 
 		/*
-		Get All Tiles - getAllTiles($max, $num_page, $ordering, $direction)
+		Get All Tiles - getAllLocalBkgTiles($max, $num_page, $ordering, $direction)
 			@param integer	- Max rows
 			@param integer	- Page number
 			@param integer	- Ordering
 			@param integer	- Ordering direction
 			@return format	- Mixed array
 		*/
-		public function getAllTiles($max = 20, $num_page = 1, $ordering = 't.id', $direction = 'ASC') {
+		public function getAllLocalBkgTiles($max = 20, $num_page = 1, $ordering = 'b.id', $direction = 'ASC') {
 			$dbFunctions	= new dbFunctions();
 			// Database Connection
 			$db				= $GLOBALS['db'];
 			// Initialize variables
 			$return			= false;
 			// Query set up
-			$table			= 'tb_tile AS t JOIN tb_tiletype AS tt ON (t.id_tiletype = tt.id)';
-			$select_what	= 't.*, tt.vc_name as vc_tiletype';
+			$table			= 'tb_localarea_background AS b JOIN tb_localarea_tiletype AS tt ON (b.id_localarea_tiletype = tt.id)';
+			$select_what	= 'b.*, tt.vc_name as vc_tiletype';
 			$conditions		= "1";
 			$return			= $dbFunctions->getPage($select_what, $table, $conditions, $max, $num_page, $ordering, $direction);
 			// Return
@@ -64,7 +64,76 @@
 		}
 
 		/*
-		Get Searched Tiles - getSearchedTiles($vc_search, $max, $num_page, $ordering, $direction)
+		Get All Tiles - getAllEncounterBkgTiles($max, $num_page, $ordering, $direction)
+			@param integer	- Max rows
+			@param integer	- Page number
+			@param integer	- Ordering
+			@param integer	- Ordering direction
+			@return format	- Mixed array
+		*/
+		public function getAllEncounterBkgTiles($max = 20, $num_page = 1, $ordering = 'b.id', $direction = 'ASC') {
+			$dbFunctions	= new dbFunctions();
+			// Database Connection
+			$db				= $GLOBALS['db'];
+			// Initialize variables
+			$return			= false;
+			// Query set up
+			$table			= 'tb_encounter_background AS b JOIN tb_encounter_tiletype AS tt ON (b.id_encounter_tiletype = tt.id)';
+			$select_what	= 'b.*, tt.vc_name as vc_tiletype';
+			$conditions		= "1";
+			$return			= $dbFunctions->getPage($select_what, $table, $conditions, $max, $num_page, $ordering, $direction);
+			// Return
+			return $return;
+		}
+
+		/*
+		Get All Tiles - getAllLocalDtlTiles($max, $num_page, $ordering, $direction)
+			@param integer	- Max rows
+			@param integer	- Page number
+			@param integer	- Ordering
+			@param integer	- Ordering direction
+			@return format	- Mixed array
+		*/
+		public function getAllLocalDtlTiles($max = 20, $num_page = 1, $ordering = 'id', $direction = 'ASC') {
+			$dbFunctions	= new dbFunctions();
+			// Database Connection
+			$db				= $GLOBALS['db'];
+			// Initialize variables
+			$return			= false;
+			// Query set up
+			$table			= 'tb_localarea_detail';
+			$select_what	= '*';
+			$conditions		= "1";
+			$return			= $dbFunctions->getPage($select_what, $table, $conditions, $max, $num_page, $ordering, $direction);
+			// Return
+			return $return;
+		}
+
+		/*
+		Get All Tiles - getAllEncounterDtlTiles($max, $num_page, $ordering, $direction)
+			@param integer	- Max rows
+			@param integer	- Page number
+			@param integer	- Ordering
+			@param integer	- Ordering direction
+			@return format	- Mixed array
+		*/
+		public function getAllEncounterDtlTiles($max = 20, $num_page = 1, $ordering = 'id', $direction = 'ASC') {
+			$dbFunctions	= new dbFunctions();
+			// Database Connection
+			$db				= $GLOBALS['db'];
+			// Initialize variables
+			$return			= false;
+			// Query set up
+			$table			= 'tb_encounter_detail';
+			$select_what	= '*';
+			$conditions		= "1";
+			$return			= $dbFunctions->getPage($select_what, $table, $conditions, $max, $num_page, $ordering, $direction);
+			// Return
+			return $return;
+		}
+
+		/*
+		Get Searched Tiles - getSearchedLocalBkgTiles($vc_search, $max, $num_page, $ordering, $direction)
 			@param string	- String to be searched
 			@param integer	- Max rows
 			@param integer	- Pager number
@@ -72,7 +141,7 @@
 			@param string	- Ordering direction
 			@return format	- Mixed array
 		*/
-		public function getSearchedTiles($vc_search = false, $max = 20, $num_page = 1, $ordering = 'c.id', $direction = 'ASC') {
+		public function getSearchedLocalBkgTiles($vc_search = false, $max = 20, $num_page = 1, $ordering = 'c.id', $direction = 'ASC') {
 			$dbFunctions		= new dbFunctions();
 			// Database Connection
 			$db					= $GLOBALS['db'];
@@ -80,9 +149,87 @@
 			$return				= false;
 			if ($vc_search) {
 				// Query set up
-				$table			= 'tb_tile AS t JOIN tb_tiletype AS tt ON (t.id_tiletype = tt.id)';
-				$select_what	= 't.*, tt.vc_name as vc_tiletype';
-				$conditions		= "t.id LIKE '%{$vc_search}%' OR t.vc_name LIKE '%{$vc_search}%' OR t.vc_path LIKE '%{$vc_search}%' OR tt.vc_name LIKE '%{$vc_search}%'";
+				$table			= 'tb_localarea_background AS b JOIN tb_localarea_tiletype AS tt ON (b.id_localarea_tiletype = tt.id)';
+				$select_what	= 'b.*, tt.vc_name as vc_tiletype';
+				$conditions		= "b.id LIKE '%{$vc_search}%' OR b.vc_name LIKE '%{$vc_search}%' OR b.vc_path LIKE '%{$vc_search}%' OR tt.vc_name LIKE '%{$vc_search}%'";
+				$return			= $dbFunctions->getPage($select_what, $table, $conditions, $max, $num_page, $ordering, $direction);
+			}
+			// Return
+			return $return;
+		}
+
+		/*
+		Get Searched Tiles - getSearchedEncounterBkgTiles($vc_search, $max, $num_page, $ordering, $direction)
+			@param string	- String to be searched
+			@param integer	- Max rows
+			@param integer	- Pager number
+			@param string	- Order by
+			@param string	- Ordering direction
+			@return format	- Mixed array
+		*/
+		public function getSearchedEncounterBkgTiles($vc_search = false, $max = 20, $num_page = 1, $ordering = 'c.id', $direction = 'ASC') {
+			$dbFunctions		= new dbFunctions();
+			// Database Connection
+			$db					= $GLOBALS['db'];
+			// Initialize variables
+			$return				= false;
+			if ($vc_search) {
+				// Query set up
+				$table			= 'tb_encounter_background AS b JOIN tb_encounter_tiletype AS tt ON (b.id_encounter_tiletype = tt.id)';
+				$select_what	= 'b.*, tt.vc_name as vc_tiletype';
+				$conditions		= "b.id LIKE '%{$vc_search}%' OR b.vc_name LIKE '%{$vc_search}%' OR b.vc_path LIKE '%{$vc_search}%' OR tt.vc_name LIKE '%{$vc_search}%'";
+				$return			= $dbFunctions->getPage($select_what, $table, $conditions, $max, $num_page, $ordering, $direction);
+			}
+			// Return
+			return $return;
+		}
+
+		/*
+		Get Searched Tiles - getSearchedLocalDtlTiles($vc_search, $max, $num_page, $ordering, $direction)
+			@param string	- String to be searched
+			@param integer	- Max rows
+			@param integer	- Pager number
+			@param string	- Order by
+			@param string	- Ordering direction
+			@return format	- Mixed array
+		*/
+		public function getSearchedLocalDtlTiles($vc_search = false, $max = 20, $num_page = 1, $ordering = 'c.id', $direction = 'ASC') {
+			$dbFunctions		= new dbFunctions();
+			// Database Connection
+			$db					= $GLOBALS['db'];
+			// Initialize variables
+			$return				= false;
+			if ($vc_search) {
+				// Query set up
+				$table			= 'tb_localarea_detail';
+				$select_what	= '*';
+				$conditions		= "id LIKE '%{$vc_search}%' OR vc_name LIKE '%{$vc_search}%' OR vc_path LIKE '%{$vc_search}%'";
+				$return			= $dbFunctions->getPage($select_what, $table, $conditions, $max, $num_page, $ordering, $direction);
+			}
+			// Return
+			return $return;
+		}
+
+		/*
+		Get Searched Tiles - getSearchedEncounterDtlTiles($vc_search, $max, $num_page, $ordering, $direction)
+			@param string	- String to be searched
+			@param integer	- Max rows
+			@param integer	- Pager number
+			@param string	- Order by
+			@param string	- Ordering direction
+			@return format	- Mixed array
+		*/
+		public function getSearchedEncounterDtlTiles($vc_search = false, $max = 20, $num_page = 1, $ordering = 'c.id', $direction = 'ASC') {
+			$dbFunctions		= new dbFunctions();
+			// Database Connection
+			$db					= $GLOBALS['db'];
+			// Initialize variables
+			$return				= false;
+			if ($vc_search) {
+				// Query set up
+				$table			= 'tb_encounter_detail';
+				$select_what	= '*';
+				$conditions		= "id LIKE '%{$vc_search}%' OR vc_name LIKE '%{$vc_search}%' OR vc_path LIKE '%{$vc_search}%'";
 				$return			= $dbFunctions->getPage($select_what, $table, $conditions, $max, $num_page, $ordering, $direction);
 			}
 			// Return
@@ -144,11 +291,71 @@
 		}
 
 		/*
-		Insert TILE Texture into Database - insertTile($tile_data)
+		Get All Local Area Tile Types - getAllLocalAreaTileTypes()
+			@return format	- Mixed array
+		*/
+		public function getAllLocalAreaTileTypes() {
+			// Database Connection
+			$db				= $GLOBALS['db'];
+			// Initialize variables
+			$return			= false;
+			// Query set up
+			$table			= 'tb_localarea_tiletype';
+			$select_what	= '*';
+			$conditions		= "1 ORDER BY vc_name";
+			$return			= $db->getAllRows_Arr($table, $select_what, $conditions);
+			// Return
+			return $return;
+		}
+
+		/*
+		Get All Local Area Tile Types - getAllEncounterTileTypes()
+			@return format	- Mixed array
+		*/
+		public function getAllEncounterTileTypes() {
+			// Database Connection
+			$db				= $GLOBALS['db'];
+			// Initialize variables
+			$return			= false;
+			// Query set up
+			$table			= 'tb_encounter_tiletype';
+			$select_what	= '*';
+			$conditions		= "1 ORDER BY vc_name";
+			$return			= $db->getAllRows_Arr($table, $select_what, $conditions);
+			// Return
+			return $return;
+		}
+
+		/*
+		Insert Local Area DETAIL TILE Texture into Database - insertLocalAreaDtlTile($tile_data)
 			@param array	- Mixed with user info (order like database w/ no id)
 			@return boolean
 		*/
-		public function insertTile($tile_data = false) {
+		public function insertLocalAreaDtlTile($tile_data = false) {
+			// Initialize variables
+			$return				= false;
+			// Database Connection
+			$db					= $GLOBALS['db'];
+			// Validate sent information
+			if ($tile_data) {
+				$vc_name		= (isset($tile_data[0])) ? $tile_data[0] : false;
+				$vc_path		= (isset($tile_data[1])) ? $tile_data[1] : false;
+				if (($vc_name) && ($vc_path)) {
+					// Add Tile into Database
+					$db->insertRow('tb_localarea_detail', $tile_data, '');
+					$return		= true;
+				}
+			}
+			// Return
+			return $return;
+		}
+
+		/*
+		Insert Local Area BACKGROUND TILE Texture into Database - insertLocalAreaTile($tile_data)
+			@param array	- Mixed with user info (order like database w/ no id)
+			@return boolean
+		*/
+		public function insertLocalAreaBkgTile($tile_data = false) {
 			// Initialize variables
 			$return				= false;
 			// Database Connection
@@ -160,7 +367,56 @@
 				$vc_path		= (isset($tile_data[2])) ? $tile_data[2] : false;
 				if (($id_tiletype) && ($vc_name) && ($vc_path)) {
 					// Add Tile into Database
-					$db->insertRow('tb_tile', $tile_data, '');
+					$db->insertRow('tb_localarea_background', $tile_data, '');
+					$return		= true;
+				}
+			}
+			// Return
+			return $return;
+		}
+
+		/*
+		Insert Local Area DETAIL TILE Texture into Database - insertEncounterDtlTile($tile_data)
+			@param array	- Mixed with user info (order like database w/ no id)
+			@return boolean
+		*/
+		public function insertEncounterDtlTile($tile_data = false) {
+			// Initialize variables
+			$return				= false;
+			// Database Connection
+			$db					= $GLOBALS['db'];
+			// Validate sent information
+			if ($tile_data) {
+				$vc_name		= (isset($tile_data[0])) ? $tile_data[0] : false;
+				$vc_path		= (isset($tile_data[1])) ? $tile_data[1] : false;
+				if (($vc_name) && ($vc_path)) {
+					// Add Tile into Database
+					$db->insertRow('tb_encounter_detail', $tile_data, '');
+					$return		= true;
+				}
+			}
+			// Return
+			return $return;
+		}
+
+		/*
+		Insert Encounter BACKGROUND TILE Texture into Database - insertEncounterTile($tile_data)
+			@param array	- Mixed with user info (order like database w/ no id)
+			@return boolean
+		*/
+		public function insertEncounterBkgTile($tile_data = false) {
+			// Initialize variables
+			$return				= false;
+			// Database Connection
+			$db					= $GLOBALS['db'];
+			// Validate sent information
+			if ($tile_data) {
+				$id_tiletype	= (isset($tile_data[0])) ? $tile_data[0] : false;
+				$vc_name		= (isset($tile_data[1])) ? $tile_data[1] : false;
+				$vc_path		= (isset($tile_data[2])) ? $tile_data[2] : false;
+				if (($id_tiletype) && ($vc_name) && ($vc_path)) {
+					// Add Tile into Database
+					$db->insertRow('tb_encounter_background', $tile_data, '');
 					$return		= true;
 				}
 			}

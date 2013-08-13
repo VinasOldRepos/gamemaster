@@ -55,20 +55,62 @@
 		}
 
 		/*
-		Get Tiles by Tile type ID - getTilesByTileTypeId($id)
-			@param integer	- tile type Id
+		Get Encounter Tile by Id - getEncounterBkgTileById($id)
+			@param integer	- Tile Id
 			@return format	- Mixed array
 		*/
-		public function getTilesByTileTypeId($id = false) {
+		public function getEncounterBkgTileById($id = false) {
 			// Database Connection
 			$db		= $GLOBALS['db'];
-			// Initialize variables
-			$return	= false;
 			// Query set up
-			$return	= ($id) ? $db->getAllRows_Arr('tb_tile', '*', "id_tiletype = '{$id}'") : false;
+			$return	= ($id) ? $db->getRow('tb_encounter_background', '*', "id = '{$id}'") : false;
 			// Return
 			return $return;
 		}
+
+		/*
+		Get Local Area Tile by Id - getLocalBkgTileById($id)
+			@param integer	- Tile Id
+			@return format	- Mixed array
+		*/
+		public function getLocalBkgTileById($id = false) {
+			// Database Connection
+			$db		= $GLOBALS['db'];
+			// Query set up
+			$return	= ($id) ? $db->getRow('tb_localarea_background', '*', "id = '{$id}'") : false;
+			// Return
+			return $return;
+		}
+
+
+		/*
+		Get Encounter Detail Tile by Id - getEncounterDtlTileById($id)
+			@param integer	- Tile Id
+			@return format	- Mixed array
+		*/
+		public function getEncounterDtlTileById($id = false) {
+			// Database Connection
+			$db		= $GLOBALS['db'];
+			// Query set up
+			$return	= ($id) ? $db->getRow('tb_encounter_detail', '*', "id = '{$id}'") : false;
+			// Return
+			return $return;
+		}
+
+		/*
+		Get Loal area Detail Tile by Id - getLocalDtlTileById($id)
+			@param integer	- Tile Id
+			@return format	- Mixed array
+		*/
+		public function getLocalDtlTileById($id = false) {
+			// Database Connection
+			$db		= $GLOBALS['db'];
+			// Query set up
+			$return	= ($id) ? $db->getRow('tb_localarea_detail', '*', "id = '{$id}'") : false;
+			// Return
+			return $return;
+		}
+
 
 		/*
 		Get Area by Id - getAreaById($id)
@@ -101,7 +143,7 @@
 			// Database Connection
 			$db		= $GLOBALS['db'];
 			// Query set up
-			$return	= ($id) ? $db->getRow('tb_areamap', 'id, id_areatype, vc_name', "id = '{$id}'") : false;
+			$return	= ($id) ? $db->getRow('tb_areamap', 'id, boo_encounter, id_areatype, vc_name', "id = '{$id}'") : false;
 			// Return
 			return $return;
 		}
@@ -173,7 +215,7 @@
 			// Database Connection
 			$db		= $GLOBALS['db'];
 			// Query
-			$return	= ($id) ? $db->getRow('tb_map_link_icon AS mli JOIN tb_areamap AS am ON mli.id_map_orign = am.id', 'mli.id_map_orign, am.id_areatype', "id_map_target = {$id}") : false;
+			$return	= ($id) ? $db->getRow('tb_map_link_icon AS mli JOIN tb_areamap AS am ON mli.id_map_orign = am.id', 'mli.id_map_orign, am.boo_encounter, am.id_areatype', "id_map_target = {$id}") : false;
 			// Return
 			return $return;
 		}
@@ -192,15 +234,55 @@
 		}
 
 		/*
-		Get All Tiles By Tile Type ID - getAllTilesByTileTypeId($id)
+		Get All Local background Tiles By Tile Type ID - getAllLocalBkgTilesByTileTypeId($id)
 			@param integer	- Tile type id
 			@return format	- Mixed array
 		*/
-		public function getAllTilesByTileTypeId($id = false) {
+		public function getAllLocalBkgTilesByTileTypeId($id = false) {
 			// Database Connection
 			$db		= $GLOBALS['db'];
 			// Query
-			$return	= ($id) ? $db->getAllRows_Arr('tb_tile', '*', "id_tiletype = {$id}") : false;
+			$return	= ($id) ? $db->getAllRows_Arr('tb_localarea_background', '*', "id_localarea_tiletype = {$id}") : false;
+			// Return
+			return $return;
+		}
+
+		/*
+		Get All Encounter background Tiles By Tile Type ID - getAllEncounterBkgTilesByTileTypeId($id)
+			@param integer	- Tile type id
+			@return format	- Mixed array
+		*/
+		public function getAllEncounterBkgTilesByTileTypeId($id = false) {
+			// Database Connection
+			$db		= $GLOBALS['db'];
+			// Query
+			$return	= ($id) ? $db->getAllRows_Arr('tb_encounter_background', '*', "id_encounter_tiletype = {$id}") : false;
+			// Return
+			return $return;
+		}
+
+		/*
+		Get All Encounter detail Tiles - getAllEncounterDtlTilesByTileTypeId()
+			@return format	- Mixed array
+		*/
+		public function getAllEncounterDtlTilesByTileTypeId() {
+			// Database Connection
+			$db		= $GLOBALS['db'];
+			// Query
+			$return	= $db->getAllRows_Arr('tb_encounter_detail', '*', "1");
+			// Return
+			return $return;
+		}
+
+		/*
+		Get All Leval Area detail Tiles - getAllLocalDtlTilesByTileTypeId()
+			@return format	- Mixed array
+		*/
+		public function getAllLocalDtlTilesByTileTypeId() {
+			// Database Connection
+			$db		= $GLOBALS['db'];
+			// Query
+			$return	= $db->getAllRows_Arr('tb_localarea_detail', '*', "1");
 			// Return
 			return $return;
 		}
@@ -283,6 +365,57 @@
 		}
 
 		/*
+		Get All Local Area Tile Types - getAllLocalAreaTileTypes()
+			@return format	- Mixed array
+		*/
+		public function getAllLocalAreaTileTypes() {
+			// Database Connection
+			$db				= $GLOBALS['db'];
+			// Initialize variables
+			$return			= false;
+			// Query set up
+			$table			= 'tb_localarea_tiletype';
+			$select_what	= '*';
+			$conditions		= "1 ORDER BY vc_name";
+			$return			= $db->getAllRows_Arr($table, $select_what, $conditions);
+			// Return
+			return $return;
+		}
+
+		/*
+		Get All Encounter Tile Types - getAllEncounterTileTypes()
+			@return format	- Mixed array
+		*/
+		public function getAllEncounterTileTypes() {
+			// Database Connection
+			$db				= $GLOBALS['db'];
+			// Initialize variables
+			$return			= false;
+			// Query set up
+			$table			= 'tb_encounter_tiletype';
+			$select_what	= '*';
+			$conditions		= "1 ORDER BY vc_name";
+			$return			= $db->getAllRows_Arr($table, $select_what, $conditions);
+			// Return
+			return $return;
+		}
+
+		/*
+		Get All Encounter Bkg Tiles - getAllEncounterBkgTiles()
+			@return format	- Mixed array
+		*/
+		public function getAllEncounterBkgTilesByTTileId($id = false) {
+			// Database Connection
+			$db		= $GLOBALS['db'];
+			// Initialize variables
+			$return	= false;
+			// Query set up
+			$return	= ($id) ? $db->getAllRows_Arr('tb_encounter_background', '*', "id_tiletype = '{$id}'") : false;
+			// Return
+			return $return;
+		}
+
+		/*
 		Get Map Ids byt Parent map id - getMapIdsByParentMapId($id)
 			@param integer	- Areamap Id
 			@return format	- Mixed array
@@ -356,7 +489,7 @@
 			@param array	- map info
 			@return boolean
 		*/
-		public function insertMap($id_areatype = false, $vc_name = false, $coords = false) {
+		public function insertMap($boo_encounter = false, $id_areatype = false, $vc_name = false, $coords = false) {
 			// Initialize variables
 			$return					= false;
 			$map_icon				= false;
@@ -365,6 +498,7 @@
 			// Validate sent information
 			if (($id_areatype) && ($coords) && ($vc_name)) {
 				// Prepare map data to be inserted
+				$map_data[]			= $boo_encounter;
 				$map_data[]			= $id_areatype;
 				$map_data[]			= $vc_name;
 				for ($i = 0; $i < 100; $i++) {
