@@ -201,6 +201,7 @@
 					$id_areatype		= $map['id_areatype'];
 					$tiles				= $RepMap->getAllEncounterBkgTilesByTileTypeId($id_tiletype);
 					$link_icon			= $RepMap->getLinksIconsByAreaId($area['id_areamap']);
+					$monsters			= $RepMap->getMonstersInMap($area['id_areamap']);
 					$parent_areamap		= ($parent_id_areamap) ? $RepMap->getMapInfoById($parent_id_areamap) : false;
 					$parent_areamap		= (!$parent_areamap) ? $RepMap->getParentMapIdTypeByMapId($area['id_areamap']) : $parent_areamap;
 					$parent_id_areamap	= (!$parent_id_areamap) ? $parent_areamap['id_map_orign'] : $parent_id_areamap;
@@ -209,6 +210,7 @@
 					// Model Area Related info
 					$map				= $ModMap->dungeon($map, $link_icon);
 					$tiles				= ($tiles) ? $ModMap->listEncounterBkgTiles($tiles) : false;
+					$monsters			= ($monsters) ? $ModMap->mapMonsters($monsters) : '';
 					// Select "Back" link
 					if ($parent_areamap['boo_encounter'] == 1) {
 						$link			= '/gamemaster/Maps/EditDungeon/'.$parent_id_areamap;
@@ -232,6 +234,7 @@
 					View::set('detail_tiles',		$detail_tiles);
 					View::set('tiletypes',			$tiletypes);
 					View::set('parent_id_areamap',	$parent_id_areamap);
+					View::set('monsters',			$monsters);
 					// Render view
 					View::render('dungeonsEdit');
 				}
@@ -314,74 +317,6 @@
 				View::render('dungeonsNew');
 			}
  		}
-
-		/*
-		Prints out a world - loadWorldMap()
-			@return format	- print
-		*/
-		public function loadWorldMap() {
-			// Declare Classes
-			$RepMap		= new RepMap();
-			$ModMap		= new ModMap();
-			// Initialize variables
-			$return		= false;
-			$id_world	= (isset($_POST['id_world'])) ? trim($_POST['id_world']) : false;
-			// If values were sent
-			if ($id_world) {
-				// Load World Map info
-				$world	= $RepMap->getWorldMapById($id_world);
-				// Get linking info
-				$links	= $RepMap->getLinksIconsByAreaId($world['id']);
-				// Model world
-				$return	= ($world) ? $ModMap->world($world, $links) : false;
-			}
-			// Return
-			echo $return;
-		}
-
-		/*
-		Loads Background Tile List - loadBackgroundTiles()
-			@return format	- print
-		*/
-		public function loadBackgroundTiles() {
-			// Declare Classes
-			$RepMap			= new RepMap();
-			$ModMap			= new ModMap();
-			// Initialize variables
-			$return			= false;
-			$id_tiletype	= (isset($GLOBALS['params'][1])) ? trim(($GLOBALS['params'][1])) : false;
-			// If values were sent
-			if ($id_tiletype) {
-				// Get tiles
-				$tiles		= $RepMap->getAllEncounterBkgTilesByTileTypeId($id_tiletype);
-				// Model tiles and prepare return
-				$return		= ($tiles) ? $ModMap->listEncounterBkgTiles($tiles) : false;
-			}
-			// Return
-			echo $return;
-		}
-
-		/*
-		Loads Details Tile List - loadDetailTiles()
-			@return format	- print
-		*/
-		public function loadDetailTiles() {
-			// Declare Classes
-			$RepMap			= new RepMap();
-			$ModMap			= new ModMap();
-			// Initialize variables
-			$return			= false;
-			//$id_tiletype	= (isset($GLOBALS['params'][1])) ? trim(($GLOBALS['params'][1])) : false;
-			// If values were sent
-			//if ($id_tiletype) {
-				// Get tiles
-				$tiles		= $RepMap->getAllEncounterDtlTilesByTileTypeId();
-				// Model tiles and prepare return
-				$return		= ($tiles) ? $ModMap->listEncounterDtlTiles($tiles) : false;
-			//}
-			// Return
-			echo $return;
-		}
 
 		/*
 		Generates a new local map (random texture) - generateLocalMap()
@@ -753,6 +688,172 @@
 				// Load and Model Tile
 				$tiles		= $RepMap->getAllLocalBkgTilesByTileTypeId($id_tiletype);
 				$return		= ($tiles) ? $ModMap->listTiles($tiles) : 'No Tiles found.';
+			}
+			// Return
+			echo $return;
+		}
+
+		/*
+		Prints out a world - loadWorldMap()
+			@return format	- print
+		*/
+		public function loadWorldMap() {
+			// Declare Classes
+			$RepMap		= new RepMap();
+			$ModMap		= new ModMap();
+			// Initialize variables
+			$return		= false;
+			$id_world	= (isset($_POST['id_world'])) ? trim($_POST['id_world']) : false;
+			// If values were sent
+			if ($id_world) {
+				// Load World Map info
+				$world	= $RepMap->getWorldMapById($id_world);
+				// Get linking info
+				$links	= $RepMap->getLinksIconsByAreaId($world['id']);
+				// Model world
+				$return	= ($world) ? $ModMap->world($world, $links) : false;
+			}
+			// Return
+			echo $return;
+		}
+
+		/*
+		Loads Background Tile List - loadBackgroundTiles()
+			@return format	- print
+		*/
+		public function loadBackgroundTiles() {
+			// Declare Classes
+			$RepMap			= new RepMap();
+			$ModMap			= new ModMap();
+			// Initialize variables
+			$return			= false;
+			$id_tiletype	= (isset($GLOBALS['params'][1])) ? trim(($GLOBALS['params'][1])) : false;
+			// If values were sent
+			if ($id_tiletype) {
+				// Get tiles
+				$tiles		= $RepMap->getAllEncounterBkgTilesByTileTypeId($id_tiletype);
+				// Model tiles and prepare return
+				$return		= ($tiles) ? $ModMap->listEncounterBkgTiles($tiles) : false;
+			}
+			// Return
+			echo $return;
+		}
+
+		/*
+		Loads Details Tile List - loadDetailTiles()
+			@return format	- print
+		*/
+		public function loadDetailTiles() {
+			// Declare Classes
+			$RepMap			= new RepMap();
+			$ModMap			= new ModMap();
+			// Initialize variables
+			$return			= false;
+			//$id_tiletype	= (isset($GLOBALS['params'][1])) ? trim(($GLOBALS['params'][1])) : false;
+			// If values were sent
+			//if ($id_tiletype) {
+				// Get tiles
+				$tiles		= $RepMap->getAllEncounterDtlTilesByTileTypeId();
+				// Model tiles and prepare return
+				$return		= ($tiles) ? $ModMap->listEncounterDtlTiles($tiles) : false;
+			//}
+			// Return
+			echo $return;
+		}
+
+		/*
+		 Load Monster' list - loadMonsters()
+		 	@return format	- View render
+		*/
+		public function loadMonsters() {
+			// Declare classes
+			$RepMap			= new RepMap();
+			$ModMap			= new ModMap();
+			// Initialize variables
+			$int_level		= (isset($_POST['int_level'])) ? trim($_POST['int_level']) : false;
+			$return			= false;
+			// If level was sent
+			if ($int_level) {
+				// Get and model all monsters from the given level
+				$monsters	= $RepMap->getminAllMonstersByLevel($int_level);
+				$return		= $ModMap->listMonsters($monsters);
+			}
+			// Return
+			echo $return;
+		}
+
+		/*
+		 Load Monster' list - Monsters()
+		 	@return format	- View render
+		*/
+		public function Monsters() {
+			// Declare classes
+			$RepMap				= new RepMap();
+			$ModMap				= new ModMap();
+			// Initialize variables
+			$int_level			= (isset($GLOBALS['params'][1])) ? trim(($GLOBALS['params'][1])) : false;
+			// If level was sent
+			if ($int_level) {
+				// Get and model all monsters from the given level
+				$monsters		= $RepMap->getminAllMonstersByLevel($int_level);
+				$monsters		= $ModMap->listMonsters($monsters);
+				$level_options	= $ModMap->levelOptions($int_level);
+				// Prepare return
+				View::set('monsters',		$monsters);
+				View::set('level_options',	$level_options);
+				// Return
+				View::render('partial_listMonsters');
+			}
+		}
+
+		/*
+		 Add Monster to map - addMonster()
+		 	@return format	- View render
+		*/
+		public function addMonster() {
+			// Declare classes
+			$RepMap				= new RepMap();
+			$ModMap				= new ModMap();
+			// Initialize variables
+			$id_monster			= (isset($_POST['id_monster'])) ? trim(($_POST['id_monster'])) : false;
+			$pos				= (isset($_POST['pos'])) ? trim(($_POST['pos'])) : false;
+			$id_areamap			= (isset($_POST['id_areamap'])) ? trim(($_POST['id_areamap'])) : false;
+			$return				= false;
+			// If level was sent
+			if (($id_monster) &&  ($pos) &&  ($id_areamap)){ 
+				// Add Monster to the room and prepare return
+				$res			= $RepMap->addMonsterToRoom($id_areamap, $pos, $id_monster);
+				if ($res) {
+					$monsters	= $RepMap->getMonstersInMap($id_areamap);
+					$return		= ($monsters)  ? $ModMap->mapMonsters($monsters) : false;
+				}
+			}
+			// Return
+			echo $return;
+		}
+
+		/*
+		 Remove Monster from tile - removeMonster()
+		 	@return format	- View render
+		*/
+		public function removeMonster() {
+			// Declare classes
+			$RepMap				= new RepMap();
+			$ModMap				= new ModMap();
+			// Initialize variables
+			$key				= (isset($_POST['key'])) ? trim(($_POST['key'])) : false;
+			$id_areamap			= (isset($_POST['id_areamap'])) ? trim(($_POST['id_areamap'])) : false;
+			$return				= false;
+			// If info was sent
+			if (($key) && ($id_areamap)) { 
+				// Delete Monster to the room and prepare return
+				$res			= $RepMap->deleteMonsterFromRoom($key);
+				// If monster was deleted
+				if ($res) {
+					// Reload and model map monster list
+					$monsters	= $RepMap->getMonstersInMap($id_areamap);
+					$return		= ($monsters)  ? $ModMap->mapMonsters($monsters) : false;
+				}
 			}
 			// Return
 			echo $return;

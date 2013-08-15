@@ -241,7 +241,6 @@ function openFancybox($url, $width, $height) {
 		speedOut		: 200,
 		type			: 'iframe',
 		onClosed		: function() {
-			document.body.style.cursor	= 'wait';
 			$key		= parent.$('#pager_pg_num').val();
 			$ordering	= parent.$('#ordering').val();
 			$offset		= parent.$('#offset').val();
@@ -252,6 +251,7 @@ function openFancybox($url, $width, $height) {
 			$parent_id	= parent.$('#parent_id').val();
 			$actionurl	= actionURL();
 			if (($key) && ($ordering) && ($offset) && ($limit) && ($direction) && ($actionurl)) {
+				document.body.style.cursor	= 'wait';
 				fetchResults($actionurl, $key, $ordering, $offset, $limit, $direction, $str_search, $parent_id);
 			}
 		}

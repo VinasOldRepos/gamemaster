@@ -10,6 +10,7 @@ $('document').ready(function() {
 	$(".new_monster").live("click", function() {
 		document.body.style.cursor	= 'wait';
 		$vc_id				= $("#vc_id").val();
+		$int_level			= $("#int_level").val();
 		$vc_name			= $("#vc_name").val();
 		$int_hits_min		= $("#int_hits_min").val();
 		$int_hits_max		= $("#int_hits_max").val();
@@ -21,10 +22,11 @@ $('document').ready(function() {
 		$int_treasure_min	= $("#int_treasure_min").val();
 		$int_treasure_max	= $("#int_treasure_max").val();
 		$tx_description		= $("#tx_description").val();
-		if (($vc_id) && ($vc_name) && ($int_hits_min) && ($int_hits_max) && ($int_me) && ($int_damage_min) && ($int_damage_max) && ($int_ds) && ($int_knowledge) && ($int_treasure_min) && ($int_treasure_max) && ($tx_description)) {
+		if (($vc_id) && ($int_level) && ($vc_name) && ($int_hits_min) && ($int_hits_max) && ($int_me) && ($int_damage_min) && ($int_damage_max) && ($int_ds) && ($int_knowledge) && ($int_treasure_min) && ($int_treasure_max) && ($tx_description)) {
 			$.post('/gamemaster/Monsters/addMonster/', {
 				vc_id:				$vc_id,
 				vc_name:			$vc_name,
+				int_level:			$int_level,
 				int_hits_min:		$int_hits_min,
 				int_hits_max:		$int_hits_max,
 				int_me:				$int_me,
@@ -69,6 +71,7 @@ $('document').ready(function() {
 		document.body.style.cursor = 'wait';
 		$id_monster			= $("#id_monster").val();
 		$vc_id				= $("#vc_id").val();
+		$int_level			= $("#int_level").val();
 		$vc_name			= $("#vc_name").val();
 		$int_hits_min		= $("#int_hits_min").val();
 		$int_hits_max		= $("#int_hits_max").val();
@@ -80,10 +83,11 @@ $('document').ready(function() {
 		$int_treasure_min	= $("#int_treasure_min").val();
 		$int_treasure_max	= $("#int_treasure_max").val();
 		$tx_description		= $("#tx_description").val();
-		if (($vc_id) && ($vc_name) && ($int_hits_min) && ($int_hits_max) && ($int_me) && ($int_damage_min) && ($int_damage_max) && ($int_ds) && ($int_knowledge) && ($int_treasure_min) && ($int_treasure_max) && ($tx_description)) {
+		if (($id_monster) && ($vc_id) && ($int_level) && ($vc_name) && ($int_hits_min) && ($int_hits_max) && ($int_me) && ($int_damage_min) && ($int_damage_max) && ($int_ds) && ($int_knowledge) && ($int_treasure_min) && ($int_treasure_max) && ($tx_description)) {
 			$.post('/gamemaster/Monsters/updateMonster/', {
 			id_monster:			$id_monster,
 			vc_id:				$vc_id,
+			int_level:			$int_level,
 			vc_name:			$vc_name,
 			int_hits_min:		$int_hits_min,
 			int_hits_max:		$int_hits_max,

@@ -365,6 +365,20 @@
 		}
 
 		/*
+		Get All Monsters By Level - getminAllMonstersByLevel($int_level)
+			@param integer	- Level
+			@return format	- Mixed array
+		*/
+		public function getminAllMonstersByLevel($int_level = false) {
+			// Database Connection
+			$db				= $GLOBALS['db'];
+			// Query set up
+			$return			= ($int_level) ? $db->getAllRows_Arr('tb_monster', '*', 'int_level = '.$int_level.' ORDER BY vc_name') : false;
+			// Return
+			return $return;
+		}
+
+		/*
 		Get All Local Area Tile Types - getAllLocalAreaTileTypes()
 			@return format	- Mixed array
 		*/
@@ -411,6 +425,21 @@
 			$return	= false;
 			// Query set up
 			$return	= ($id) ? $db->getAllRows_Arr('tb_encounter_background', '*', "id_tiletype = '{$id}'") : false;
+			// Return
+			return $return;
+		}
+
+		/*
+		Get All Monsters int eh Map - getMonstersInMap($id_areamap)
+			@return format	- Mixed array
+		*/
+		public function getMonstersInMap($id = false) {
+			// Database Connection
+			$db		= $GLOBALS['db'];
+			// Initialize variables
+			$return	= false;
+			// Query set up
+			$return	= ($id) ? $db->getAllRows_Arr('tb_area_pos_monster AS p JOIN tb_monster AS m ON p.id_monster = m.id', 'p.*, m.vc_name, m.int_level', "id_areamap = '{$id}'") : false;
 			// Return
 			return $return;
 		}
@@ -551,6 +580,32 @@
 		}
 
 		/*
+		Insert Area into Database - addMonsterToRoom ($id_areamap, $pos, $id_monster)
+			@param integer	- Area type id
+			@param integer	- Field id
+			@param integer	- Area Map id
+			@param integer	- level
+			@param integer	- status
+			@return boolean
+		*/
+		public function addMonsterToRoom($id_areamap = false, $pos = false, $id_monster = false) {
+			// Initialize variables
+			$return		= false;
+			// Database Connection
+			$db			= $GLOBALS['db'];
+			// Validate sent information
+			if (($id_areamap) && ($pos) && ($id_monster)) {
+				// Save area map and prepare return (id_area)
+				$info[]	= $id_areamap;
+				$info[]	= $pos;
+				$info[]	= $id_monster;
+				$return	= ($db->insertRow('tb_area_pos_monster', $info, '')) ? $db->last_id() : false;
+			}
+			// Return
+			return $return;
+		}
+
+		/*
 		Update Tile info - updateTile($id_tile, $tile_data)
 			@param integer	- Tile id
 			@param array	- Mixed with tile info (order like database w/ id)
@@ -668,6 +723,17 @@
 				$db->deleteRow('tb_area', 'id_areamap = '.$id);
 				$return		= $db->deleteRow('tb_areamap', 'id = '.$id);
 			}
+			return $return;
+		}
+
+		/*
+		Delete monster from tile - deleteMonsterFromRoom($id)
+			@param array	- Mixed with user info (order like database w/ id)
+			@return boolean
+		*/
+		public function deleteMonsterFromRoom($id) {
+			$db		= $GLOBALS['db'];
+			$return	= ($id) ? $db->deleteRow('tb_area_pos_monster', 'id = '.$id) : false;
 			return $return;
 		}
 

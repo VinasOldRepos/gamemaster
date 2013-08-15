@@ -76,7 +76,7 @@
 			return $return;
 		}
 
-		public function dungeon($map = false, $links = false) {
+		public function dungeon($map = false, $links = false, $monsters = false) {
 			$return				= false;
 			if ($links) {
 				foreach ($links as $link) {
@@ -150,6 +150,18 @@
 					} else {
 						$return	.= '<option value="'.$entry['id'].'">'.$entry['vc_name'].'</option>'.PHP_EOL;
 					}
+				}
+			}
+			return $return;
+		}
+
+		public function levelOptions($int_level = false) {
+			$return				= false;
+			for ($i = 1; $i <= 13; $i++) {
+				if ($i == $int_level) {
+					$return	.= '<option value="'.$i.'" selected="selected">'.$i.'</option>'.PHP_EOL;
+				} else {
+					$return	.= '<option value="'.$i.'">'.$i.'</option>'.PHP_EOL;
 				}
 			}
 			return $return;
@@ -245,6 +257,22 @@
 			return $return;
 		}
 
+		public function listMonsters($entries = false) {
+			$return	= '<br />No icons found'.PHP_EOL;
+			if ($entries) {
+				$tot_entries	= count($entries);
+				$return			= '<div class="details_result_box" id="tiles_result_box">'.PHP_EOL;
+				for ($i = 0; $i < $tot_entries; $i++) {
+					$return		.= '	<div class="monsters_return_row" key="'.$entries[$i]['id'].'">'.PHP_EOL;
+					$return		.= '		<div class="result_field result_id">'.$entries[$i]['vc_id'].'</div>'.PHP_EOL;
+					$return		.= '		<div class="result_field result_iconname">'.$entries[$i]['vc_name'].'</div>'.PHP_EOL;
+					$return		.= '	</div><br />'.PHP_EOL;
+				}
+				$return			.= '</div><br />'.PHP_EOL;
+			}
+			return $return;
+		}
+
 		public function changeTile($tiles = false, $tiletypes = false) {
 			$return	= false;
 			if ($tiles) {
@@ -260,4 +288,20 @@
 			}
 			return $return;
 		}
+
+		public function mapMonsters($monsters = false) {
+			$return			= '<span class="title_01">Monsters in this tile</span>'.PHP_EOL;
+			if ($monsters) {
+				$return		.= '<br /><br />'.PHP_EOL;
+				foreach ($monsters as $monster) {
+
+					$return	.= '	<div class="not_shown tilemonster_'.$monster['vc_pos'].'">'.PHP_EOL;
+					$return	.= '		<div class="result_monsterid" key="'.$monster['id'].'">(<span class="remove_monster" key="'.$monster['id'].'">X</span>)</div>'.PHP_EOL;
+					$return	.= '		<div class="result_monstername">'.$monster['vc_name'].'</div>'.PHP_EOL;
+					$return	.= '	</div>'.PHP_EOL;
+				}
+			}
+			return $return;
+		}
+
 	}

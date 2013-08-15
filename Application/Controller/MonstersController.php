@@ -91,7 +91,7 @@
 				$rows			= $result[0];
 				$paging_info	= $result[1];
 				// Model Result
-				$return			= $ModMonster->listMonsters($rows, 'u.id', 'ASC');
+				$return			= $ModMonster->listMonsters($rows, 'id', 'ASC');
 				// Define Pager info
 				$pager				= Pager::pagerOptions($paging_info, 'monsters', 'partialResult');
 			}
@@ -162,6 +162,7 @@
 					View::set('id_monster',			$id_monster);
 					View::set('vc_id',				$monster['vc_id']);
 					View::set('vc_name',			$monster['vc_name']);
+					View::set('int_level',			$monster['int_level']);
 					View::set('int_hits_min',		$monster['int_hits_min']);
 					View::set('int_hits_max',		$monster['int_hits_max']);
 					View::set('int_me',				$monster['int_me']);
@@ -187,6 +188,7 @@
 			$RepMonster		= new RepMonster();
 			// Initialize variable
 			$vc_id				= (isset($_POST['vc_id'])) ? trim($_POST['vc_id']) : false;
+			$int_level			= (isset($_POST['int_level'])) ? trim($_POST['int_level']) : false;
 			$vc_name			= (isset($_POST['vc_name'])) ? trim($_POST['vc_name']) : false;
 			$int_hits_min		= (isset($_POST['int_hits_min'])) ? trim($_POST['int_hits_min']) : false;
 			$int_hits_max		= (isset($_POST['int_hits_max'])) ? trim($_POST['int_hits_max']) : false;
@@ -200,10 +202,11 @@
 			$tx_description		= (isset($_POST['tx_description'])) ? General::quotes(trim($_POST['tx_description'])) : false;
 			$return				= false;
 			// If values were sent
-			if (($vc_id !== false) && ($vc_name !== false) && ($int_hits_min !== false) && ($int_hits_max !== false) && ($int_me !== false) && ($int_damage_min !== false) && ($int_damage_max !== false) && ($int_ds !== false) && ($int_knowledge !== false) && ($int_treasure_min !== false) && ($int_treasure_max !== false) && ($tx_description !== false)) {
+			if (($vc_id !== false) && ($int_level !== false) && ($vc_name !== false) && ($int_hits_min !== false) && ($int_hits_max !== false) && ($int_me !== false) && ($int_damage_min !== false) && ($int_damage_max !== false) && ($int_ds !== false) && ($int_knowledge !== false) && ($int_treasure_min !== false) && ($int_treasure_max !== false) && ($tx_description !== false)) {
 				// Create Monster
 				$monster_data[]	= $vc_id;
 				$monster_data[]	= $vc_name;
+				$monster_data[]	= $int_level;
 				$monster_data[]	= $int_hits_min;
 				$monster_data[]	= $int_hits_max;
 				$monster_data[]	= $int_me;
@@ -233,6 +236,7 @@
 			// Initialize variable
 			$id_monster			= (isset($_POST['id_monster'])) ? trim($_POST['id_monster']) : false;
 			$vc_id				= (isset($_POST['vc_id'])) ? trim($_POST['vc_id']) : false;
+			$int_level			= (isset($_POST['int_level'])) ? trim($_POST['int_level']) : false;
 			$vc_name			= (isset($_POST['vc_name'])) ? trim($_POST['vc_name']) : false;
 			$int_hits_min		= (isset($_POST['int_hits_min'])) ? trim($_POST['int_hits_min']) : false;
 			$int_hits_max		= (isset($_POST['int_hits_max'])) ? trim($_POST['int_hits_max']) : false;
@@ -246,10 +250,11 @@
 			$tx_description		= (isset($_POST['tx_description'])) ? General::quotes(trim($_POST['tx_description'])) : false;
 			$return				= false;
 			// If values were sent
-			if (($id_monster !== false) && ($vc_id !== false) && ($vc_name !== false) && ($int_hits_min !== false) && ($int_hits_max !== false) && ($int_me !== false) && ($int_damage_min !== false) && ($int_damage_max !== false) && ($int_ds !== false) && ($int_knowledge !== false) && ($int_treasure_min !== false) && ($int_treasure_max !== false) && ($tx_description !== false)) {
+			if (($id_monster !== false) && ($vc_id !== false) && ($int_level !== false) && ($vc_name !== false) && ($int_hits_min !== false) && ($int_hits_max !== false) && ($int_me !== false) && ($int_damage_min !== false) && ($int_damage_max !== false) && ($int_ds !== false) && ($int_knowledge !== false) && ($int_treasure_min !== false) && ($int_treasure_max !== false) && ($tx_description !== false)) {
 				// Update Monster				
 				$monster_data[]	= $vc_id;
 				$monster_data[]	= $vc_name;
+				$monster_data[]	= $int_level;
 				$monster_data[]	= $int_hits_min;
 				$monster_data[]	= $int_hits_max;
 				$monster_data[]	= $int_me;

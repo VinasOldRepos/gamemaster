@@ -93,6 +93,8 @@ $('document').ready(function() {
 		$last_content	= $("#"+$last_id).html();
 		$last_status	= $("#"+$last_id).attr('status');
 		$last_icon		= $("#"+$last_id).attr('icon');
+		$(".tilemonster_"+$last_id).hide();
+		$(".tilemonster_"+$this_id).show();
 		if ($target_id > 0) {
 			$("#linkmap").attr('target', $target_id);
 			$("#linkmap").show();
@@ -109,11 +111,11 @@ $('document').ready(function() {
 			}
 		}
 		if (!$(this).html()) {
-			$html			= $(this).html('<img src="/gamemaster/Application/View/img/textures/selected.png" width="32" height="32" border="0" />');
+			$html		= $(this).html('<img src="/gamemaster/Application/View/img/textures/selected.png" width="32" height="32" border="0" />');
 		} else {
-			$html			= $(this).css("visibility", 'hidden');
+			$html		= $(this).css("visibility", 'hidden');
 		}
-		$html				= $(this).attr('status', 'selected');
+		$html			= $(this).attr('status', 'selected');
 		$("#target_tile_id").val($this_id);
 		contentShow("#map_interaction");
 		return false;
@@ -204,18 +206,25 @@ $('document').ready(function() {
 		$id_map			= $("#id_map").val();
 		$pos			= $("#target_tile_id").val();
 		$id_tiletype	= $("#id_tiletype").val();
+		$int_level		= $("#level").val();
 		if ($this_block) {
-			$(".tile_options").hide();
 			if (($this_block == 'linkTile') || ($this_block == 'changeBkgTileDungeon') || ($this_block == 'changeDtlTileDungeon')) {
+				$(".tile_options").hide();
 				contentShow("#"+$this_block);
 			} else if ($this_block == 'changeTile') {
+				$(".tile_options").hide();
 				$.post('/gamemaster/Maps/'+$this_block, {pos: $pos, id_tiletype: $id_tiletype}, function($return) {
 					if ($return) {
 						contentShowData("#"+$this_block, $return);
 					}
 					return false;
 				});
+			} else if ($this_block == 'addMonsters') {
+				if ($int_level) {
+					openFancybox('/gamemaster/Maps/Monsters/'+$int_level, 800, 500);
+				}
 			} else {
+				$(".tile_options").hide();
 				$.post('/gamemaster/Maps/'+$this_block, {pos: $pos}, function($return) {
 					if ($return) {
 						contentShowData("#"+$this_block, $return);
@@ -223,6 +232,7 @@ $('document').ready(function() {
 					return false;
 				});
 			}
+			document.body.style.cursor	= 'default';
 		}
 		return false;
 	});
@@ -496,6 +506,69 @@ $('document').ready(function() {
 		}
 	});
 
+	// What happens when user selects a monster to be inserted
+	$(".monsters_return_row").live("click", function() {
+		$id_monster	= $(this).attr('key');
+		$pos		= parent.$("#target_tile_id").val();
+		$id_areamap	= parent.$("#id_areamap").val();
+		if (($id_monster) && ($pos) && ($id_areamap)) {
+			$.post('/gamemaster/Maps/addMonster/', {
+				id_monster:	$id_monster,
+				pos:		$pos,
+				id_areamap:	$id_areamap
+			}, function($return) {
+				if ($return) {
+					$return	= $return.trim();
+					if ($return) {
+						parent.$("#monsters").html($return);
+						parent.contentShow(".tilemonster_"+$pos);
+						parent.$.fancybox.close();
+					} else {
+						alert("Sorry,\n\nwe weren't able to add this monster to the room.\n\nError: "+$return);
+					}
+				}
+				return false;
+			});
+		}
+		return false;
+	});
+
+	// What happens when user clicks to remove a monster from a tile/room
+	$(".remove_monster").live("click", function() {
+		$key		= $(this).attr('key');
+		$id_areamap	= $("#id_areamap").val();
+		$this_tile	= $("#target_tile_id").val();
+		if (($key) && ($id_areamap) && ($this_tile)) {
+			$.post('/gamemaster/Maps/removeMonster/', {
+				key:		$key,
+				id_areamap:	$id_areamap
+			}, function($return) {
+				$return		= $return.trim();
+				$("#monsters").html($return);
+				contentShow(".tilemonster_"+$this_tile);
+			});
+			
+		}
+		return false;
+	});
+
+	// What happens when user changes monsters' level on ad monster modal
+	$("#int_level").live("change", function() {
+		$int_level	= $(this).val();
+		if ($int_level) {
+			$.post('/gamemaster/Maps/loadMonsters/', {
+				int_level:	$int_level
+			}, function($return) {
+				if ($return) {
+					$("#monster_list").hide()
+					contentShowData("#monster_list", $return);
+				} else {
+					alert("Sorry,\n\nbut we couldn't do it");
+				}
+			});
+		}
+		return false;
+	});
 });
 
 

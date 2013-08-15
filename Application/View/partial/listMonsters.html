@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<header>
+		<title>The Game Master</title>
+		<!-- JS -->
+		<?php echo $GLOBALS['general_js']; ?>
+		<?php echo $GLOBALS['this_js']; ?>
+		<!-- CSS -->
+		<?php echo $GLOBALS['general_css']; ?>
+		<?php echo $GLOBALS['this_css']; ?>
+	</header>
+	<body class="details_body" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0">
+		<div class="details_container">
+			<div class="content" style="text-align: center;">
+				<span class="title_01" id="main_title">Choose a monster</span>
+				Level: 
+				<fieldset style="width: 200px;">
+					<label for="int_level">Level:</label>
+					<select name="int_level" id="int_level">
+						<?php echo $level_options; ?>
+					</select>
+				</fieldset>
+				<br /><br />
+				<br /><br />
+				<div class="monster_list" id="monster_list">
+					<?php echo $monsters; ?>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
