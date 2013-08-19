@@ -9,7 +9,7 @@
 *					functions.														*
 *																					*
 * Creation Date:	22/09/2011														*
-* Version:			2.13.0716														*
+* Version:			2.13.0816														*
 * License:			http://www.opensource.org/licenses/bsd-license.php BSD			*
 *************************************************************************************/
 
@@ -256,6 +256,15 @@
 		 * @return boolean */
 		public function deleteRow($table, $condition) {
 			$query = 'DELETE FROM '.$table.' WHERE '.$condition;
+			$res = $this->rq($query);
+			return $res;
+		}
+
+		/* Apaga todas as informações e registros da tabela - truncateTable($table)
+		 * @param  string - A tabela em questão
+		 * @return boolean */
+		public function truncateTable($table) {
+			$query = 'TRUNCATE TABLE '.$table;
 			$res = $this->rq($query);
 			return $res;
 		}

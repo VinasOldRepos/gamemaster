@@ -448,3 +448,9 @@ label {
 	color:			#C00;
 	font-weight:	bold;
 }
+
+/* GENERAL */
+
+.pointer:hover {
+	cursor: pointer;
+}

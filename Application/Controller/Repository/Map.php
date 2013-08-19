@@ -234,6 +234,19 @@
 		}
 
 		/*
+		Get All World Maps - getAllWorldMaps()
+			@return format	- Mixed array
+		*/
+		public function getAllWorldMaps() {
+			// Database Connection
+			$db		= $GLOBALS['db'];
+			// Query
+			$return	= $db->getAllRows_Arr('tb_areamap', 'id, vc_name', "id_areatype = 4");
+			// Return
+			return $return;
+		}
+
+		/*
 		Get All Local background Tiles By Tile Type ID - getAllLocalBkgTilesByTileTypeId($id)
 			@param integer	- Tile type id
 			@return format	- Mixed array
@@ -360,6 +373,20 @@
 			$select_what	= '*';
 			$conditions		= "1 ORDER BY vc_name";
 			$return			= $db->getAllRows_Arr($table, $select_what, $conditions);
+			// Return
+			return $return;
+		}
+
+		/*
+		Get navigation Links By Area Id - getNavigationLinkByAreaId($id)
+			@param integer	- Area ID
+			@return format	- Mixed array
+		*/
+		public function getNavigationLinkByAreaId($id = false) {
+			// Database Connection
+			$db				= $GLOBALS['db'];
+			// Query set up
+			$return			= ($id) ? $db->getAllRows_Arr('tb_world_navigation', '*', 'id_map_orign = '.$id) : false;
 			// Return
 			return $return;
 		}
@@ -606,24 +633,22 @@
 		}
 
 		/*
-		Update Tile info - updateTile($id_tile, $tile_data)
-			@param integer	- Tile id
+		Update Tile info - updateTile($id_areamap, $world_pos, $bk_image)
+			@param integer	- Area map id
+			@param string	- position
+			@param string	- Imagem de fundo
 			@param array	- Mixed with tile info (order like database w/ id)
 			@return boolean
 		*/
-		public function updateWorldMap($id_world = false, $world_pos = false, $bk_image = false) {
+		public function updateWorldMap($id_areamap = false, $world_pos = false, $bk_image = false) {
 			// Initialize variables
 			$return				= false;
 			// Database Connection
 			$db					= $GLOBALS['db'];
 			// Validate sent information
-			if (($id_world) && ($world_pos) && ($bk_image)) {
-				// Get Map ID
-				$id_map			= $db->getRow('tb_world', 'id_areamap', "id = {$id_world}");
-				if (!empty($id_map['id_areamap'])) {
-					// Update world Map and prepare return
-					$return		= ($db->updateRow('tb_areamap', array('vc_coord_'.$world_pos), array($bk_image), 'id = '.$id_map['id_areamap'])) ? true : false;
-				}
+			if (($id_areamap) && ($world_pos) && ($bk_image)) {
+				// Update world Map and prepare return
+				$return		= ($db->updateRow('tb_areamap', array('vc_coord_'.$world_pos), array($bk_image), 'id = '.$id_areamap)) ? true : false;
 			}
 			return $return;
 		}
@@ -786,6 +811,51 @@
 					// Insert position data
 					$return	= $db->insertRow('tb_map_link_icon', array($id_map_orign, $id_map_target, $id_icon, $pos, $vc_link));
 				}
+			}
+			// Return
+			return $return;
+		}
+
+		/*
+		  Erase all World related info - resetWorld()
+			@return boolean
+		*/
+		public function resetWorld() {
+			// Database Connection
+			$db		= $GLOBALS['db'];
+			$return	= $db->truncateTable('tb_areamap');
+			$return	= $db->truncateTable('tb_area');
+			$return	= $db->truncateTable('tb_area_pos_monster');
+			$return	= $db->truncateTable('tb_map_link_icon');
+			$return	= $db->truncateTable('tb_world_navigation');
+			return $return;
+		}
+
+		/*
+		  Erase all Texture related info - resetTextures()
+			@return boolean
+		*/
+		public function resetTextures() {
+			// Database Connection
+			$db		= $GLOBALS['db'];
+			$return	= $db->truncateTable('tb_icon');
+			$return	= $db->truncateTable('tb_encounter_background');
+			$return	= $db->truncateTable('tb_encounter_detail');
+			$return	= $db->truncateTable('tb_localarea_background');
+			$return	= $db->truncateTable('tb_localarea_detail');
+			return $return;
+		}
+
+		public function addWorldMapLink($id_map_orign = false, $id_map_target = false, $direction = false) {
+			// Initialize variables
+			$return			= false;
+			$map_icon		= false;
+			// Database Connection
+			$db				= $GLOBALS['db'];
+			// Validate sent information
+			if (($id_map_orign) && ($id_map_target) && ($direction)) {
+				// Insert position data
+				$return	= $db->insertRow('tb_world_navigation', array($id_map_orign, $id_map_target, $direction));
 			}
 			// Return
 			return $return;

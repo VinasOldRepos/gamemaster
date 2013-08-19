@@ -242,3 +242,27 @@
 	font-weight:		bold;
 	color:				#F00;
 }
+
+.go_left {
+	float:			left;
+	position:		absolute;
+	margin-top:		150px;
+	margin-left:	-7px;
+}
+
+.go_right {
+	float:			left;
+	position:		absolute;
+	margin-top:		150px;
+	margin-left:	380px;
+}
+
+.go_down {
+	position:		absolute;
+	margin-top:		360px;
+	margin-left:	175px;
+}
+
+.go_up {
+	margin-bottom:	10px;
+}

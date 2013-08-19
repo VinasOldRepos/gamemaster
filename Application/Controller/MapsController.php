@@ -74,20 +74,21 @@
 			// Fetch and model worlds for combo
 			//$worlds			= $RepMap->getAllWorlds();
 			//$worlds			= ($worlds) ? $ModMap->combo($worlds, true) : false;
-
 			// Load World Map info
 			if ($id_areamap) {
-				$world			= $RepMap->getMapById($id_areamap);
+				$world		= $RepMap->getMapById($id_areamap);
 			} else {
-				$world			= $RepMap->getWorldMapById($id_world);
+				$world		= $RepMap->getWorldMapById($id_world);
 			}
 			$mapname		= $world['vc_name'];
 			$vc_id_areamap	= sprintf('%04d', $world['id']);
+			$id_areamap		= $world['id'];
+			// Get directional links (world navigation)
+			$navigation		= $RepMap->getNavigationLinkByAreaId($world['id']);
 			// Get linking info
 			$links			= $RepMap->getLinksIconsByAreaId($world['id']);
 			// Model world
-			$world			= ($world) ? $ModMap->world($world, $links) : false;
-
+			$world			= ($world) ? $ModMap->world($world, $links, $navigation) : false;
 			// Fetch and model tile types for combo
 			$tiletypes		= $RepMap->getAllLocalAreaTileTypes();
 			$tiletypes		= ($tiletypes) ? $ModMap->combo($tiletypes, true) : false;
@@ -390,6 +391,7 @@
 			$id_areatype		= (isset($_POST['id_areatype'])) ? trim($_POST['id_areatype']) : false;
 			$world_pos			= (isset($_POST['world_pos'])) ? trim($_POST['world_pos']) : false;
 			$id_world			= (isset($_POST['id_world'])) ? trim($_POST['id_world']) : false;
+			$id_areamap_orign	= (isset($_POST['id_areamap'])) ? trim($_POST['id_areamap']) : false;
 			$id_field			= (isset($_POST['id_field'])) ? trim($_POST['id_field']) : false;
 			$level				= (isset($_POST['level'])) ? trim($_POST['level']) : false;
 			$vc_name			= (isset($_POST['vc_name'])) ? trim($_POST['vc_name']) : false;
@@ -399,20 +401,20 @@
 				}
 			}
 			// If data was sent
-			if (($id_areatype) && ($world_pos) && ($id_world) && ($id_field) && ($coords) && ($level) && ($vc_name)) {
+			if (($id_areatype) && ($id_areamap_orign) && ($world_pos) && ($id_world) && ($id_field) && ($coords) && ($level) && ($vc_name)) {
 				// Save map area
 				$id_areamap		= $RepMap->insertMap(0, $id_areatype, $vc_name, $coords);
 				// If map area was saved
 				if ($id_areamap) {
 					// Save area info
-					$id_area	= $RepMap->insertArea($id_world, $id_areatype, $id_field, $id_areamap, $level, 1);
+					$id_area	= $RepMap->insertArea($id_areamap_orign, $id_areatype, $id_field, $id_areamap, $level, 1);
 					// If info was saved
 					if ($id_area) {
 						// Create Link
-						$res	= $RepMap->addIconLink($id_world, $id_areamap, false, $world_pos, false);
+						$res	= $RepMap->addIconLink($id_areamap_orign, $id_areamap, false, $world_pos, false);
 						if ($res) {
-							// Change world map and prepare return
-							$return	= ($RepMap->updateWorldMap($id_world, $world_pos, 'unveiled.gif')) ? $id_areamap : 'nok';
+							// Change world map and prepare return'
+							$return	= ($RepMap->updateWorldMap($id_areamap_orign, $world_pos, 'unveiled.gif')) ? $id_areamap : 'nok';
 						}
 					}
 				}

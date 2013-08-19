@@ -371,6 +371,7 @@ $('document').ready(function() {
 		$id_areatype		= $("#id_areatype").val();
 		$world_pos			= $("#world_pos").val();
 		$id_world			= $("#id_world").val();
+		$id_areamap			= $("#id_areamap").val();
 		$id_field			= $("#id_field").val();
 		$level				= $("#level").val();
 		$vc_name			= $("#vc_name").val();
@@ -379,6 +380,7 @@ $('document').ready(function() {
 			id_areatype:	$id_areatype,
 			world_pos:		$world_pos,
 			id_world:		$id_world,
+			id_areamap:		$id_areamap,
 			id_field:		$id_field,
 			level:			$level,
 			vc_name:		$vc_name,
@@ -569,6 +571,15 @@ $('document').ready(function() {
 		}
 		return false;
 	});
+
+	$(".go").live("click", function() {
+		$id_areamap	= $(this).attr('key');
+		if ($id_areamap) {
+			$(location).attr('href', '/gamemaster/Maps/Insert/'+$id_areamap);
+		}
+		return false;
+	});
+
 });
 
 

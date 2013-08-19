@@ -15,7 +15,7 @@
 
 	class Map {
 
-		public function world($world = false, $links = false) {
+		public function world($world = false, $links = false, $navigation = false) {
 			$return				= false;
 			if ($links) {
 				foreach ($links as $link) {
@@ -23,6 +23,19 @@
 				}
 			}
 			if ($world) {
+				if ($navigation) {
+					foreach ($navigation as $link) {
+						if ($link['vc_direction'] == 'up') {
+							$return	.= '<div class="go_up go pointer" key="'.$link['id_map_target'].'">up</div>'.PHP_EOL;
+						} else if ($link['vc_direction'] == 'left') {
+							$return	.= '<div class="go_left go pointer" key="'.$link['id_map_target'].'">&lt;-</div>'.PHP_EOL;
+						} else if ($link['vc_direction'] == 'right') {
+							$return	.= '<div class="go_right go pointer" key="'.$link['id_map_target'].'">-&gt;</div>'.PHP_EOL;
+						} else if ($link['vc_direction'] == 'down') {
+							$return	.= '<div class="go_down go pointer" key="'.$link['id_map_target'].'">down</div>'.PHP_EOL;
+						}
+					}
+				}
 				for ($i = 1; $i <= 100; $i++) {
 					if ($i == 1) {
 						$return	.= '<div class="map_row">'.PHP_EOL;
@@ -40,6 +53,7 @@
 					}
 				}
 				$return			.= '</div>'.PHP_EOL;
+				$return			.= '<br />'.PHP_EOL;
 			}
 			return $return;
 		}
