@@ -316,7 +316,7 @@
 					$paging_info	= $result[1];
 					// Model Result
 					$pager			= Pager::pagerOptions($paging_info, 'textures', 'partLocalBkgResultTiles');
-					$return			= $ModTexture->jqueryLocalBkgTiles($rows, $pager, $ordering, $direction);
+					$return			= $ModTexture->jqueryBkgTiles($rows, $pager, $ordering, $direction);
 				}
 			}
 			// Print out result

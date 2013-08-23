@@ -1,16 +1,22 @@
 <?php
-/************************************************************************************
+/*
+					######## DO NOT UPLOAD THIS FILE ########
+					######## DO NOT UPLOAD THIS FILE ########
+*************************************************************************************
 * Name:				Robots Controller												*
 * File:				Application\Controller\RobotsController.php 					*
 * Author(s):		Vinas de Andrade												*
 *																					*
-* Description: 		This files holds general functions that relate to user session,	*
-*					and can be accessed from anywhere.								*
+* Description: 		This files holds specific database related functions, designed 	*
+*					to save testing time. It MUST NOT be uploaded. 					*
 *																					*
-* Creation Date:	04/07/2013														*
-* Version:			1.13.0704														*
+* Creation Date:	20/08/2013														*
+* Version:			1.13.0820														*
 * License:			http://www.opensource.org/licenses/bsd-license.php BSD			*
-*************************************************************************************/
+*************************************************************************************
+					######## DO NOT UPLOAD THIS FILE ########
+					######## DO NOT UPLOAD THIS FILE ########
+*/
 
 	namespace Application\Controller;
 

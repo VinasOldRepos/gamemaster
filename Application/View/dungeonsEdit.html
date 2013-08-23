@@ -30,6 +30,7 @@
 								<input type="hidden" name="level" id="level" value="<?php echo $int_level; ?>" />
 								<input type="hidden" name="parent_id_areamap" id="parent_id_areamap" value="<?php echo $parent_id_areamap; ?>" />
 								<input type="hidden" name="target_tile_id" id="target_tile_id" value="" />
+								<input type="hidden" name="area_tiles" id="area_tiles" value="" />
 								<label for="id_tiletype">Background Type:</label>
 								<select name="encounter_id_tiletype" id="encounter_id_tiletype" class="main_text_input" style="width: 206px;">
 									<?php echo $tiletypes; ?>
@@ -88,6 +89,17 @@
 							</div>
 						</div>
 						<br />
+					</div>
+					<div class="area_interaction not_shown" id="area_interaction" align="center">
+						<span class="title_01">Area Grouping and Ordering</span>
+						<br /><br /><br />
+						<div id="ordered_areas">
+							<?php echo $areas; ?>
+						</div>
+						<br /><br />
+						<label for="area_ordering">Group this as #</label>
+						<input type="text" name="area_ordering" id="area_ordering" class="tiny_text_input" value="" />
+						<br /><br />
 					</div>
 				</div>
 			</div>

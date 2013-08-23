@@ -4,8 +4,7 @@
 * File:				Application\Controller\MapsController.php 						*
 * Author(s):		Vinas de Andrade												*
 *																					*
-* Description: 		This files holds general functions that relate to user session,	*
-*					and can be accessed from anywhere.								*
+* Description: 		This file controls Map related information.						*
 *																					*
 * Creation Date:	04/07/2013														*
 * Version:			1.13.0704														*
@@ -70,7 +69,7 @@
 			$ModMap			= new ModMap();
 			// Initialize variables
 			$id_world		= 1; // Sophia
-			$id_areamap		= (isset($GLOBALS['params'][1])) ? trim(($GLOBALS['params'][1])) : false;
+			$id_areamap		= (isset($GLOBALS['params'][1])) ? trim(($GLOBALS['params'][1])) : 45;
 			// Fetch and model worlds for combo
 			//$worlds			= $RepMap->getAllWorlds();
 			//$worlds			= ($worlds) ? $ModMap->combo($worlds, true) : false;
@@ -208,10 +207,12 @@
 					$parent_id_areamap	= (!$parent_id_areamap) ? $parent_areamap['id_map_orign'] : $parent_id_areamap;
 					$worlds				= $RepMap->getAllWorlds();
 					$mapname			= $map['vc_name'];
+					$areas				= $RepMap->getAreasInMap($id_areamap);
 					// Model Area Related info
 					$map				= $ModMap->dungeon($map, $link_icon);
 					$tiles				= ($tiles) ? $ModMap->listEncounterBkgTiles($tiles) : false;
 					$monsters			= ($monsters) ? $ModMap->mapMonsters($monsters) : '';
+					$areas				= ($areas)  ? $ModMap->listAreaOrder($areas) : false;
 					// Select "Back" link
 					if ($parent_areamap['boo_encounter'] == 1) {
 						$link			= '/gamemaster/Maps/EditDungeon/'.$parent_id_areamap;
@@ -236,6 +237,7 @@
 					View::set('tiletypes',			$tiletypes);
 					View::set('parent_id_areamap',	$parent_id_areamap);
 					View::set('monsters',			$monsters);
+					View::set('areas',				$areas);
 					// Render view
 					View::render('dungeonsEdit');
 				}
@@ -497,7 +499,7 @@
 		}
 
 		/*
-		 Deeltes a Map - deleteMap()
+		 Deletes a Map - deleteMap()
 			@return format	- print
 		*/
 		public function deleteMap() {
@@ -534,6 +536,27 @@
 						$return			= '/gamemaster/Maps/EditLocalMap/'.$parent_id_areamap;
 					}
 				}
+			}
+			// Return
+			echo $return;
+		}
+
+		/*
+		 Deletes tile info - deleteTileInfo()
+			@return format	- print
+		*/
+		public function deleteTileInfo() {
+			// Declare Classes
+			$RepMap		= new RepMap();
+			$ModMap		= new ModMap();
+			// Initialize variables
+			$return		= false;
+			$id_areamap	= (isset($_POST['id_areamap'])) ? trim($_POST['id_areamap']) : false;
+			$pos		= (isset($_POST['pos'])) ? trim($_POST['pos']) : false;
+			// If data was sent
+			if (($id_areamap) && ($pos)) {
+				// Delete this tile's info
+				$return	= ($RepMap->deleteTileInfo($id_areamap, $pos)) ? 'ok' : false;
 			}
 			// Return
 			echo $return;
@@ -828,6 +851,32 @@
 				if ($res) {
 					$monsters	= $RepMap->getMonstersInMap($id_areamap);
 					$return		= ($monsters)  ? $ModMap->mapMonsters($monsters) : false;
+				}
+			}
+			// Return
+			echo $return;
+		}
+
+		/*
+		 Add Area order to encounter map - addAreaOrder()
+		 	@return format	- View render
+		*/
+		public function addAreaOrder() {
+			// Declare classes
+			$RepMap			= new RepMap();
+			$ModMap			= new ModMap();
+			// Initialize variables
+			$id_areamap		= (isset($_POST['id_areamap'])) ? trim(($_POST['id_areamap'])) : false;
+			$area_tiles		= (isset($_POST['area_tiles'])) ? trim(($_POST['area_tiles'])) : false;
+			$area_order		= (isset($_POST['area_order'])) ? trim(($_POST['area_order'])) : false;
+			$return			= false;
+			// If data was sent
+			if (($id_areamap) && ($area_tiles) &&  ($area_order)) { 
+				// Order Area
+				$res		= $RepMap->addAreaOrder($id_areamap, $area_order, $area_tiles);
+				if ($res) {
+					$areas	= $RepMap->getAreasInMap($id_areamap);
+					$return	= ($areas)  ? $ModMap->listAreaOrder($areas) : false;
 				}
 			}
 			// Return

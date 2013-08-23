@@ -37,7 +37,7 @@
 	float:	left;
 }
 .main_menu .separator {
-	margin-top:	29px;
+	margin-top:	25px;
 	float:		left;
 }
 
@@ -53,7 +53,7 @@
 .menu .details {
 	float:				left;
 	position:			absolute;
-	margin-top:			14px;
+	margin-top:			10px;
 	width:				550px;
 	height:				75px;	
 	background-color:	#FFFFFF;
@@ -67,7 +67,7 @@
 	padding-left:	5px;
 	padding-right:	5px;
 	font-family:	Arial, Helvetica, sans-serif;
-	font-size:		24px;
+	font-size:		20px;
 	color:			#FFFFFF;
 }
 
@@ -76,7 +76,7 @@
 	padding-left:		5px;
 	padding-right:		5px;
 	font-family:		Arial, Helvetica, sans-serif;
-	font-size:			24px;
+	font-size:			20px;
 	color:				#7A7A7A;
 	background-color:	#FFFFFF;
 }
@@ -453,4 +453,8 @@ label {
 
 .pointer:hover {
 	cursor: pointer;
+}
+
+.not_shown {
+	display:	none;
 }

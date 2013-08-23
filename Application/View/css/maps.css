@@ -17,10 +17,6 @@
 	width:			110px;
 }
 
-.not_shown {
-	display:	none;
-}
-
 .map_area {
 	margin-top:		130px;
 	margin-left:	150px;
@@ -48,6 +44,15 @@
 }
 
 .map_interaction {
+	position:			absolute;
+	background-color:	#666;
+	margin-left:		520px;
+	margin-top:			0px;
+	width:				400px;
+	text-align:			center;
+}
+
+.area_interaction {
 	position:			absolute;
 	background-color:	#666;
 	margin-left:		520px;
@@ -133,6 +138,23 @@
 }
 
 .dtl_tiles_return_row:hover {
+	cursor:				pointer;
+	background-color:	#7A7A7A;
+	color:				#FFF;
+}
+
+.area_order_row {
+	position:			absolute;
+	border-style:		solid;
+	border-color:		#000;
+	border-width:		1px;
+	margin-bottom:		2px;
+	margin-left:		10px;
+	background-color:	#FFF;
+	color:				#7A7A7A;
+}
+
+.area_order_row:hover {
 	cursor:				pointer;
 	background-color:	#7A7A7A;
 	color:				#FFF;
@@ -227,7 +249,7 @@
 }
 
 .details_result_box {
-	margin-left:	100px;
+	margin-left:	10px;
 }
 
 .remove_monster {
@@ -265,4 +287,8 @@
 
 .go_up {
 	margin-bottom:	10px;
+}
+
+.area_order {
+	background-color:	#fff;
 }

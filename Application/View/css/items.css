@@ -1,0 +1,50 @@
+.formInsertCourse {
+	width:			400px;
+	position:		absolute;
+	margin-left:	100px;
+}
+
+.bt_cancel {
+	float:	left;
+}
+
+.new_combatitem {
+	float:	right;
+}
+
+.new_noncombatitem {
+	float:	right;
+}
+
+.form_buttons {
+	margin-left:	230px;
+	margin-top:		20px;
+	width:			110px;
+}
+
+.result_id {
+	width:		50px;
+	text-align:	center;
+}
+
+.result_item {
+	width:		100px;
+	text-align:	left;
+}
+
+.result_name {
+	width:		300px;
+	text-align:	left;
+}
+
+.delete_item {
+	position:		absolute;
+	float:			left;
+	margin-top:		200px;
+	margin-left:	90px;
+	color: 			#FB6F6F;
+}
+
+.delete_item:hover {
+	cursor:	pointer;
+}

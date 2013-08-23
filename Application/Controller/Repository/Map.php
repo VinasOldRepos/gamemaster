@@ -457,7 +457,7 @@
 		}
 
 		/*
-		Get All Monsters int eh Map - getMonstersInMap($id_areamap)
+		Get All Monsters in the Map - getMonstersInMap($id_areamap)
 			@return format	- Mixed array
 		*/
 		public function getMonstersInMap($id = false) {
@@ -467,6 +467,21 @@
 			$return	= false;
 			// Query set up
 			$return	= ($id) ? $db->getAllRows_Arr('tb_area_pos_monster AS p JOIN tb_monster AS m ON p.id_monster = m.id', 'p.*, m.vc_name, m.int_level', "id_areamap = '{$id}'") : false;
+			// Return
+			return $return;
+		}
+
+		/*
+		Get All areas in the Map - getAreasInMap($id_areamap)
+			@return format	- Mixed array
+		*/
+		public function getAreasInMap($id = false) {
+			// Database Connection
+			$db		= $GLOBALS['db'];
+			// Initialize variables
+			$return	= false;
+			// Query set up
+			$return	= ($id) ? $db->getAllRows_Arr('tb_encounter_areaorder', '*', "id_areamap = '{$id}' ORDER BY int_order") : false;
 			// Return
 			return $return;
 		}
@@ -633,6 +648,38 @@
 		}
 
 		/*
+		Add Area Order info - addAreaOrder ($id_areamap, $area_order, $id_monster)
+			@param integer	- Area map id
+			@param integer	- Area order
+			@param string	- Area tiles
+			@return boolean
+		*/
+		public function addAreaOrder($id_areamap = false, $area_order = false, $area_tiles = false) {
+			// Initialize variables
+			$return			= false;
+			// Database Connection
+			$db				= $GLOBALS['db'];
+			// Validate sent information
+			if (($id_areamap) && ($area_order) && ($area_tiles)) {
+				// If there are someone at this position
+				$position	= $db->getAllRows_Arr('tb_encounter_areaorder', 'id', "id_areamap = {$id_areamap} AND int_order >= {$area_order}");
+				if ($position) {
+					// Delete everyone
+					foreach ($position as $pos) {
+						$this->deleteAreaOrder($pos['id']);
+					}
+				}
+				// Save area map and prepare return (id_area)
+				$info[]		= $id_areamap;
+				$info[]		= $area_order;
+				$info[]		= $area_tiles;
+				$return		= ($db->insertRow('tb_encounter_areaorder', $info, '')) ? $db->last_id() : false;
+			}
+			// Return
+			return $return;
+		}
+
+		/*
 		Update Tile info - updateTile($id_areamap, $world_pos, $bk_image)
 			@param integer	- Area map id
 			@param string	- position
@@ -759,6 +806,29 @@
 		public function deleteMonsterFromRoom($id) {
 			$db		= $GLOBALS['db'];
 			$return	= ($id) ? $db->deleteRow('tb_area_pos_monster', 'id = '.$id) : false;
+			return $return;
+		}
+
+		/*
+		Delete area order - deleteAreaOrder($id)
+			@param integer	- area order id
+			@return boolean
+		*/
+		public function deleteAreaOrder($id) {
+			$db		= $GLOBALS['db'];
+			$return	= ($id) ? $db->deleteRow('tb_encounter_areaorder', 'id = '.$id) : false;
+			return $return;
+		}
+
+		/*
+		Delete Tile info - deleteTileInfo($id_areamap, $pos)
+			@param integer	- area mapid
+			@param integer	- position
+			@return boolean
+		*/
+		public function deleteTileInfo($id_areamap = false, $pos = false) {
+			$db		= $GLOBALS['db'];
+			$return	= (($id_areamap) && ($pos)) ? $db->deleteRow('tb_map_link_icon', 'id_map_orign = '.$id_areamap.' AND int_pos = '.$pos) : false;
 			return $return;
 		}
 

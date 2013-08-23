@@ -83,9 +83,9 @@ $('document').ready(function() {
 	});
 
 	// What happens when user clickes a dungeon map tile
-	$(".dungeon_map_tile").live("click", function() {
-		$("#tile_options").show();
-		$(".opt_details").hide();
+	$(".dungeon_map_tile").live("click", function(e) {
+		$("#area_interaction").hide();
+		$("#map_interaction").hide();
 		$last_id		= $("#target_tile_id").val();
 		$this_id		= $(this).attr('id');
 		$target_id		= $(this).attr('target');
@@ -93,31 +93,61 @@ $('document').ready(function() {
 		$last_content	= $("#"+$last_id).html();
 		$last_status	= $("#"+$last_id).attr('status');
 		$last_icon		= $("#"+$last_id).attr('icon');
-		$(".tilemonster_"+$last_id).hide();
-		$(".tilemonster_"+$this_id).show();
-		if ($target_id > 0) {
-			$("#linkmap").attr('target', $target_id);
-			$("#linkmap").show();
-		} else {
-			$("#linkmap").attr('target', '');
-			$("#linkmap").hide();
-		}
-		if ($last_status == 'selected') {
-			$("#"+$last_id).attr('status', 'unselected');
-			if ($last_icon) {
-				$("#"+$last_id).css("visibility", 'visible');
-			} else {
+		if (e.shiftKey) {
+			$area_tiles		= $("#area_tiles").val();
+			if (!$area_tiles) {
 				$("#"+$last_id).html('');
+				$("#"+$last_id).attr('status', 'unselected');
+				$area_tiles		= $this_id;
+			} else {
+				$area_tiles		= $area_tiles+','+$this_id;
 			}
-		}
-		if (!$(this).html()) {
-			$html		= $(this).html('<img src="/gamemaster/Application/View/img/textures/selected.png" width="32" height="32" border="0" />');
+			$("#area_tiles").val($area_tiles);
+			contentShow("#area_interaction");
+			if (!$(this).html()) {
+				$html		= $(this).html('<img src="/gamemaster/Application/View/img/textures/selected.png" width="32" height="32" border="0" />');
+			} else {
+				$html		= $(this).css("visibility", 'hidden');
+			}
+			$html			= $(this).attr('status', 'selected');
 		} else {
-			$html		= $(this).css("visibility", 'hidden');
+			$area_tiles		= $("#area_tiles").val();
+			if ($area_tiles) {
+				$tiles		= $area_tiles.split(",");
+				for (var $i in $tiles) {
+					$("#"+$tiles[$i]).html('');
+					$("#"+$tiles[$i]).attr('status', 'unselected');
+				}
+			}
+			$("#area_tiles").val('');
+			$("#tile_options").show();
+			$(".opt_details").hide();
+			$(".tilemonster_"+$last_id).hide();
+			$(".tilemonster_"+$this_id).show();
+			if ($target_id > 0) {
+				$("#linkmap").attr('target', $target_id);
+				$("#linkmap").show();
+			} else {
+				$("#linkmap").attr('target', '');
+				$("#linkmap").hide();
+			}
+			if ($last_status == 'selected') {
+				$("#"+$last_id).attr('status', 'unselected');
+				if ($last_icon) {
+					$("#"+$last_id).css("visibility", 'visible');
+				} else {
+					$("#"+$last_id).html('');
+				}
+			}
+			if (!$(this).html()) {
+				$html		= $(this).html('<img src="/gamemaster/Application/View/img/textures/selected.png" width="32" height="32" border="0" />');
+			} else {
+				$html		= $(this).css("visibility", 'hidden');
+			}
+			$html			= $(this).attr('status', 'selected');
+			$("#target_tile_id").val($this_id);
+			contentShow("#map_interaction");
 		}
-		$html			= $(this).attr('status', 'selected');
-		$("#target_tile_id").val($this_id);
-		contentShow("#map_interaction");
 		return false;
 	});
 
@@ -203,7 +233,7 @@ $('document').ready(function() {
 	// What happens when user clicks on an action menu item
 	$(".tile_opt").live("click", function() {
 		$this_block		= $(this).attr('key');
-		$id_map			= $("#id_map").val();
+		$id_areamap		= $("#id_areamap").val();
 		$pos			= $("#target_tile_id").val();
 		$id_tiletype	= $("#id_tiletype").val();
 		$int_level		= $("#level").val();
@@ -223,6 +253,17 @@ $('document').ready(function() {
 				if ($int_level) {
 					openFancybox('/gamemaster/Maps/Monsters/'+$int_level, 800, 500);
 				}
+			} else if ($this_block == 'deleteTileInfo') {
+				$.post('/gamemaster/Maps/'+$this_block, {
+					id_areamap:	$id_areamap,
+					pos: $pos
+				}, function($return) {
+					//alert($return);
+				});
+				$("#"+$pos).html('<img src="/gamemaster/Application/View/img/textures/selected.png" width="32" height="32" border="0" />');
+				$("#"+$pos).attr('status', 'selected');
+				$("#"+$pos).attr('icon', '');
+				$("#"+$pos).css("visibility", 'visible');
 			} else {
 				$(".tile_options").hide();
 				$.post('/gamemaster/Maps/'+$this_block, {pos: $pos}, function($return) {
@@ -247,7 +288,7 @@ $('document').ready(function() {
 			alert('edicao');
 		} else {
 			if ($id_icon) {
-				$("#"+$position).html('<img src="/gamemaster/Application/View/img/textures/'+$image+'" width="15" height="15" border="0">');
+				$("#"+$position).html('<img src="/gamemaster/Application/View/img/textures/'+$image+'" width="32" height="32" border="0">');
 				$("#"+$position).attr('image', $image);
 				$("#"+$position).attr('icon', $id_icon);
 				contentHide("#map_interaction");
@@ -390,7 +431,7 @@ $('document').ready(function() {
 			if ($return) {
 				$(location).attr('href', '/gamemaster/Maps/EditLocalMap/'+$return);
 			} else {
-				alert("Sorry,\n\nbla bla bla.\n\nError: "+$return);
+				alert("Sorry,\n\nbla bla bla.\n\nError");
 			}
 			return false;
 		});
@@ -578,6 +619,59 @@ $('document').ready(function() {
 			$(location).attr('href', '/gamemaster/Maps/Insert/'+$id_areamap);
 		}
 		return false;
+	});
+
+	// What happens when user groups and order encounter area tiles
+	$("#area_ordering").live("keypress", function(e) {
+		if (e.keyCode == 13) {
+			$id_areamap		= $("#id_areamap").val();
+			$area_tiles		= $("#area_tiles").val();
+			$area_order		= $(this).val();
+			if (($id_areamap) && ($area_tiles) && ($area_order)) {
+				$.post('/gamemaster/Maps/addAreaOrder/', {
+					id_areamap:	$id_areamap,
+					area_tiles:	$area_tiles,
+					area_order:	$area_order
+				}, function($return) {
+					$return		= $return.trim();
+					if ($return) {
+						$("#ordered_areas").hide();
+						$("#area_tiles").val('');
+						$tiles	= $area_tiles.split(",");
+						for (var $i in $tiles) {
+							$("#"+$tiles[$i]).html('');
+							$("#"+$tiles[$i]).attr('status', 'unselected');
+						}
+						contentShowData("#ordered_areas", $return);
+					} else {
+						alert("Sorry,\n\nWe weren't able to perform the given task");
+					}
+					return false;
+				});
+			}
+			return false;
+		}
+	});
+
+	// What happens when user mouseover an area order list row
+	$(".area_order_row").live("mouseover", function() {
+		$area_tiles	= $(this).attr('key');
+		$tiles	= $area_tiles.split(",");
+		if ($area_tiles) {
+			for (var $i in $tiles) {
+				$("#"+$tiles[$i]).html('<img src="/gamemaster/Application/View/img/textures/selected.png" width="32" height="32" border="0" />');
+				$("#"+$tiles[$i]).attr('status', 'selected');
+			}
+		}
+	}).live("mouseout", function() {
+		$area_tiles	= $(this).attr('key');
+		$tiles	= $area_tiles.split(",");
+		if ($area_tiles) {
+			for (var $i in $tiles) {
+				$("#"+$tiles[$i]).html('');
+				$("#"+$tiles[$i]).attr('status', 'unselected');
+			}
+		}
 	});
 
 });

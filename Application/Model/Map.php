@@ -75,7 +75,7 @@
 					$pos		= sprintf('%03d', $i);
 					if (isset($targets[$i])) {
 						$return		.= '<div class="map_tile local_map_tile" id="'.$pos.'" icon="'.$targets[$i][0].'" status="unselected" bkgrnd="'.$map['vc_coord_'.$pos].'" target="'.$targets[$i][2].'" image="" style="background-image:url(/gamemaster/Application/View/img/textures/'.$map['vc_coord_'.$pos].');">'.PHP_EOL;
-						$return		.= '	<img src="/gamemaster/Application/View/img/textures/'.$targets[$i][1].'" width="15" height="15" />'.PHP_EOL;
+						$return		.= '	<img src="/gamemaster/Application/View/img/textures/'.$targets[$i][1].'" width="32" height="32" />'.PHP_EOL;
 						$return		.= '</div>'.PHP_EOL;
 					} else {
 						$return		.= '<div class="map_tile local_map_tile" id="'.$pos.'" icon="" status="unselected" bkgrnd="'.$map['vc_coord_'.$pos].'" image="" style="background-image:url(/gamemaster/Application/View/img/textures/'.$map['vc_coord_'.$pos].');"></div>'.PHP_EOL;
@@ -236,7 +236,7 @@
 		}
 
 		public function listEncounterBkgTiles($entries = false) {
-			$return	= '<br />No icons found'.PHP_EOL;
+			$return	= '<br />No tiles found'.PHP_EOL;
 			if ($entries) {
 				$tot_entries	= count($entries);
 				$return			= '<div class="details_result_box" id="tiles_result_box">'.PHP_EOL;
@@ -245,8 +245,8 @@
 					$return		.= '	<div class="encounterbkg_tiles_return_row" key="'.$entries[$i]['id'].'" image="'.$entries[$i]['vc_path'].'">'.PHP_EOL;
 					$return		.= '		<div class="result_field result_id">'.$entries[$i]['id'].'</div>'.PHP_EOL;
 					$return		.= '		<div class="result_field result_iconname">'.$entries[$i]['vc_name'].'</div>'.PHP_EOL;
-					$return		.= '		<div class="result_field result_icon"><img src="/gamemaster/Application/View/img/textures/'.$entries[$i]['vc_path'].'" width="20" height="20" /></div>'.PHP_EOL;
-					$return		.= '	</div><br />'.PHP_EOL;
+					$return		.= '		<div class="result_field result_icon"><img src="/gamemaster/Application/View/img/textures/'.$entries[$i]['vc_path'].'" width="25" height="25" /></div>'.PHP_EOL;
+					$return		.= '	</div><br /><br />'.PHP_EOL;
 				}
 				$return			.= '</div><br />'.PHP_EOL;
 			}
@@ -272,7 +272,7 @@
 		}
 
 		public function listMonsters($entries = false) {
-			$return	= '<br />No icons found'.PHP_EOL;
+			$return	= '<br />No monsters found'.PHP_EOL;
 			if ($entries) {
 				$tot_entries	= count($entries);
 				$return			= '<div class="details_result_box" id="tiles_result_box">'.PHP_EOL;
@@ -283,6 +283,20 @@
 					$return		.= '	</div><br />'.PHP_EOL;
 				}
 				$return			.= '</div><br />'.PHP_EOL;
+			}
+			return $return;
+		}
+
+		public function listAreaOrder($entries = false) {
+			$return	= false;
+			if ($entries) {
+				$tot_entries	= count($entries);
+				for ($i = 0; $i < $tot_entries; $i++) {
+					$return		.= '	<div class="area_order_row" key="'.$entries[$i]['vc_tiles'].'">'.PHP_EOL;
+					$return		.= '		<div class="result_field result_id"># '.$entries[$i]['int_order'].'</div>'.PHP_EOL;
+					$return		.= '		<div class="result_field result_iconname">'.$entries[$i]['vc_tiles'].'</div>'.PHP_EOL;
+					$return		.= '	</div><br />'.PHP_EOL;
+				}
 			}
 			return $return;
 		}

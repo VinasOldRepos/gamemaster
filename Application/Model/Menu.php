@@ -26,6 +26,42 @@
 					$GLOBALS['menu']['maps']['opt2_css']		= 'details_item_off';
 					$GLOBALS['menu']['maps']['opt3_css']		= 'details_item_off';
 
+					$GLOBALS['menu']['items']['css']			= 'item_off';
+					$GLOBALS['menu']['items']['display']		= 'none';
+					$GLOBALS['menu']['items']['opt1_css']		= 'details_item_off';
+					$GLOBALS['menu']['items']['opt2_css']		= 'details_item_off';
+					$GLOBALS['menu']['items']['opt3_css']		= 'details_item_off';
+
+					$GLOBALS['menu']['textures']['css']			= 'item_off';
+					$GLOBALS['menu']['textures']['display']		= 'none';
+					$GLOBALS['menu']['textures']['opt1_css']	= 'details_item_off';
+					$GLOBALS['menu']['textures']['opt2_css']	= 'details_item_off';
+					$GLOBALS['menu']['textures']['opt3_css']	= 'details_item_off';
+					$GLOBALS['menu']['textures']['opt4_css']	= 'details_item_off';
+					$GLOBALS['menu']['textures']['opt5_css']	= 'details_item_off';
+
+					$GLOBALS['menu']['monsters']['css']			= 'item_off';
+					$GLOBALS['menu']['monsters']['display']		= 'none';
+					$GLOBALS['menu']['monsters']['opt1_css']	= 'details_item_off';
+					$GLOBALS['menu']['monsters']['opt2_css']	= 'details_item_off';
+
+					$GLOBALS['menu']['users']['css']			= 'item_off';
+					$GLOBALS['menu']['users']['display']		= 'none';
+					$GLOBALS['menu']['users']['opt1_css']		= 'details_item_off';
+					$GLOBALS['menu']['users']['opt2_css']		= 'details_item_off';
+				} else if ($controller == 'Items') {
+					$GLOBALS['menu']['maps']['css']				= 'item_off';
+					$GLOBALS['menu']['maps']['display']			= 'none';
+					$GLOBALS['menu']['maps']['opt1_css']		= 'details_item_off';
+					$GLOBALS['menu']['maps']['opt2_css']		= 'details_item_off';
+					$GLOBALS['menu']['maps']['opt3_css']		= 'details_item_off';
+
+					$GLOBALS['menu']['items']['css']			= 'item_on';
+					$GLOBALS['menu']['items']['display']		= 'block';
+					$GLOBALS['menu']['items']['opt1_css']		= 'details_item_off';
+					$GLOBALS['menu']['items']['opt2_css']		= 'details_item_off';
+					$GLOBALS['menu']['items']['opt3_css']		= 'details_item_off';
+
 					$GLOBALS['menu']['textures']['css']			= 'item_off';
 					$GLOBALS['menu']['textures']['display']		= 'none';
 					$GLOBALS['menu']['textures']['opt1_css']	= 'details_item_off';
@@ -49,6 +85,12 @@
 					$GLOBALS['menu']['maps']['opt1_css']		= 'details_item_off';
 					$GLOBALS['menu']['maps']['opt2_css']		= 'details_item_off';
 					$GLOBALS['menu']['maps']['opt3_css']		= 'details_item_off';
+
+					$GLOBALS['menu']['items']['css']			= 'item_off';
+					$GLOBALS['menu']['items']['display']		= 'none';
+					$GLOBALS['menu']['items']['opt1_css']		= 'details_item_off';
+					$GLOBALS['menu']['items']['opt2_css']		= 'details_item_off';
+					$GLOBALS['menu']['items']['opt3_css']		= 'details_item_off';
 
 					$GLOBALS['menu']['textures']['css']			= 'item_on';
 					$GLOBALS['menu']['textures']['display']		= 'block';
@@ -74,6 +116,12 @@
 					$GLOBALS['menu']['maps']['opt2_css']		= 'details_item_off';
 					$GLOBALS['menu']['maps']['opt3_css']		= 'details_item_off';
 
+					$GLOBALS['menu']['items']['css']			= 'item_off';
+					$GLOBALS['menu']['items']['display']		= 'none';
+					$GLOBALS['menu']['items']['opt1_css']		= 'details_item_off';
+					$GLOBALS['menu']['items']['opt2_css']		= 'details_item_off';
+					$GLOBALS['menu']['items']['opt3_css']		= 'details_item_off';
+
 					$GLOBALS['menu']['textures']['css']			= 'item_off';
 					$GLOBALS['menu']['textures']['display']		= 'none';
 					$GLOBALS['menu']['textures']['opt1_css']	= 'details_item_off';
@@ -97,6 +145,12 @@
 					$GLOBALS['menu']['maps']['opt1_css']		= 'details_item_off';
 					$GLOBALS['menu']['maps']['opt2_css']		= 'details_item_off';
 					$GLOBALS['menu']['maps']['opt3_css']		= 'details_item_off';
+
+					$GLOBALS['menu']['items']['css']			= 'item_off';
+					$GLOBALS['menu']['items']['display']		= 'none';
+					$GLOBALS['menu']['items']['opt1_css']		= 'details_item_off';
+					$GLOBALS['menu']['items']['opt2_css']		= 'details_item_off';
+					$GLOBALS['menu']['items']['opt3_css']		= 'details_item_off';
 
 					$GLOBALS['menu']['textures']['css']			= 'item_off';
 					$GLOBALS['menu']['textures']['display']		= 'none';
@@ -123,6 +177,12 @@
 					$GLOBALS['menu']['maps']['opt1_css']		= 'details_item_off';
 					$GLOBALS['menu']['maps']['opt2_css']		= 'details_item_off';
 					$GLOBALS['menu']['maps']['opt3_css']		= 'details_item_off';
+
+					$GLOBALS['menu']['items']['css']			= 'item_off';
+					$GLOBALS['menu']['items']['display']		= 'none';
+					$GLOBALS['menu']['items']['opt1_css']		= 'details_item_off';
+					$GLOBALS['menu']['items']['opt2_css']		= 'details_item_off';
+					$GLOBALS['menu']['items']['opt3_css']		= 'details_item_off';
 
 					$GLOBALS['menu']['textures']['css']			= 'item_off';
 					$GLOBALS['menu']['textures']['display']		= 'none';
