@@ -198,6 +198,8 @@ function actionURL() {
 			$return	= '/gamemaster/Monsters/'+$action;
 		} else if ($thispage == 'users') {
 			$return	= '/gamemaster/Users/'+$action;
+		} else if ($thispage == 'items') {
+			$return	= '/gamemaster/Items/'+$action;
 		}
 		return $return;
 	/* } else {
@@ -260,7 +262,7 @@ function openFancybox($url, $width, $height) {
 
 // Similiar to the PHP one
 function sprintf($length, $char, $string) {
-	if (($length) && ($string)) {
+	if (($length) && ($string)&& ($char)) {
 		$str_len	= $string.length;
 		if ($length > $str_len) {
 			for ($i = 0; $i < $length - $str_len; $i++) {

@@ -332,4 +332,13 @@
 			return $return;
 		}
 
+		public function totals($tot_monsters = false, $tot_treasure_min = false, $tot_treasure_max = false) {
+			$return		= false;
+			if (($tot_monsters) && ($tot_treasure_max) && ($tot_treasure_min)) {
+				$return	.= '<div class="text_01" id="total_treasure">Total Monsters: <span class="text_01 bold" >'.$tot_monsters.'</div><br />'.PHP_EOL;
+				$return	.= '<div class="text_01" id="total_treasure">Total Treasure drop: <span class="text_01 bold" >'.$tot_treasure_min.' - '.$tot_treasure_max.'</span> gold</div><br /><br />'.PHP_EOL;
+			}
+			return $return;
+		}
+
 	}

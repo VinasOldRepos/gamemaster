@@ -29,6 +29,41 @@
 		}
 
 		/*
+		Get Field by id  - getFieldById($id)
+			@param integer	- Field id
+			@return format	- Mixed array
+		*/
+		public function getFieldById($id = false) {
+			// Database Connection
+			$db				= $GLOBALS['db_q'];
+			// Query set up	
+			$return			= ($id) ? $db->getRow('tb_field', '*', "id = {$id}") : false;
+			// Return
+			return $return;
+		}
+
+		/*
+		Get Branch by Field Id - getBranchFieldId($id)
+			@param integer	- Field ID
+			@return format	- Mixed array
+		*/
+		public function getBranchFieldId($id = false) {
+			// Database Connection
+			$db					= $GLOBALS['db_q'];
+			// Initialize variables
+			$return				= false;
+			if ($id) {
+				// Query set up	
+				$table			= 'tb_field AS f JOIN tb_branch AS b ON f.id_branch = b.id';
+				$select_what	= 'b.*';
+				$conditions		= "f.id = {$id}";
+				$return			= $db->getRow($table, $select_what, $conditions);
+			}
+			// Return
+			return $return;
+		}
+
+		/*
 		Get All Branches - getAllBranches()
 			@return format	- Mixed array
 		*/
@@ -60,27 +95,6 @@
 			$select_what	= 'id, vc_field AS vc_name';
 			$conditions		= "1 ORDER BY vc_field ASC";
 			$return			= $db->getAllRows_Arr($table, $select_what, $conditions);
-			// Return
-			return $return;
-		}
-
-		/*
-		Get Branch Id by Field Id - getBranchIdByFieldId($id)
-			@param integer	- Field ID
-			@return format	- Mixed array
-		*/
-		public function getBranchIdByFieldId($id = false) {
-			// Database Connection
-			$db					= $GLOBALS['db_q'];
-			// Initialize variables
-			$return				= false;
-			if ($id) {
-				// Query set up	
-				$table			= 'tb_field AS f JOIN tb_branch AS b ON f.id_branch = b.id';
-				$select_what	= 'b.vc_branch AS vc_name';
-				$conditions		= "f.id = {$id}";
-				$return			= $db->getRow($table, $select_what, $conditions);
-			}
 			// Return
 			return $return;
 		}

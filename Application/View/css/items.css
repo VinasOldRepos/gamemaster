@@ -8,6 +8,10 @@
 	float:	left;
 }
 
+.bt_cancel_detail {
+	float:	left;
+}
+
 .new_combatitem {
 	float:	right;
 }
@@ -32,19 +36,47 @@
 	text-align:	left;
 }
 
+.result_idfield {
+	width:		180px;
+	text-align:	left;
+}
+
 .result_name {
 	width:		300px;
 	text-align:	left;
 }
 
-.delete_item {
+.delete_combatItem {
 	position:		absolute;
 	float:			left;
 	margin-top:		200px;
 	margin-left:	90px;
 	color: 			#FB6F6F;
+	font-family:	Arial, Helvetica, sans-serif;
+	font-size:		12px;
 }
 
-.delete_item:hover {
+.delete_combatItem:hover {
 	cursor:	pointer;
+}
+
+.delete_nonCombatItem {
+	position:		absolute;
+	float:			left;
+	margin-top:		200px;
+	margin-left:	90px;
+	color: 			#FB6F6F;
+	font-family:	Arial, Helvetica, sans-serif;
+	font-size:		12px;
+}
+
+.delete_nonCombatItem:hover {
+	cursor:	pointer;
+}
+
+.content_details {
+	width:		700px;
+	position:	absolute;
+	margin-top:	12px;
+	text-align:	center;
 }

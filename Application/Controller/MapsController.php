@@ -136,12 +136,13 @@
 					$mapname			= $map['vc_name'];
 					$link_icon			= $RepMap->getLinksIconsByAreaId($area['id_areamap']);
 					$worlds				= $RepMap->getAllWorlds();
+					$world_pos			= $RepMap->getWorldPosition($parent_id_areamap, $id_areamap);
 					// Model Area Related info
 					$map				= $ModMap->map($map, $link_icon);
 					$worlds				= ($worlds) ? $ModMap->combo($worlds, false, $area['id_world']) : false;
 					// Load Field related info
 					$RepQuestion		= new RepQuestion();
-					$id_branch			= ($area['id_field']) ? $RepQuestion->getBranchIdByFieldId($area['id_field']) : false;
+					$id_branch			= ($branch = $RepQuestion->getBranchFieldId($area['id_field'])) ? $branch['id'] : false;
 					$branches			= $RepQuestion->getAllBranches();
 					$fields				= $RepQuestion->getAllFields();
 					// Model Field Related Info
@@ -161,6 +162,7 @@
 					View::set('mapname',			$mapname);
 					View::set('parent_id_areamap',	$parent_id_areamap);
 					View::set('vc_id_areamap',		sprintf('%04d', $area['id_areamap']));
+					View::set('world_pos',			sprintf('%03d', $world_pos));
 					// Render view
 					View::render('mapsEdit');
 				}
@@ -184,6 +186,9 @@
 			}
 			$return						= false;
 			$link						= false;
+			$tot_treasure_min			= 0;
+			$tot_treasure_max			= 0;
+			$tot_monsters				= 0;
 			// if area map id was sent
 			if ($id_areamap) {
 				// Load area information
@@ -208,6 +213,14 @@
 					$worlds				= $RepMap->getAllWorlds();
 					$mapname			= $map['vc_name'];
 					$areas				= $RepMap->getAreasInMap($id_areamap);
+					// Calculate total treasure drop
+					if ($monsters) {
+						$tot_monsters			= count($monsters);
+						foreach ($monsters as $monster) {
+							$tot_treasure_min	= $tot_treasure_min + $monster['int_treasure_min'];
+							$tot_treasure_max	= $tot_treasure_max + $monster['int_treasure_max'];
+						}
+					}
 					// Model Area Related info
 					$map				= $ModMap->dungeon($map, $link_icon);
 					$tiles				= ($tiles) ? $ModMap->listEncounterBkgTiles($tiles) : false;
@@ -237,6 +250,9 @@
 					View::set('tiletypes',			$tiletypes);
 					View::set('parent_id_areamap',	$parent_id_areamap);
 					View::set('monsters',			$monsters);
+					View::set('tot_treasure_min',	$tot_treasure_min);
+					View::set('tot_treasure_max',	$tot_treasure_max);
+					View::set('tot_monsters',		$tot_monsters);
 					View::set('areas',				$areas);
 					// Render view
 					View::render('dungeonsEdit');
@@ -415,8 +431,12 @@
 						// Create Link
 						$res	= $RepMap->addIconLink($id_areamap_orign, $id_areamap, false, $world_pos, false);
 						if ($res) {
+							// Creates world bckgrnd tile
+							$map	= $RepMap->getMapById($id_areamap);
+							$image	= $this->shrink($map);
+							$image	= ($image) ? $image : 'unveiled.gif';
 							// Change world map and prepare return'
-							$return	= ($RepMap->updateWorldMap($id_areamap_orign, $world_pos, 'unveiled.gif')) ? $id_areamap : 'nok';
+							$return	= ($RepMap->updateWorldMap($id_areamap_orign, $world_pos, $image)) ? $id_areamap : 'nok';
 						}
 					}
 				}
@@ -483,16 +503,45 @@
 			$id_areatype		= (isset($_POST['id_areatype'])) ? trim($_POST['id_areatype']) : false;
 			$id_field			= (isset($_POST['id_field'])) ? trim($_POST['id_field']) : false;
 			$int_level			= (isset($_POST['int_level'])) ? trim($_POST['int_level']) : false;
+			$world_pos			= (isset($_POST['world_pos'])) ? trim($_POST['world_pos']) : false;
+			$id_areamap_orign	= (isset($_POST['id_areamap_orign'])) ? trim($_POST['id_areamap_orign']) : false;
 			if ($_POST['coords']) {
 				for ($i = 0; $i < 100; $i++) {
 					$coords[$i]	= $_POST['coords'][$i+1];
 				}
 			}
 			// If data was sent
-			if (($id_areamap) && ($coords) && ($id_tiletype) && ($id_field) && ($int_level)) {
+			if (($id_areamap) && ($coords) && ($id_tiletype) && ($id_field) && ($int_level) && ($world_pos)) {
 				// Update map and area info
 				$id_areamap		= $RepMap->updateMap($id_areamap, $id_tiletype, $coords);
+				// Get and shrink Map
+				$map			= $RepMap->getMapById($id_areamap);
+				$image			= $this->shrink($map);
+				$image			= ($image) ? $image : 'unveiled.gif';
+				// Change world map and prepare return'
+				$RepMap->updateWorldMap($id_areamap_orign, $world_pos, $image);
 				$return			= ($RepMap->updateArea($id_areatype, $id_field, $id_areamap, $int_level, 1)) ? 'ok' : false;
+			}
+			// Return
+			echo $return;
+		}
+
+		/*
+		 Updates a Map name - updateMapName()
+			@return format	- print
+		*/
+		public function updateMapName() {
+			// Declare Classes
+			$RepMap				= new RepMap();
+			$ModMap				= new ModMap();
+			// Initialize variables
+			$return				= false;
+			$id_areamap			= (isset($_POST['id_areamap'])) ? trim($_POST['id_areamap']) : false;
+			$vc_name			= (isset($_POST['vc_name'])) ? trim($_POST['vc_name']) : false;
+			// If data was sent
+			if (($id_areamap) && ($vc_name)) {
+				// Update map and area info
+				$return			= ($RepMap->updateMapName($id_areamap, $vc_name)) ? 'ok' : false;
 			}
 			// Return
 			echo $return;
@@ -908,6 +957,73 @@
 			}
 			// Return
 			echo $return;
+		}
+
+		/*
+		 Coutnts Dungeon's treasure drop - countTotalTreasure()
+		 	@return format	- print
+		*/
+		public function countTotalTreasure() {
+			// Declare classes
+			$RepMap				= new RepMap();
+			$ModMap				= new ModMap();
+			// Initialize variables
+			$id_areamap			= (isset($_POST['id_areamap'])) ? trim(($_POST['id_areamap'])) : false;
+			$return				= false;
+			$tot_treasure_min	= 0;
+			$tot_treasure_max	= 0;
+			// If info was sent
+			if ($id_areamap) { 
+				$monsters		= $RepMap->getMonstersInMap($id_areamap);
+				// Calculate total treasure drop
+				if ($monsters) {
+					$tot_monsters			= count($monsters);
+					foreach ($monsters as $monster) {
+						$tot_treasure_min	= $tot_treasure_min + $monster['int_treasure_min'];
+						$tot_treasure_max	= $tot_treasure_max + $monster['int_treasure_max'];
+					}
+				}
+				// Model return
+				$return			= $ModMap->totals($tot_monsters, $tot_treasure_min, $tot_treasure_max);
+			}
+			// Return
+			echo $return;
+		}
+
+		public function shrink($map = false) {
+			$base_path			= VIEW_PATH."img/textures/";
+			$x					= 0;
+			$y					= 0;
+			if ($map) {
+				// Cria modelo virtual da imagem
+				$final_image	= imagecreate(320, 320);
+				$final_thumb	= imagecreate(32, 32);
+				imagealphablending($final_image, false);
+				imagesavealpha($final_image, true);
+				for ($i = 1; $i <= 100; $i++) {
+					$image		= $base_path.$map['vc_coord_'.sprintf('%03d', $i)];
+					$extension			= substr($image, -3);
+					if ($extension == 'jpg') {
+						$image_model	= imagecreatefromjpeg($image);
+					} else if ($extension == 'gif') {
+						$image_model	= imagecreatefromgif($image);
+					} else if ($extension == 'png') {
+						$image_model	= imagecreatefrompng($image);
+					}
+					imagecopymerge($final_image, $image_model, $x, $y, 0, 0, 32, 32, 100);
+					//imagefilledrectangle($final_thumb, 0, 0, 10, 10, $transparent);
+					if ($x >= 288) {
+						$x = 0;
+						$y = $y + 32;
+					} else {
+						$x = $x + 32;
+					}
+				}
+				imagecopyresampled($final_thumb, $final_image, 0, 0, 0, 0, 32, 32, 320, 320);
+			}
+			$filename		= General::randomString(15).'.'.$extension;
+			$return			= (imagepng($final_thumb, $base_path.$filename)) ? $filename : false;
+			return $return;
 		}
 
 	}

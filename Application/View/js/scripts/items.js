@@ -6,6 +6,11 @@ $('document').ready(function() {
 		$(location).attr('href', '/gamemaster/Items/insert');
 	});
 
+	// What happens when user clicks on "cancel" at items' details
+	$(".bt_cancel_detail").live("click", function() {
+		parent.$.fancybox.close();
+	});
+
 	// What happens when user selects item type on insert
 	$("#item_type").live("change", function() {
 		$item_type	= $(this).val();
@@ -101,14 +106,112 @@ $('document').ready(function() {
 
 	// What happens when user clicks a combat result row
 	$(".combat_row").live("click", function() {
-		alert('combat');
+		$key		= $(this).attr('key');
+		if ($key) {
+			openFancybox('/gamemaster/Items/combatDetails/'+$key, 800, 500);
+		}
 		return false;
 	});
 
 	// What happens when user clicks a non combat result row
 	$(".noncombat_row").live("click", function() {
-		alert('non-combat');
+		$key		= $(this).attr('key');
+		if ($key) {
+			openFancybox('/gamemaster/Items/nonCombatDetails/'+$key, 800, 500);
+		}
 		return false;
+	});
+
+	// What happens when user updates a combat item
+	$(".updt_combatItem").live("click", function() {
+		$id			= $("#id_item").val();
+		$id_field	= $("#id_field").val();
+		$int_level	= $("#int_level").val();
+		$int_bonus	= $("#int_bonus").val();
+		$id_type	= $("#id_type").val();
+		$vc_name	= $("#vc_name").val();
+		if (($id) && ($id_field) && ($int_level) && ($int_bonus) && ($id_type) && ($vc_name)) {
+			$.post('/gamemaster/Items/updtCombatItem/', {
+				id:			$id,
+				id_field:	$id_field,
+				int_level:	$int_level,
+				int_bonus:	$int_bonus,
+				id_type:	$id_type,
+				vc_name:	$vc_name
+			}, function($return) {
+				$return	= $return.trim();
+				if ($return == 'ok') {
+					alert("Item saved!");
+				} else {
+					alert("Well,\n\nApparently my computational system wasn't able to compute the data you've tried to insert.\n\nBut if you're a wanna-be-a-hacker smart ass, here a hint of what have happened:\n\n"+$return);
+				}
+				return false;
+			});
+		}
+	});
+
+	// What happens when user updates a combat item
+	$(".updt_nonCombatItem").live("click", function() {
+		$id					= $("#id_item").val();
+		$int_level			= $("#int_level").val();
+		$int_bonus_start	= $("#int_bonus_start").val();
+		$int_bonus_end		= $("#int_bonus_end").val();
+		$id_type			= $("#id_type").val();
+		$vc_name			= $("#vc_name").val();
+		if (($id) && ($int_level) && ($int_bonus_start) && ($int_bonus_end) && ($id_type) && ($vc_name)) {
+			$.post('/gamemaster/Items/updtNonCombatItem/', {
+				id:					$id,
+				int_level:			$int_level,
+				int_bonus_start:	$int_bonus_start,
+				int_bonus_end:		$int_bonus_end,
+				id_type:			$id_type,
+				vc_name:			$vc_name
+			}, function($return) {
+				$return	= $return.trim();
+				if ($return == 'ok') {
+					alert("Item saved!");
+				} else {
+					alert("Well,\n\nApparently my computational system wasn't able to compute the data you've tried to insert.\n\nBut if you're a wanna-be-a-hacker smart ass, here a hint of what have happened:\n\n"+$return);
+				}
+				return false;
+			});
+		}
+	});
+
+	// What happens when user deletes a combat item
+	$(".delete_combatItem").live("click", function() {
+		$id				= $("#id_item").val();
+		if ($id) {
+			$.post('/gamemaster/Items/deleteCombatItem/', {
+				id:			$id
+			}, function($return) {
+				$return	= $return.trim();
+				if ($return == 'ok') {
+					parent.$.fancybox.close();
+				} else {
+					alert("Please,\n\nDo NOT press this button again.\n\nHere's the problem you've caused:\n\n"+$return);
+				}
+				return false;
+			});
+		}
+	});
+
+	// What happens when user deletes a non-combat item
+	$(".delete_nonCombatItem").live("click", function() {
+		$id				= $("#id_item").val();
+		if ($id) {
+			$.post('/gamemaster/Items/deleteNonCombatItem/', {
+				id:		$id
+			}, function($return) {
+				$return	= $return.trim();
+				if ($return == 'ok') {
+					parent.$.fancybox.close();
+				} else {
+					alert("Please,\n\nDo NOT press this button again.\n\nHere's the problem you've caused:\n\n"+$return);
+				}
+				return false;
+			});
+		}
 	});
 
 });

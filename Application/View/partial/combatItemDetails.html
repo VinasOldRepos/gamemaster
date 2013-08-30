@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<header>
+		<title>The Game Master</title>
+		<!-- JS -->
+		<?php echo $GLOBALS['general_js']; ?>
+		<?php echo $GLOBALS['this_js']; ?>
+		<!-- CSS -->
+		<?php echo $GLOBALS['general_css']; ?>
+		<?php echo $GLOBALS['this_css']; ?>
+	</header>
+	<body class="details_body" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0">
+		<div class="details_container">
+			<div class="content_details">
+				<br />
+				<span class="title_01" id="main_title">Edit Combat Item</span>
+				<br /><br />
+				<div class="formInsertCourse" id="formInsertCourse">
+					<fieldset style="width: 500px;">
+						<form class="form">
+							<input type="hidden" name="id_item" id="id_item" value="<?php echo $id_item; ?>" />
+							<input type="hidden" name="id_field" id="id_field" value="<?php echo $id_field; ?>" />
+
+							<label for="vc_branch">Branch:</label> <input type="text" name="combat_int_level" id="combat_int_level" maxlength="100" class="sec_text_input" disabled="disabled" value="<?php echo $vc_branch; ?>" />
+							<label for="vc_field">Field:</label> <input type="text" name="combat_int_level" id="combat_int_level" maxlength="100" class="sec_text_input" disabled="disabled" value="<?php echo $vc_field; ?>" />
+
+							<label for="int_level">Level:</label> <input type="text" name="int_level" id="int_level" maxlength="100" class="sec_text_input" value="<?php echo $int_level; ?>" />
+							<label for="int_bonus">Bonus:</label> <input type="text" name="int_bonus" id="int_bonus" maxlength="100" class="sec_text_input" value="<?php echo $int_bonus; ?>" />
+							<label for="id_type">Type:</label>
+							<select name="id_type" id="id_type" class="sec_text_input" style="width: 206px;">
+								<?php echo $types; ?>
+							</select>
+							<label for="vc_name">Name:</label> <input type="text" name="vc_name" id="vc_name" maxlength="100" class="sec_text_input" value="<?php echo $vc_name; ?>" />
+
+							<div class="form_buttons">
+								<div class="bt_cancel_detail">
+									<img class="form_button" src="/gamemaster/Application/View/img/bt_cancel.png" width="41" height="41" border="0" /><br />
+									<span class="text_02">Cancel</span>
+								</div>
+								<div class="bt_ok updt_combatItem">
+									<img class="form_button" src="/gamemaster/Application/View/img/bt_ok.png" width="41" height="41" border="0" /><br />
+									<span class="text_02">OK</span>
+								</div>
+							</div>
+						</form>
+					</fieldset>
+					<div class="delete_combatItem" id="delete_combatItem"><img src="/gamemaster/Application/View/img/bt_trashcan.png" width="20" height="20" border="0" />&nbsp;Delete</div>
+				</div>
+				<div class="message_area" id="message_area" style="display: none;"></div>
+			</div>
+		</div>
+	</body>
+</html>

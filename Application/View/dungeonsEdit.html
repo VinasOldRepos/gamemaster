@@ -52,13 +52,17 @@
 					</div>
 					<div class="map_interaction not_shown" id="map_interaction" align="center">
 						<span class="title_01">What do you wanna do?</span>
-						<br /><br /><br />
+						<br />
 						<div class="tile_options" id="tile_options">
 							<div class="text_01 tile_opt" key="listIcons" id="linkmap" target="">Go to this location</div><br /><br />
 							<div class="text_01 tile_opt" key="linkTile">Link this to map</div><br /><br />
 							<div class="text_01 tile_opt" key="changeBkgTileDungeon">Background tile</div><br /><br />
 							<div class="text_01 tile_opt" key="changeDtlTileDungeon">Detail tile</div><br /><br />
 							<div class="text_01 tile_opt" key="addMonsters">Add monsters here</div><br /><br />
+							<div id="totals">
+								<div class="text_01" id="total_treasure">Total Monsters: <span class="text_01 bold" ><?php echo $tot_monsters; ?></div><br />
+								<div class="text_01" id="total_treasure">Total Treasure drop: <span class="text_01 bold" ><?php echo $tot_treasure_min; ?> - <?php echo $tot_treasure_max; ?></span> gold</div><br /><br />
+							</div>
 							<!-- div class="text_01 tile_opt" key="delete_tileinfo">Delete all info related (but background)</div><br /><br /-->
 							<br />
 							<div id="monsters">

@@ -102,11 +102,14 @@
 			$result				= $RepItem->getAllCombatItems(20);
 			// If there are entries
 			if ($result) {
+				// Get Field names
+				$RepQuestion	= new RepQuestion();
+				$fields			= $RepQuestion->getAllFields();
 				// Separate returned data an paging info
 				$rows			= $result[0];
 				$paging_info	= $result[1];
 				// Model Result
-				$return			= $ModItem->listCombatItems($rows, 'i.id', 'ASC');
+				$return			= $ModItem->listCombatItems($rows, $fields, 'i.id', 'ASC');
 				// Define Pager info
 				$pager			= Pager::pagerOptions($paging_info, 'items', 'partialCombatResult');
 			}
@@ -149,6 +152,160 @@
 			// render view
 			View::render('usersSearch');
  		}
+
+		/*
+		Combat Items list - partialCombatResult()
+			@return format	- render view
+		*/
+		public function partialCombatResult() {
+			// Declare Classes
+			$RepItem				= new RepItem();
+			$ModItem				= new ModItem();
+			// Intialize variables
+			$return					= '<br />(no combat items found)';
+			$num_page				= (isset($_POST['num_page'])) ? trim($_POST['num_page']) : false;
+			$ordering				= (isset($_POST['ordering'])) ? trim($_POST['ordering']) : false;
+			$offset					= (isset($_POST['offset'])) ? trim($_POST['offset']) : false;
+			$limit					= (isset($_POST['limit'])) ? trim($_POST['limit']) : false;
+			$direction				= (isset($_POST['direction'])) ? trim($_POST['direction']) : false;
+			$str_search				= (isset($_POST['str_search'])) ? trim($_POST['str_search']) : false;
+			$pager					= '';
+			// If data was sent
+			//if (($num_page) && ($ordering) && ($offset) && ($limit) && ($direction)) {
+			if (($num_page) && ($ordering) && ($limit) && ($direction)) {
+				// Get searched data
+				if ($str_search) {
+					$result			= $RepItem->getSearchedCombat($str_search, $limit, $num_page, $ordering, $direction);
+				} else {
+					$result			= $RepItem->getAllCombatItems($limit, $num_page, $ordering, $direction);
+				}
+				// If there are entries
+				if ($result) {
+					// Get Field names
+					$RepQuestion	= new RepQuestion();
+					$fields			= $RepQuestion->getAllFields();
+					// Separate returned data and paging info
+					$rows			= $result[0];
+					$paging_info	= $result[1];
+					// Model Result
+					$pager			= Pager::pagerOptions($paging_info, 'items', 'partialCombatResult');
+					$return			= $ModItem->jqueryCombatItems($rows, $fields, $pager, $ordering, $direction);
+				}
+			}
+			// Print out result
+			echo $return;
+ 		}
+
+		/*
+		Non Combat Items list - partialNonCombatResult()
+			@return format	- render view
+		*/
+		public function partialNonCombatResult() {
+			// Declare Classes
+			$RepItem				= new RepItem();
+			$ModItem				= new ModItem();
+			// Intialize variables
+			$return					= '<br />(no non+combat items found)';
+			$num_page				= (isset($_POST['num_page'])) ? trim($_POST['num_page']) : false;
+			$ordering				= (isset($_POST['ordering'])) ? trim($_POST['ordering']) : false;
+			$offset					= (isset($_POST['offset'])) ? trim($_POST['offset']) : false;
+			$limit					= (isset($_POST['limit'])) ? trim($_POST['limit']) : false;
+			$direction				= (isset($_POST['direction'])) ? trim($_POST['direction']) : false;
+			$str_search				= (isset($_POST['str_search'])) ? trim($_POST['str_search']) : false;
+			$pager					= '';
+			// If data was sent
+			//if (($num_page) && ($ordering) && ($offset) && ($limit) && ($direction)) {
+			if (($num_page) && ($ordering) && ($limit) && ($direction)) {
+				// Get searched data
+				if ($str_search) {
+					$result			= $RepItem->getSearchedNonCombat($str_search, $limit, $num_page, $ordering, $direction);
+				} else {
+					$result			= $RepItem->getAllNonCombatItems($limit, $num_page, $ordering, $direction);
+				}
+				// If there are entries
+				if ($result) {
+					// Separate returned data and paging info
+					$rows			= $result[0];
+					$paging_info	= $result[1];
+					// Model Result
+					$pager			= Pager::pagerOptions($paging_info, 'items', 'partialNonCombatResult');
+					$return			= $ModItem->jqueryNonCombatItems($rows, $pager, $ordering, $direction);
+				}
+			}
+			// Print out result
+			echo $return;
+ 		}
+
+		/*
+		Renders Combat Items' Details - combatDetails()
+			@return format	- render view
+		*/
+		public function combatDetails() {
+			// Add Clases
+			$RepItem	= new RepItem();
+			$ModItem	= new ModItem();
+			// Initialize variables
+			$id			= (isset($GLOBALS['params'][1])) ? trim(($GLOBALS['params'][1])) : false;
+			// If values were sent
+			if ($id) {
+				// Get item's data
+				$item					= $RepItem->getCombatById($id);
+				if ($item) {
+					$types				= $RepItem->getAllCombatItemTypes();
+					$RepQuestion		= new RepQuestion();
+					if (isset($item['id_field'])) {
+						$vc_field		= ($field = $RepQuestion->getFieldById($item['id_field'])) ? $field['vc_field'] : false;
+						$vc_branch		= ($branch = $RepQuestion->getBranchFieldId($item['id_field'])) ? $branch['vc_branch'] : false;
+					}
+					// Model info
+					$types				= $ModItem->combo($types, false, $item['id_type']);
+					$item['int_bonus']	= ($item['int_bonus'] > 0) ? '+'.$item['int_bonus'] : $item['int_bonus'];
+					// Prepare data for return
+					View::set('id_item',	$item['id']);
+					View::set('id_field',	$item['id_field']);
+					View::set('int_level',	$item['int_level']);
+					View::set('int_bonus',	$item['int_bonus']);
+					View::set('vc_name',	$item['vc_name']);
+					View::set('vc_field',	$vc_field);
+					View::set('vc_branch',	$vc_branch);
+					View::set('types',		$types);
+					// Return
+					View::render('partial_combatItemDetails');
+				}
+			}
+		}
+
+		/*
+		Renders Non-Combat Items' Details - nonCombatDetails()
+			@return format	- render view
+		*/
+		public function nonCombatDetails() {
+			// Add Clases
+			$RepItem	= new RepItem();
+			$ModItem	= new ModItem();
+			// Initialize variables
+			$id			= (isset($GLOBALS['params'][1])) ? trim(($GLOBALS['params'][1])) : false;
+			// If values were sent
+			if ($id) {
+				// Get item's data
+				$item					= $RepItem->getNonCombatById($id);
+				if ($item) {
+					$types				= $RepItem->getAllNonCombatItemTypes();
+					$RepQuestion		= new RepQuestion();
+					// Model info
+					$types				= $ModItem->combo($types, false, $item['id_type']);
+					// Prepare data for return
+					View::set('id_item',			$item['id']);
+					View::set('int_level',			$item['int_level']);
+					View::set('int_bonus_start',	$item['int_bonus_start']);
+					View::set('int_bonus_end',		$item['int_bonus_end']);
+					View::set('vc_name',			$item['vc_name']);
+					View::set('types',				$types);
+					// Return
+					View::render('partial_nonCombatItemDetails');
+				}
+			}
+		}
 
 		/*
 		Saves a combat item - addCombatItem()
@@ -196,4 +353,89 @@
 			echo $return;
  		}
 
+		/*
+		Update a Combat item - updtCombatItem()
+			@return format	- print
+		*/
+		public function updtCombatItem() {
+			// Declare classes
+			$RepItem	= new RepItem();
+			// Initialize variables
+			$return		= false;
+			$id			= (isset($_POST['id'])) ? trim($_POST['id']) : false;
+			$id_field	= (isset($_POST['id_field'])) ? trim($_POST['id_field']) : false;
+			$id_type	= (isset($_POST['id_type'])) ? trim($_POST['id_type']) : false;
+			$int_level	= (isset($_POST['int_level'])) ? trim($_POST['int_level']) : false;
+			$int_bonus	= (isset($_POST['int_bonus'])) ? trim($_POST['int_bonus']) : false;
+			$vc_name	= (isset($_POST['vc_name'])) ? trim($_POST['vc_name']) : false;
+			// If values were sent
+			if (($id) && ($id_field) && ($id_type) && ($int_level) && ($int_bonus) && ($vc_name)) {
+				// Save Item and prepare return
+				$return	= ($RepItem->updateCombatItem($id, $id_field, $id_type, $int_level, $int_bonus, $vc_name)) ? 'ok' : false;
+			}
+			// Return
+			echo $return;
+ 		}
+
+		/*
+		Update a Non-Combat item - updtNonCombatItem()
+			@return format	- print
+		*/
+		public function updtNonCombatItem() {
+			// Declare classes
+			$RepItem			= new RepItem();
+			// Initialize variables
+			$return				= false;
+			$id					= (isset($_POST['id'])) ? trim($_POST['id']) : false;
+			$id_type			= (isset($_POST['id_type'])) ? trim($_POST['id_type']) : false;
+			$int_level			= (isset($_POST['int_level'])) ? trim($_POST['int_level']) : false;
+			$int_bonus_start	= (isset($_POST['int_bonus_start'])) ? trim($_POST['int_bonus_start']) : false;
+			$int_bonus_end		= (isset($_POST['int_bonus_end'])) ? trim($_POST['int_bonus_end']) : false;
+			$vc_name			= (isset($_POST['vc_name'])) ? trim($_POST['vc_name']) : false;
+			// If values were sent
+			if (($id) && ($id_type) && ($int_level) && ($int_bonus_start) && ($int_bonus_end) && ($vc_name)) {
+				// Save Item and prepare return
+				$return	= ($RepItem->updateNonCombatItem($id, $id_type, $int_level, $int_bonus_start, $int_bonus_end, $vc_name)) ? 'ok' : false;
+			}
+			// Return
+			echo $return;
+ 		}
+
+		/*
+		Deletes a Combat item - deleteCombatItem()
+			@return format	- print
+		*/
+		public function deleteCombatItem() {
+			// Declare classes
+			$RepItem	= new RepItem();
+			// Initialize variables
+			$return		= false;
+			$id			= (isset($_POST['id'])) ? trim($_POST['id']) : false;
+			// If values were sent
+			if ($id) {
+				// Save Item and prepare return
+				$return	= ($RepItem->deleteCombatItem($id)) ? 'ok' : false;
+			}
+			// Return
+			echo $return;
+		}
+
+		/*
+		Deletes a Non-Combat item - deleteNonCombatItem()
+			@return format	- print
+		*/
+		public function deleteNonCombatItem() {
+			// Declare classes
+			$RepItem	= new RepItem();
+			// Initialize variables
+			$return		= false;
+			$id			= (isset($_POST['id'])) ? trim($_POST['id']) : false;
+			// If values were sent
+			if ($id) {
+				// Save Item and prepare return
+				$return	= ($RepItem->deleteNonCombatItem($id)) ? 'ok' : false;
+			}
+			// Return
+			echo $return;
+		}
 	}

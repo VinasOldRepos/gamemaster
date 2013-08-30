@@ -22,7 +22,7 @@
 					<div style="float: left;">
 						<fieldset style="width: 500px;">
 							<form class="form">
-								<input type="hidden" name="world_pos" id="world_pos" value="" />
+								<input type="hidden" name="world_pos" id="world_pos" value="<?php echo $world_pos; ?>" />
 								<input type="hidden" name="action" id="action" value="" />
 								<input type="hidden" name="id_areamap" id="id_areamap" value="<?php echo $id_areamap; ?>" />
 								<input type="hidden" name="id_areatype" id="id_areatype" value="<?php echo $id_areatype; ?>" /> <!-- 1 = Local Map -->
@@ -47,6 +47,7 @@
 						</fieldset>
 						<br />
 						<div class="title_01 map_name" id="map_name"><?php echo '#'.$vc_id_areamap.' - '.$mapname; ?></div>
+						<div class="map_name_edit not_shown" id="map_name_edit"><label for="map_name_input">Map's name:</label><input type="text" name="map_name_input" id="map_name_input" class="main_text_input" value="<?php echo $mapname; ?>" /></div>
 						<div class="back_button"><a href="/gamemaster/Maps/Insert/<?php echo $parent_id_areamap; ?>"><img src="/gamemaster/Application/View/img/bt_back.png" width="41" height="41" alt="" title="" /></a></div>
 						<div class="map_area" id="map_area">
 							<?php echo $map; ?>

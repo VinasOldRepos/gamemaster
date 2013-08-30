@@ -445,17 +445,21 @@ $('document').ready(function() {
 		$id_areatype		= $("#id_areatype").val();
 		$id_field			= $("#id_field").val();
 		$int_level			= $("#level").val();
+		$world_pos			= $("#world_pos").val();
+		$id_areamap_orign	= $("#parent_id_areamap").val();
 		$coords				= getAllMapsCoords();
 		if (($id_areamap) && ($id_tiletype) && ($id_field) && ($int_level) && ($coords) ) {
 			$.post('/gamemaster/Maps/updateMap', {
-				id_areamap:		$id_areamap,
-				id_areatype:	$id_areatype,
-				id_tiletype:	$id_tiletype,
-				id_field:		$id_field,
-				int_level:		$int_level,
-				coords:			$coords
+				id_areamap:			$id_areamap,
+				id_areatype:		$id_areatype,
+				id_tiletype:		$id_tiletype,
+				id_field:			$id_field,
+				int_level:			$int_level,
+				world_pos:			$world_pos,
+				id_areamap_orign:	$id_areamap_orign,
+				coords:				$coords
 			}, function($return) {
-				$return			= $return.trim();
+				$return				= $return.trim();
 				if ($return == 'ok') {
 					alert("Map was saved!");
 				} else {
@@ -565,7 +569,13 @@ $('document').ready(function() {
 					if ($return) {
 						parent.$("#monsters").html($return);
 						parent.contentShow(".tilemonster_"+$pos);
-						parent.$.fancybox.close();
+						$.post('/gamemaster/Maps/countTotalTreasure/', {
+							id_areamap:	$id_areamap
+						}, function($return) {
+							$return		= $return.trim();
+							parent.$("#totals").html($return);
+							parent.$.fancybox.close();
+						});
 					} else {
 						alert("Sorry,\n\nwe weren't able to add this monster to the room.\n\nError: "+$return);
 					}
@@ -583,14 +593,23 @@ $('document').ready(function() {
 		$this_tile	= $("#target_tile_id").val();
 		if (($key) && ($id_areamap) && ($this_tile)) {
 			$.post('/gamemaster/Maps/removeMonster/', {
-				key:		$key,
-				id_areamap:	$id_areamap
+				key:			$key,
+				id_areamap:		$id_areamap
 			}, function($return) {
-				$return		= $return.trim();
-				$("#monsters").html($return);
-				contentShow(".tilemonster_"+$this_tile);
+				if ($return) {
+					$return			= $return.trim();
+					$("#monsters").html($return);
+					contentShow(".tilemonster_"+$this_tile);
+					$.post('/gamemaster/Maps/countTotalTreasure/', {
+						id_areamap:	$id_areamap
+					}, function($return) {
+						$return		= $return.trim();
+						$("#totals").html($return);
+						return false;
+					});
+				}
+				return false;
 			});
-			
 		}
 		return false;
 	});
@@ -653,7 +672,7 @@ $('document').ready(function() {
 		}
 	});
 
-	// What happens when user mouseover an area order list row
+	// What happens when user mouseover/out an area order list row
 	$(".area_order_row").live("mouseover", function() {
 		$area_tiles	= $(this).attr('key');
 		$tiles	= $area_tiles.split(",");
@@ -674,6 +693,38 @@ $('document').ready(function() {
 		}
 	});
 
+	// What happens when user double clicks a map name
+	$("#map_name").live("dblclick", function() {
+		$(this).hide();
+		contentShow("#map_name_edit");
+		return false;
+	});
+
+	// What happens when user alters a map name
+	$("#map_name_input").live("keypress", function(e) {
+		if (e.keyCode == 13) {
+			$vc_name	= $(this).val();
+			$id_areamap	= $("#id_areamap").val();
+			if (($id_areamap) && ($vc_name)) {
+				$.post('/gamemaster/Maps/updateMapName/', {
+					id_areamap:	$id_areamap,
+					vc_name:	$vc_name
+				}, function($return) {
+					$return	= $return.trim();
+					if ($return == 'ok') {
+						$("#map_name").html('#'+sprintf(4, '0', $id_areamap)+' - '+$vc_name);
+					} else {
+						alert("Hum,\n\nIt seems that our central computer wasn't able to process your request. The problem was reported and posted via radio waves to Jupiter. The automatic response shall reach you withint 10 hours.\n\nMeanwhile, you can check what might have happened checking the following error:\n\n"+$return);
+					}
+					$("#map_name_edit").hide();
+					$(this).val('');
+					contentShow("#map_name");
+					return false;
+				});
+			}
+			return false;
+		}
+	});
 });
 
 

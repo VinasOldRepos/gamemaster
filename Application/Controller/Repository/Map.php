@@ -221,6 +221,21 @@
 		}
 
 		/*
+		Getlocal map's world position - getWorldPosition($parent_id_areamap, $id_areamap)
+			@param integer	- Parent Area Id
+			@param integer	- Area Id
+			@return format	- Mixed array
+		*/
+		public function getWorldPosition($parent_id_areamap = false, $id_areamap = false) {
+			$db		= $GLOBALS['db'];
+			$return	= false;
+			if (($parent_id_areamap) && ($id_areamap)) {
+				$return = ($link = $db->getRow('tb_map_link_icon', 'int_pos', "id_map_orign = {$parent_id_areamap} AND id_map_target = {$id_areamap}")) ? $link['int_pos'] : false;
+			}
+			return $return;
+		}
+
+		/*
 		Get All Worlds - getAllWorlds()
 			@return format	- Mixed array
 		*/
@@ -466,7 +481,7 @@
 			// Initialize variables
 			$return	= false;
 			// Query set up
-			$return	= ($id) ? $db->getAllRows_Arr('tb_area_pos_monster AS p JOIN tb_monster AS m ON p.id_monster = m.id', 'p.*, m.vc_name, m.int_level', "id_areamap = '{$id}'") : false;
+			$return	= ($id) ? $db->getAllRows_Arr('tb_area_pos_monster AS p JOIN tb_monster AS m ON p.id_monster = m.id', 'p.*, m.vc_name, m.int_level, m.int_treasure_min, m.int_treasure_max', "id_areamap = '{$id}'") : false;
 			// Return
 			return $return;
 		}
@@ -734,6 +749,30 @@
 						$this->addIconLink($id_areamap, 0, $icon[1], $icon[0], $vc_link = '');
 					}
 				}
+			}
+			// Return
+			return $return;
+		}
+
+		/*
+		Update Map Name in the Database - updateMapName($id_areamap, $vc_name)
+			@param integer	- Area type id
+			@param array	- map info
+			@return boolean
+		*/
+		public function updateMapName($id_areamap = false, $vc_name = false) {
+			// Initialize variables
+			$return			= false;
+			$map_icon		= false;
+			// Database Connection
+			$db				= $GLOBALS['db'];
+			// Validate sent information
+			if (($id_areamap) && ($vc_name)) {
+				// Prepare map data to be inserted
+				$map_data[]	= $vc_name;
+				$fields[]	= 'vc_name';
+				// Save area map and prepare return (id_areamap)
+				$return		= ($db->updateRow('tb_areamap', $fields, $map_data, 'id = '.$id_areamap)) ? $id_areamap : false;
 			}
 			// Return
 			return $return;
