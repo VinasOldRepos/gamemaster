@@ -270,7 +270,7 @@
 			// Database Connection
 			$db		= $GLOBALS['db'];
 			// Query
-			$return	= ($id) ? $db->getAllRows_Arr('tb_localarea_background', '*', "id_localarea_tiletype = {$id}") : false;
+			$return	= ($id) ? $db->getAllRows_Arr('tb_localarea_background', '*', "id_localarea_tiletype = {$id} ORDER BY vc_name") : false;
 			// Return
 			return $return;
 		}
@@ -284,7 +284,7 @@
 			// Database Connection
 			$db		= $GLOBALS['db'];
 			// Query
-			$return	= ($id) ? $db->getAllRows_Arr('tb_encounter_background', '*', "id_encounter_tiletype = {$id}") : false;
+			$return	= ($id) ? $db->getAllRows_Arr('tb_encounter_background', '*', "id_encounter_tiletype = {$id} ORDER BY vc_name") : false;
 			// Return
 			return $return;
 		}

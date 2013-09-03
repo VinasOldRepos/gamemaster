@@ -23,10 +23,15 @@
 	// Framework Classes
 	use SaSeed\View;
 	use SaSeed\Session;
-	use SaSeed\General;
+//	use SaSeed\General;
 
 	// Repository Classes
 	use Application\Controller\Repository\Map		as RepMap;
+	use Application\Controller\Repository\Monster	as RepMonster;
+
+	// Model Classes
+	use Application\Model\Map						as ModMap;
+	use Application\Model\Monster					as ModMonster;
 
 	// Other Classes
 	use Application\Controller\LogInController		as LogIn;
@@ -44,10 +49,47 @@
 			}
 		}
 
+		public function CombatSimulator() {
+			// Classes
+			$RepMap		= new RepMap();
+			$ModMap		= new ModMap();
+
+			// Variables
+			$level		= 1;
+			$id_course	= 1;
+
+			$GLOBALS['this_js']		= '<script type="text/javascript" src="/gamemaster/Application/View/js/scripts/temp.js"></script>'.PHP_EOL;	// Se não houver, definir como vazio ''
+			$GLOBALS['this_css']	= '<link href="'.URL_PATH.'/Application/View/css/maps.css" rel="stylesheet">'.PHP_EOL;	// Se não houver, definir como vazio ''
+
+			// Get all Monsters
+			$monsters	= $RepMap->getminAllMonstersByLevel(2);
+			// Model all monster
+			$monsters	= $ModMap->listMonsters($monsters);
+			// Prepare return
+			View::set('monsters',	$monsters);
+			View::set('id_course',	$id_course);
+			// Return
+			View::render('combatSimulator');
+		}
+		
+		public function loadMonster() {
+			$RepMonster	= new RepMonster();
+			$monster	= $RepMonster->getById($_POST['id_monster']);
+			$return['monster_hp']		= rand($monster['int_hits_min'], $monster['int_hits_max']);
+			$return['monster_min_dmg']	= $monster['int_damage_min'];
+			$return['monster_max_dmg']	= $monster['int_damage_max'];
+			header('Content-Type: application/json');
+			echo json_encode($return);
+		}
+		
+		/* ************************************************************* */
+		/* ************************************************************* */
+		/* ************************************************************* */
+
 		public function resetWorld() {
 			$RepMap		= new RepMap();
 			$RepMap->resetWorld();
-			echo 'terminou chefe!!';
+			echo 'Mundo Resetado';
 		}
 
 		public function resetTextures() {
@@ -67,7 +109,7 @@
 			for ($i = 0; $i < 100; $i++) {
 				$RepMap->insertMap(0, 4, $map_name[$i], $coords);
 			}
-			echo 'terminou chapa!!';
+			echo 'Novo mundo criado';
 		}
 
 		public function linkWorldMaps() {
@@ -386,7 +428,7 @@
 					$RepMap->addWorldMapLink($maps[$i]['id'], $id_target, 'up');
 				} 
 			}
-			echo 'demorou mas funcionou!!!';
+			echo 'mundo criado';
 		}
 
 	}

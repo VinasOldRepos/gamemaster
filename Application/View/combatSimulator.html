@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="pt-BR" xml:lang="pt-BR" xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+		<title>Knowledge Quest Adventures - Piercing the Veil of Ignorance</title>
+		<!-- JS -->
+		<?php echo $GLOBALS['general_js']; ?>
+		<?php echo $GLOBALS['this_js']; ?>
+		<!-- CSS -->
+		<?php echo $GLOBALS['general_css']; ?>
+		<?php echo $GLOBALS['this_css']; ?>
+	</head>
+		
+	<body>
+		<input type="hidden" name="id_monster" id="id_monster" value="" />
+		<div style="float: left; background-color: #999; padding: 20px;">
+			What is your damage? <input type="text" name="player_min_dmg" id="player_min_dmg" value="" size="5" /> - <input type="text" name="player_max_dmg" id="player_max_dmg" value="" size="5" /><br />
+			Your hit points? <input type="text" name="player_hp" id="player_hp" value="" size="32" /><br />
+			<br />
+			Select your monster:
+			<?php echo $monsters; ?>
+		</div>
+		<div style="margin-left: 400px; position: absolute; float: right; background-color: #FF9; padding: 20px;">
+			Monster HP: <input type="text" name="monster_hp" id="monster_hp" value="" /><br />
+			Monster damage: <input type="text" name="monster_min_dmg" id="monster_min_dmg" value="" size="5" /> - <input type="text" name="monster_max_dmg" id="monster_max_dmg" value="" size="5" /><br />
+		</div>
+
+		<div style="margin-left: 400px; margin-top: 100px; position: absolute; float: right; background-color: #F30; padding: 20px;">
+		</div>
+	</body>
+
+</html>

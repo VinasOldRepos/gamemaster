@@ -161,7 +161,6 @@
 }
 
 .encounterbkg_tiles_return_row {
-	position:			absolute;
 	border-style:		solid;
 	border-color:		#000;
 	border-width:		1px;
@@ -208,6 +207,16 @@
 	color:				#FFF;
 }
 
+.selected_monsters_return_row {
+	position:			absolute;
+	border-style:		solid;
+	border-color:		#000;
+	border-width:		1px;
+	margin-bottom:		2px;
+	background-color:	#7A7A7A;
+	color:				#FFF;
+}
+
 .map_name {
 	float:			left;
 	margin-top:		100px;
@@ -250,6 +259,9 @@
 
 .details_result_box {
 	margin-left:	10px;
+	height:			300px;
+	overflow-y:		scroll;
+	background-color: #FFF;
 }
 
 .remove_monster {

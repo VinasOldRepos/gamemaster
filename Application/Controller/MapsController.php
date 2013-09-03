@@ -511,15 +511,18 @@
 				}
 			}
 			// If data was sent
-			if (($id_areamap) && ($coords) && ($id_tiletype) && ($id_field) && ($int_level) && ($world_pos)) {
+			if (($id_areamap) && ($coords) && ($id_tiletype) && ($id_field) && ($int_level)) {
 				// Update map and area info
 				$id_areamap		= $RepMap->updateMap($id_areamap, $id_tiletype, $coords);
-				// Get and shrink Map
-				$map			= $RepMap->getMapById($id_areamap);
-				$image			= $this->shrink($map);
-				$image			= ($image) ? $image : 'unveiled.gif';
-				// Change world map and prepare return'
-				$RepMap->updateWorldMap($id_areamap_orign, $world_pos, $image);
+				// If we're updating a local map
+				if (($id_areamap_orign) && ($id_areamap_orign)) {
+					// Get and shrink Map
+					$map			= $RepMap->getMapById($id_areamap);
+					$image			= $this->shrink($map);
+					$image			= ($image) ? $image : 'unveiled.gif';
+					// Change world map and prepare return'
+					$RepMap->updateWorldMap($id_areamap_orign, $world_pos, $image);
+				}
 				$return			= ($RepMap->updateArea($id_areatype, $id_field, $id_areamap, $int_level, 1)) ? 'ok' : false;
 			}
 			// Return

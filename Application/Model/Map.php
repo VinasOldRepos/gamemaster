@@ -204,7 +204,6 @@
 			if ($entries) {
 				$tot_entries	= count($entries);
 				$return			= '<div class="details_result_box" id="tiles_result_box">'.PHP_EOL;
-				$return			.= '	<span class="title_01">Choose a tile</span><br />'.PHP_EOL;
 				for ($i = 0; $i < $tot_entries; $i++) {
 					$return		.= '	<div class="tiles_return_row" key="'.$entries[$i]['id'].'" image="'.$entries[$i]['vc_path'].'">'.PHP_EOL;
 					$return		.= '		<div class="result_field result_id">'.$entries[$i]['id'].'</div>'.PHP_EOL;
@@ -239,8 +238,8 @@
 			$return	= '<br />No tiles found'.PHP_EOL;
 			if ($entries) {
 				$tot_entries	= count($entries);
-				$return			= '<div class="details_result_box" id="tiles_result_box">'.PHP_EOL;
-				$return			.= '	<span class="title_01">Choose a tile</span><br />'.PHP_EOL;
+				$return			= '	<span class="title_01">Choose a tile</span><br />'.PHP_EOL;
+				$return			.= '<div class="details_result_box" id="tiles_result_box">'.PHP_EOL;
 				for ($i = 0; $i < $tot_entries; $i++) {
 					$return		.= '	<div class="encounterbkg_tiles_return_row" key="'.$entries[$i]['id'].'" image="'.$entries[$i]['vc_path'].'">'.PHP_EOL;
 					$return		.= '		<div class="result_field result_id">'.$entries[$i]['id'].'</div>'.PHP_EOL;
