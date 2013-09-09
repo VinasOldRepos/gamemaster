@@ -29,6 +29,25 @@
 		}
 
 		/*
+		Check Answer by id  - checkAnswerById($id)
+			@param integer	- Answer id
+			@return format	- Mixed array
+		*/
+		public function checkAnswerById($id = false) {
+			// Database Connection
+			$db				= $GLOBALS['db_q'];
+			// Variables
+			$return			= false;
+			// Query set up	
+			$row			= ($id) ? $db->getRow('tb_answer', 'boo_correct', "id = {$id}") : false;
+			if ($row['boo_correct'] == 1) {
+				$return		= true;
+			}
+			// Return
+			return $return;
+		}
+
+		/*
 		Get Field by id  - getFieldById($id)
 			@param integer	- Field id
 			@return format	- Mixed array
@@ -38,6 +57,52 @@
 			$db				= $GLOBALS['db_q'];
 			// Query set up	
 			$return			= ($id) ? $db->getRow('tb_field', '*', "id = {$id}") : false;
+			// Return
+			return $return;
+		}
+
+		/*
+		get random question by course id  - getRandomQuestionByCourseId($id)
+			@param integer	- Course id
+			@return format	- Mixed array
+		*/
+		public function getRandomQuestionByCourseId($id = false) {
+			// Database Connection
+			$db				= $GLOBALS['db_q'];
+			// Query set up
+			$return			= ($id) ? $db->getRow('tb_question_course', 'id_question', "id_course = {$id} ORDER BY RAND() LIMIT 1") : false;
+			// Return
+			return $return;
+		}
+
+		/*
+		Get question by id - getQuestionById($id)
+			@param integer	- Course id
+			@return format	- Mixed array
+		*/
+		public function getQuestionById($id = false) {
+			// Database Connection
+			$db				= $GLOBALS['db_q'];
+			// Query set up
+			$return			= ($id) ? $db->getRow('tb_question', '*', "id = {$id}") : false;
+			// Return
+			return $return;
+		}
+
+		/*
+		Get question by id - getAnswersByQuestionId($id, $num_answers)
+			@param integer	- Question id
+			@param integer	- Num of answers
+			@return format	- Mixed array
+		*/
+		public function getAnswersByQuestionId($id = false, $num_answers = 4) {
+			// Database Connection
+			$db				= $GLOBALS['db_q'];
+			// Query set up
+			$num_answers	= $num_answers - 1;
+			$correct		= ($id) ? $db->getAllRows_Arr('tb_answer', '*', "id_question = {$id} AND boo_correct = 1") : false;
+			$incorrect		= ($id) ? $db->getAllRows_Arr('tb_answer', '*', "id_question = {$id} AND boo_correct = 0 LIMIT {$num_answers}") : false;
+			$return			= (($correct) && ($incorrect)) ? array_merge($correct, $incorrect) : false;
 			// Return
 			return $return;
 		}
@@ -95,6 +160,25 @@
 			$select_what	= 'id, vc_field AS vc_name';
 			$conditions		= "1 ORDER BY vc_field ASC";
 			$return			= $db->getAllRows_Arr($table, $select_what, $conditions);
+			// Return
+			return $return;
+		}
+
+		/*
+		Get All Courses By Field Id  - getCoursesByFieldId($id)
+			@param integer	- Field ID
+			@return format	- Mixed array
+		*/
+		public function getCoursesByFieldId($id = false) {
+			// Database Connection
+			$db				= $GLOBALS['db_q'];
+			// Initialize variables
+			$return			= false;
+			// Query set up	
+			$table			= 'tb_course';
+			$select_what	= 'id, vc_course AS vc_name';
+			$conditions		= "id_field = {$id} ORDER BY vc_course ASC";
+			$return			= ($id) ? $db->getAllRows_Arr($table, $select_what, $conditions) : false;
 			// Return
 			return $return;
 		}

@@ -10,22 +10,47 @@
 		<?php echo $GLOBALS['general_css']; ?>
 		<?php echo $GLOBALS['this_css']; ?>
 	</head>
-		
+
 	<body>
 		<input type="hidden" name="id_monster" id="id_monster" value="" />
-		<div style="float: left; background-color: #999; padding: 20px;">
-			What is your damage? <input type="text" name="player_min_dmg" id="player_min_dmg" value="" size="5" /> - <input type="text" name="player_max_dmg" id="player_max_dmg" value="" size="5" /><br />
+		<input type="hidden" name="monster_treasure" id="monster_treasure" value="" />
+		<input type="hidden" name="id_answer" id="id_answer" value="" />
+		<div class="box_player">
 			Your hit points? <input type="text" name="player_hp" id="player_hp" value="" size="32" /><br />
+			What is your damage? <input type="text" name="player_min_dmg" id="player_min_dmg" value="" size="5" /> - <input type="text" name="player_max_dmg" id="player_max_dmg" value="" size="5" /><br />
+			ME: <input type="text" name="player_me" id="player_me" value="" size="5" /><br />
+			DS: <input type="text" name="player_ds" id="player_ds" value="" size="5" /><br />
 			<br />
+			Your Treasure <input type="text" name="tot_treasure" id="tot_treasure" value="0" size="5" disabled="disabled" /> gold<br />
+			Your XP <input type="text" name="tot_xp" id="tot_xp" value="0" size="5" disabled="disabled" /><br />
+			<br />
+			Branch: <select name="id_branch" id="id_branch">
+				<?php echo $branches; ?>
+			</select>
+			<br />
+			Field: <select name="id_field" id="id_field">
+			</select>
+			<br />
+			Course: <select name="id_course" id="id_course">
+			</select>
+			<br /><br />
 			Select your monster:
 			<?php echo $monsters; ?>
 		</div>
-		<div style="margin-left: 400px; position: absolute; float: right; background-color: #FF9; padding: 20px;">
+		<div class="box_select_monster">
 			Monster HP: <input type="text" name="monster_hp" id="monster_hp" value="" /><br />
 			Monster damage: <input type="text" name="monster_min_dmg" id="monster_min_dmg" value="" size="5" /> - <input type="text" name="monster_max_dmg" id="monster_max_dmg" value="" size="5" /><br />
+			ME: <input type="text" name="monster_me" id="monster_me" value="" size="5" /><br />
+			DS: <input type="text" name="monster_ds" id="monster_ds" value="" size="5" /><br />
+			<br />
+			knowledge base (%): <input type="text" name="monster_knowledge" id="monster_knowledge" value="" size="5" /><br />
 		</div>
 
-		<div style="margin-left: 400px; margin-top: 100px; position: absolute; float: right; background-color: #F30; padding: 20px;">
+		<div class="box_run_round">GO</div>
+
+		<div class="box_question" id="box_question">
+		</div>
+		<div class="box_answers" id="box_answers">
 		</div>
 	</body>
 

@@ -222,7 +222,7 @@ $('document').ready(function() {
 				if ($return) {
 					$("#id_field").html($return);
 				} else {
-					alert("Sorry,\n\nThere was a problem when loading the field for the selected branch.\n\nError: ");
+					alert("Sorry,\n\nThere was a problem when loading fields for the selected branch.\n\nError: ");
 				}
 				return false;
 			});

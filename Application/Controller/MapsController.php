@@ -382,6 +382,28 @@
 		}
 
 		/*
+		 Loads Courses for combo box - loadCourses()
+			@return format	- print
+		*/
+		public function loadCourses() {
+			// Declare Classes
+			$RepQuestion	= new RepQuestion();
+			$ModMap			= new ModMap();
+			// Initialize variables
+			$return			= false;
+			$id_field		= (isset($_POST['id_field'])) ? trim($_POST['id_field']) : false;
+			// If values were sent
+			if ($id_field) {
+				// Load courses
+				$fields		= $RepQuestion->getCoursesByFieldId($id_field);
+				// Model world
+				$return		= ($fields) ? $ModMap->combo($fields, true) : false;
+			}
+			// Return
+			echo $return;
+		}
+
+		/*
 		 Loads icons for map building - listIcons()
 			@return format	- print
 		*/

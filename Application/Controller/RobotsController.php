@@ -28,10 +28,12 @@
 	// Repository Classes
 	use Application\Controller\Repository\Map		as RepMap;
 	use Application\Controller\Repository\Monster	as RepMonster;
+	use Application\Controller\Repository\Question	as RepQuestion;
 
 	// Model Classes
 	use Application\Model\Map						as ModMap;
 	use Application\Model\Monster					as ModMonster;
+	use Application\Model\Combat					as ModCombat;
 
 	// Other Classes
 	use Application\Controller\LogInController		as LogIn;
@@ -46,6 +48,10 @@
 			if (!$SesUser) {
 				// Redirect to login area when not
 				header('location: '.URL_PATH.'/LogIn/');
+			} else {
+				$GLOBALS['this_js']		= '<script type="text/javascript" src="/gamemaster/Application/View/js/scripts/combat.js"></script>'.PHP_EOL;	// Se não houver, definir como vazio ''
+				$GLOBALS['this_css']	= '<link href="'.URL_PATH.'/Application/View/css/maps.css" rel="stylesheet">'.PHP_EOL;	// Se não houver, definir como vazio ''
+				$GLOBALS['this_css']	.= '<link href="'.URL_PATH.'/Application/View/css/combat.css" rel="stylesheet">'.PHP_EOL;	// Se não houver, definir como vazio ''
 			}
 		}
 
@@ -58,30 +64,94 @@
 			$level		= 1;
 			$id_course	= 1;
 
-			$GLOBALS['this_js']		= '<script type="text/javascript" src="/gamemaster/Application/View/js/scripts/temp.js"></script>'.PHP_EOL;	// Se não houver, definir como vazio ''
-			$GLOBALS['this_css']	= '<link href="'.URL_PATH.'/Application/View/css/maps.css" rel="stylesheet">'.PHP_EOL;	// Se não houver, definir como vazio ''
-
 			// Get all Monsters
 			$monsters	= $RepMap->getminAllMonstersByLevel(2);
 			// Model all monster
 			$monsters	= $ModMap->listMonsters($monsters);
+			// Get all branches
+			$RepQuestion	= new RepQuestion();
+			$branches		= $RepQuestion->getAllBranches();
+			$branches		= ($branches) ? $ModMap->combo($branches, true) : false;
 			// Prepare return
 			View::set('monsters',	$monsters);
 			View::set('id_course',	$id_course);
+			View::set('branches',	$branches);
 			// Return
 			View::render('combatSimulator');
 		}
 		
 		public function loadMonster() {
-			$RepMonster	= new RepMonster();
-			$monster	= $RepMonster->getById($_POST['id_monster']);
-			$return['monster_hp']		= rand($monster['int_hits_min'], $monster['int_hits_max']);
-			$return['monster_min_dmg']	= $monster['int_damage_min'];
-			$return['monster_max_dmg']	= $monster['int_damage_max'];
+			// Add Classes
+			$RepMonster		= new RepMonster();
+			$ModCombat		= new ModCombat();
+			// Variables
+			$return			= false;
+			$id_monster		= (isset($_POST['id_monster'])) ? trim(($_POST['id_monster'])) : false;
+			$id_course		= (isset($_POST['id_course'])) ? trim(($_POST['id_course'])) : false;
+			if (($id_monster) && ($id_course)) {
+				// Get monster's info
+				$monster		= $RepMonster->getById($id_monster);
+				if ($monster) {
+					// Get a random question from the course
+					$RepQuestion	= new RepQuestion();
+					$id_question	= ($id_question = $RepQuestion->getRandomQuestionByCourseId($id_course)) ? $id_question['id_question'] : false;
+					$question		= ($id_question) ? $RepQuestion->getQuestionById($id_question) : false;
+					$answers		= ($id_question) ? $RepQuestion->getAnswersByQuestionId($id_question) : false;
+					$time_limit		= ($question) ? $question['int_timelimit'] : false;
+					// Calculate Monster's treasure drop
+					$treasure		= rand($monster['int_treasure_min'], $monster['int_treasure_max']);
+					// Model Data
+					$question		= ($question) ? $question['tx_question'] : false;
+					$answers		= ($answers) ? $ModCombat->answers($answers) : false;
+					// Prepare return
+					$return['monster_hp']		= rand($monster['int_hits_min'], $monster['int_hits_max']);
+					$return['monster_min_dmg']	= $monster['int_damage_min'];
+					$return['monster_max_dmg']	= $monster['int_damage_max'];
+					$return['int_ds']			= $monster['int_ds'];
+					$return['int_knowledge']	= $monster['int_knowledge'];
+					$return['int_me']			= $monster['int_me'];
+					$return['question']			= $question;
+					$return['answers']			= $answers;
+					$return['treasure']			= $treasure;
+					$return['time_limit']		= $time_limit;
+				}
+			}
+			// Return
 			header('Content-Type: application/json');
 			echo json_encode($return);
 		}
-		
+
+		public function checkAnswer() {
+			$RepQuestion	= new RepQuestion();
+			$id_answer		= (isset($_POST['id_answer'])) ? trim($_POST['id_answer']) : false;
+			$return			= ($RepQuestion->checkAnswerById($id_answer)) ? 'ok' : false;
+			echo $return;
+		}
+
+		public function loadQuestion() {
+			// Classes
+			$RepQuestion	= new RepQuestion();
+			$ModCombat		= new ModCombat();
+			// Variables
+			$return			= false;
+			$id_course		= (isset($_POST['id_course'])) ? trim($_POST['id_course']) : false;
+			if ($id_course) {
+				// Get question and Answers
+				$id_question	= ($id_question = $RepQuestion->getRandomQuestionByCourseId($id_course)) ? $id_question['id_question'] : false;
+				$question		= ($id_question) ? $RepQuestion->getQuestionById($id_question) : false;
+				$answers		= ($id_question) ? $RepQuestion->getAnswersByQuestionId($id_question) : false;
+				// Model Data
+				$question		= ($question) ? $question['tx_question'] : false;
+				$answers		= ($answers) ? $ModCombat->answers($answers) : false;
+				// Prepare return
+				$return['question']			= $question;
+				$return['answers']			= $answers;
+			}
+			// Return
+			header('Content-Type: application/json');
+			echo json_encode($return);
+		}
+
 		/* ************************************************************* */
 		/* ************************************************************* */
 		/* ************************************************************* */

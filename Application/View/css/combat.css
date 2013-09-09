@@ -1,0 +1,48 @@
+.box_player {
+	float:				left;
+	background-color:	#999;
+	padding:			20px;
+	color:				#FFF;
+}
+
+.box_select_monster {
+	margin-left:		400px;
+	position:			absolute;
+	float:				right;
+	background-color:	#FF9;
+	padding:			20px;
+}
+
+.box_answers {
+	margin-top:			260px;
+	margin-left:		400px;
+	position:			absolute;
+	float:				right;
+	background-color:	#63C;
+	color:				#FFF;
+	padding:			20px;
+}
+
+
+.box_run_round {
+	margin-top:			410px;
+	margin-left:		400px;
+	position:			absolute;
+	float:				right;
+	background-color:	#096;
+	color:				#FFF;
+	padding:			20px;
+}
+
+.box_run_round:hover {
+	cursor:	pointer;
+}
+
+.box_question {
+	margin-top:			180px;
+	margin-left:		400px;
+	position:			absolute;
+	float:				right;
+	background-color:	#FC3;
+	padding:			20px;
+}
