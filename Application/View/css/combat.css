@@ -14,7 +14,7 @@
 }
 
 .box_answers {
-	margin-top:			260px;
+	margin-top:			310px;
 	margin-left:		400px;
 	position:			absolute;
 	float:				right;
@@ -23,9 +23,32 @@
 	padding:			20px;
 }
 
+.box_rightanswer {
+	margin-top:			310px;
+	margin-left:		680px;
+	position:			absolute;
+	float:				right;
+	background-color:	#660;
+	color:				#FFF;
+	padding:			20px;
+}
+
+.box_rightanswer:hover {
+	cursor:	pointer;
+}
+.box_counter {
+	margin-top:			180px;
+	margin-left:		400px;
+	position:			absolute;
+	float:				right;
+	background-color:	#F96;
+	color:				#FFF;
+	padding:			20px;
+}
+
 
 .box_run_round {
-	margin-top:			410px;
+	margin-top:			460px;
 	margin-left:		400px;
 	position:			absolute;
 	float:				right;
@@ -38,8 +61,35 @@
 	cursor:	pointer;
 }
 
+.user_hit {
+	margin-top:			410px;
+	margin-left:		500px;
+	position:			absolute;
+	float:				right;
+	color:				#390;
+	padding:			20px;
+}
+
+.user_missed {
+	margin-top:			410px;
+	margin-left:		500px;
+	position:			absolute;
+	float:				right;
+	color:				#FC0;
+	padding:			20px;
+}
+
+.monster_hit {
+	margin-top:			410px;
+	margin-left:		500px;
+	position:			absolute;
+	float:				right;
+	color:				#C30;
+	padding:			20px;
+}
+
 .box_question {
-	margin-top:			180px;
+	margin-top:			230px;
 	margin-left:		400px;
 	position:			absolute;
 	float:				right;

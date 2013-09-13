@@ -48,18 +48,26 @@ $('document').ready(function() {
 
 	// What happens when user tries to save a combat item
 	$(".new_combatitem").live("click", function() {
-		$id_field		= $("#id_field").val();
-		$id_type		= $("#combat_type").val();
-		$int_level		= $("#combat_int_level").val();
-		$int_bonus		= $("#combat_bonus").val();
-		$vc_name		= $("#vc_combatname").val();
-		if (($id_field) && ($id_type) && ($int_level) && ($int_bonus) && ($vc_name)) {
+		$id_field	= $("#id_field").val();
+		$id_type	= $("#combat_type").val();
+		$int_level	= $("#combat_int_level").val();
+		$me_min		= $("#me_min").val();
+		$me_max		= $("#me_max").val();
+		$magic_me	= $("#magic_me").val();
+		$ds			= $("#ds").val();
+		$magic_ds	= $("#magic_ds").val();
+		$vc_name	= $("#vc_combatname").val();
+		if (($id_field) && ($id_type) && ($int_level) && ($vc_name)) {
 			$.post('/gamemaster/Items/addCombatItem/', {
-				id_field:		$id_field,
-				id_type:		$id_type,
-				int_level:		$int_level,
-				int_bonus:		$int_bonus,
-				vc_name:		$vc_name
+				id_field:	$id_field,
+				id_type:	$id_type,
+				int_level:	$int_level,
+				me_min:		$me_min,
+				me_max:		$me_max,
+				magic_me:	$magic_me,
+				ds:			$ds,
+				magic_ds:	$magic_ds,
+				vc_name:	$vc_name
 			}, function($return) {
 				$return	= $return.trim();
 				if ($return == 'ok') {
@@ -127,15 +135,23 @@ $('document').ready(function() {
 		$id			= $("#id_item").val();
 		$id_field	= $("#id_field").val();
 		$int_level	= $("#int_level").val();
-		$int_bonus	= $("#int_bonus").val();
+		$me_min		= $("#me_min").val();
+		$me_max		= $("#me_max").val();
+		$magic_me	= $("#magic_me").val();
+		$ds			= $("#ds").val();
+		$magic_ds	= $("#magic_ds").val();
 		$id_type	= $("#id_type").val();
 		$vc_name	= $("#vc_name").val();
-		if (($id) && ($id_field) && ($int_level) && ($int_bonus) && ($id_type) && ($vc_name)) {
+		if (($id) && ($id_field) && ($int_level) /*&& ($int_bonus)*/ && ($id_type) && ($vc_name)) {
 			$.post('/gamemaster/Items/updtCombatItem/', {
 				id:			$id,
 				id_field:	$id_field,
 				int_level:	$int_level,
-				int_bonus:	$int_bonus,
+				me_min:		$me_min,
+				me_max:		$me_max,
+				magic_me:	$magic_me,
+				ds:			$ds,
+				magic_ds:	$magic_ds,
 				id_type:	$id_type,
 				vc_name:	$vc_name
 			}, function($return) {
@@ -143,7 +159,7 @@ $('document').ready(function() {
 				if ($return == 'ok') {
 					alert("Item saved!");
 				} else {
-					alert("Well,\n\nApparently my computational system wasn't able to compute the data you've tried to insert.\n\nBut if you're a wanna-be-a-hacker smart ass, here a hint of what have happened:\n\n"+$return);
+					alert("Well,\n\nApparently my computational system wasn't able to compute the data you've tried to insert.\n\nBut if you're a wanna-be-a-hacker smart ass, here's a hint of what have happened:\n\n"+$return);
 				}
 				return false;
 			});

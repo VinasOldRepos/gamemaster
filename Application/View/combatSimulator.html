@@ -15,6 +15,10 @@
 		<input type="hidden" name="id_monster" id="id_monster" value="" />
 		<input type="hidden" name="monster_treasure" id="monster_treasure" value="" />
 		<input type="hidden" name="id_answer" id="id_answer" value="" />
+		<input type="hidden" name="id_question" id="id_question" value="" />
+		<input type="hidden" name="time_limit" id="time_limit" value="" />
+		<input type="hidden" name="turn" id="turn" value="" />
+		<input type="hidden" name="correct" id="correct" value="" />
 		<div class="box_player">
 			Your hit points? <input type="text" name="player_hp" id="player_hp" value="" size="32" /><br />
 			What is your damage? <input type="text" name="player_min_dmg" id="player_min_dmg" value="" size="5" /> - <input type="text" name="player_max_dmg" id="player_max_dmg" value="" size="5" /><br />
@@ -35,7 +39,8 @@
 			</select>
 			<br /><br />
 			Select your monster:
-			<?php echo $monsters; ?>
+			<div id="monster_list">
+			</div>
 		</div>
 		<div class="box_select_monster">
 			Monster HP: <input type="text" name="monster_hp" id="monster_hp" value="" /><br />
@@ -46,12 +51,21 @@
 			knowledge base (%): <input type="text" name="monster_knowledge" id="monster_knowledge" value="" size="5" /><br />
 		</div>
 
-		<div class="box_run_round">GO</div>
+		<div class="box_run_round" id="box_run_round">GO</div>
 
+		<div class="box_counter" id="box_counter">
+		</div>
 		<div class="box_question" id="box_question">
 		</div>
 		<div class="box_answers" id="box_answers">
 		</div>
+		<div class="box_rightanswer" id="box_rightanswer">
+		</div>
+
+		<div class="user_hit not_shown" id="user_hit">You hit</div>
+		<div class="user_missed not_shown" id="user_missed">You missed</div>
+		<div class="monster_hit not_shown" id="monster_hit">Monster hit</div>
+		<div class="user_missed not_shown" id="monster_missed">Monster missed</div>
 	</body>
 
 </html>

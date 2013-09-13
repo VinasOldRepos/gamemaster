@@ -16,12 +16,15 @@
 	class Combat {
 
 		public function answers($answers = false) {
-			$return	= false;
+			$return		= false;
+			$correct	= false;
 			if ($answers) {
 				shuffle($answers);
 				foreach ($answers as $answer) {
-					$return	.= '<input type="radio" name="answer_opt" id="opt_'.$answer['id'].'" value="'.$answer['id'].'" class="radio_answer_opt" /> '.$answer['vc_answer'].'<br />'.PHP_EOL;
+					$correct	= ((!$correct) && ($answer['boo_correct'] == 1)) ? $answer['id'] : false;
+					$return		.= '<input type="radio" name="answer_opt" id="opt_'.$answer['id'].'" value="'.$answer['id'].'" caption="'.$answer['vc_answer'].'" class="radio_answer_opt" /> '.$answer['vc_answer'].'<br />'.PHP_EOL;
 				}
+				//$return			.= '<input type="hidden" name="correct" id="correct" value="'.md5($correct).'" />'.PHP_EOL;
 			}
 			return $return;
 		}

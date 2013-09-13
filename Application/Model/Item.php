@@ -51,7 +51,7 @@
 					$return			.= '	<div class="result_field result_item">'.$entries[$i]['vc_type'].'</div>'.PHP_EOL;
 					$return			.= '	<div class="result_field result_id">'.$entries[$i]['int_level'].'</div>'.PHP_EOL;
 					$return			.= '	<div class="result_field result_name">'.$entries[$i]['vc_name'].'</div>'.PHP_EOL;
-					$return			.= '	<div class="result_field result_id">'.$entries[$i]['int_bonus'].'</div>'.PHP_EOL;
+					//$return			.= '	<div class="result_field result_id">'.$entries[$i]['int_bonus'].'</div>'.PHP_EOL;
 					$return			.= '</div><br />'.PHP_EOL;
 				}
 			}
@@ -113,13 +113,13 @@
 			} else {
 				$return	.= '	<div class="result_header_field result_name"  key="i.vc_name" direction="ASC" style="text-align: center;">Name</div>'.PHP_EOL;
 			}
-			if (($ordering == 'i.int_bonus') && ($direction == 'ASC')) {
+			/*if (($ordering == 'i.int_bonus') && ($direction == 'ASC')) {
 				$return	.= '	<div class="result_header_field result_id"  key="i.int_bonus" direction="DESC" style="text-align: center;"><img src="/gamemaster/Application/View/img/arrow_down_mini.gif" width="16" height="16" align="absmiddle" />Bonus</div>'.PHP_EOL;
 			} else if (($ordering == 'i.int_bonus') && ($direction == 'DESC')) {
 				$return	.= '	<div class="result_header_field result_id"  key="i.int_bonus" direction="ASC" style="text-align: center;"><img src="/gamemaster/Application/View/img/arrow_up_mini.gif" width="16" height="16" align="absmiddle" />Bonus</div>'.PHP_EOL;
 			} else {
 				$return	.= '	<div class="result_header_field result_id"  key="i.int_bonus" direction="ASC" style="text-align: center;">Bonus</div>'.PHP_EOL;
-			}
+			}*/
 			$return	.= '</div><br />'.PHP_EOL;
 			return $return;
 		}
@@ -186,7 +186,7 @@
 					$rows				.= '	<div class="result_field result_item">'.$entries[$i]['vc_type'].'</div>'.PHP_EOL;
 					$rows				.= '	<div class="result_field result_id">'.$entries[$i]['int_level'].'</div>'.PHP_EOL;
 					$rows				.= '	<div class="result_field result_name">'.$entries[$i]['vc_name'].'</div>'.PHP_EOL;
-					$rows				.= '	<div class="result_field result_id">'.$entries[$i]['int_bonus'].'</div>'.PHP_EOL;
+					//$rows				.= '	<div class="result_field result_id">'.$entries[$i]['int_bonus'].'</div>'.PHP_EOL;
 					$rows				.= '</div><br />'.PHP_EOL;
 				}
 				$return			.= '<div class="navigation_box" id="up_nav_box">'.PHP_EOL;

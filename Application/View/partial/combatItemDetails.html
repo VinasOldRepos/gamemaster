@@ -23,13 +23,15 @@
 
 							<label for="vc_branch">Branch:</label> <input type="text" name="combat_int_level" id="combat_int_level" maxlength="100" class="sec_text_input" disabled="disabled" value="<?php echo $vc_branch; ?>" />
 							<label for="vc_field">Field:</label> <input type="text" name="combat_int_level" id="combat_int_level" maxlength="100" class="sec_text_input" disabled="disabled" value="<?php echo $vc_field; ?>" />
-
-							<label for="int_level">Level:</label> <input type="text" name="int_level" id="int_level" maxlength="100" class="sec_text_input" value="<?php echo $int_level; ?>" />
-							<label for="int_bonus">Bonus:</label> <input type="text" name="int_bonus" id="int_bonus" maxlength="100" class="sec_text_input" value="<?php echo $int_bonus; ?>" />
 							<label for="id_type">Type:</label>
 							<select name="id_type" id="id_type" class="sec_text_input" style="width: 206px;">
 								<?php echo $types; ?>
 							</select>
+							<label for="int_level">Level:</label> <input type="text" name="int_level" id="int_level" maxlength="100" class="sec_text_input" value="<?php echo $int_level; ?>" />
+							<label for="me_min">ME:</label> <br /><input type="text" name="me_min" id="me_min" maxlength="3" class="sec_tiny_text_input" style="margin-left: 60px;" value="<?php echo $int_me_min; ?>" /><input type="text" name="me_max" id="me_max" maxlength="3" class="sec_tiny_text_input" style="margin-left: 10px;" value="<?php echo $int_me_max; ?>" />
+							<br /><br /><label for="magic_me">Magic Bonus ME:</label> <input type="text" name="magic_me" id="magic_me" maxlength="100" class="sec_text_input" value="<?php echo $int_magic_me; ?>" />
+							<label for="ds">DS:</label> <input type="text" name="ds" id="ds" maxlength="100" class="sec_text_input" value="<?php echo $int_ds; ?>" />
+							<label for="magic_ds">Magic Bonus DS:</label> <input type="text" name="magic_ds" id="magic_ds" maxlength="100" class="sec_text_input" value="<?php echo $int_magic_ds; ?>" />
 							<label for="vc_name">Name:</label> <input type="text" name="vc_name" id="vc_name" maxlength="100" class="sec_text_input" value="<?php echo $vc_name; ?>" />
 
 							<div class="form_buttons">

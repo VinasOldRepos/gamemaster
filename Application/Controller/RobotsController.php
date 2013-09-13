@@ -64,16 +64,14 @@
 			$level		= 1;
 			$id_course	= 1;
 
-			// Get all Monsters
-			$monsters	= $RepMap->getminAllMonstersByLevel(2);
-			// Model all monster
-			$monsters	= $ModMap->listMonsters($monsters);
 			// Get all branches
 			$RepQuestion	= new RepQuestion();
 			$branches		= $RepQuestion->getAllBranches();
 			$branches		= ($branches) ? $ModMap->combo($branches, true) : false;
 			// Prepare return
-			View::set('monsters',	$monsters);
+			//$GLOBALS['this_js']		= '<script type="text/javascript" src="/gamemaster/Application/View/js/libs/jquery.fancybox-1.3.4.pack.js"></script>'.PHP_EOL;	// Se não houver, definir como vazio ''
+			//$GLOBALS['this_css']	= '<link href="'.URL_PATH.'/Application/View/css/jquery.fancybox-1.3.4.css" rel="stylesheet">'.PHP_EOL;	// Se não houver, definir como vazio ''
+			//View::set('monsters',	$monsters);
 			View::set('id_course',	$id_course);
 			View::set('branches',	$branches);
 			// Return
@@ -86,23 +84,30 @@
 			$ModCombat		= new ModCombat();
 			// Variables
 			$return			= false;
+			$time_limit		= false;
+			$id_question	= false;
 			$id_monster		= (isset($_POST['id_monster'])) ? trim(($_POST['id_monster'])) : false;
 			$id_course		= (isset($_POST['id_course'])) ? trim(($_POST['id_course'])) : false;
 			if (($id_monster) && ($id_course)) {
 				// Get monster's info
-				$monster		= $RepMonster->getById($id_monster);
+				$monster	= $RepMonster->getById($id_monster);
 				if ($monster) {
+					/*/
 					// Get a random question from the course
-					$RepQuestion	= new RepQuestion();
-					$id_question	= ($id_question = $RepQuestion->getRandomQuestionByCourseId($id_course)) ? $id_question['id_question'] : false;
-					$question		= ($id_question) ? $RepQuestion->getQuestionById($id_question) : false;
-					$answers		= ($id_question) ? $RepQuestion->getAnswersByQuestionId($id_question) : false;
-					$time_limit		= ($question) ? $question['int_timelimit'] : false;
+					$RepQuestion		= new RepQuestion();
+					$id_question		= ($id_question = $RepQuestion->getRandomQuestionByCourseId($id_course)) ? $id_question['id_question'] : false;
+					$question			= ($id_question) ? $RepQuestion->getQuestionById($id_question) : false;
+					$answers			= ($id_question) ? $RepQuestion->getAnswersByQuestionId($id_question) : false;
 					// Calculate Monster's treasure drop
-					$treasure		= rand($monster['int_treasure_min'], $monster['int_treasure_max']);
 					// Model Data
-					$question		= ($question) ? $question['tx_question'] : false;
+					if ($question) {
+						$time_limit		= $question['int_timelimit'];
+						$id_question	= $question['id'];
+						$question		= $question['tx_question'];
+					}
 					$answers		= ($answers) ? $ModCombat->answers($answers) : false;
+					/*/
+					$treasure			= rand($monster['int_treasure_min'], $monster['int_treasure_max']);
 					// Prepare return
 					$return['monster_hp']		= rand($monster['int_hits_min'], $monster['int_hits_max']);
 					$return['monster_min_dmg']	= $monster['int_damage_min'];
@@ -110,10 +115,11 @@
 					$return['int_ds']			= $monster['int_ds'];
 					$return['int_knowledge']	= $monster['int_knowledge'];
 					$return['int_me']			= $monster['int_me'];
-					$return['question']			= $question;
-					$return['answers']			= $answers;
+					//$return['question']			= $question;
+					//$return['answers']			= $answers;
 					$return['treasure']			= $treasure;
-					$return['time_limit']		= $time_limit;
+					//$return['time_limit']		= $time_limit;
+					//$return['id_question']		= $id_question;
 				}
 			}
 			// Return
@@ -135,25 +141,61 @@
 			// Variables
 			$return			= false;
 			$id_course		= (isset($_POST['id_course'])) ? trim($_POST['id_course']) : false;
+			$time_limit		= false;
+			$id_question	= false;
+			$correct		= false;
 			if ($id_course) {
 				// Get question and Answers
 				$id_question	= ($id_question = $RepQuestion->getRandomQuestionByCourseId($id_course)) ? $id_question['id_question'] : false;
 				$question		= ($id_question) ? $RepQuestion->getQuestionById($id_question) : false;
 				$answers		= ($id_question) ? $RepQuestion->getAnswersByQuestionId($id_question) : false;
 				// Model Data
-				$question		= ($question) ? $question['tx_question'] : false;
-				$answers		= ($answers) ? $ModCombat->answers($answers) : false;
+				if ($question) {
+					$time_limit			= $question['int_timelimit'];
+					$id_question		= $question['id'];
+					$question			= $question['tx_question'];
+				}
+				if ($answers) {
+					foreach ($answers as $answer) {
+						if ($answer['boo_correct'] == 1) {
+							$correct	= $answer['id'];
+							break;
+						}
+					}
+					$answers			= $ModCombat->answers($answers);
+				}
 				// Prepare return
-				$return['question']			= $question;
-				$return['answers']			= $answers;
+				$return['question']		= $question;
+				$return['answers']		= $answers;
+				$return['time_limit']	= $time_limit;
+				$return['id_question']	= $id_question;
+				$return['correct']		= $correct;
 			}
 			// Return
 			header('Content-Type: application/json');
 			echo json_encode($return);
 		}
 
+		public function loadMonsters() {
+			// Classes
+			$RepQuestion	= new RepQuestion();
+			$ModMap			= new ModMap();
+			$id_course		= (isset($_POST['id_course'])) ? trim($_POST['id_course']) : false;
+			$return			= false;
+			if ($id_course) {
+				$course		= $RepQuestion->getCourseById($id_course);
+				// Get all Monsters
+				$RepMap		= new RepMap();
+				$monsters	= ($course) ? $RepMap->getminAllMonstersByLevel($course['int_level']) : false;
+				// Model all monster
+				$return		= ($monsters) ? $ModMap->listMonsters($monsters) : false;
+			}
+			// Return
+			echo $return;
+		}
+
 		/* ************************************************************* */
-		/* ************************************************************* */
+		/* ************************** ROBOTS *************************** */
 		/* ************************************************************* */
 
 		public function resetWorld() {

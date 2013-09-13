@@ -184,6 +184,22 @@
 		}
 
 		/*
+		Get Courses By Id  - getCourseById($id)
+			@param integer	- ID
+			@return format	- Mixed array
+		*/
+		public function getCourseById($id = false) {
+			// Database Connection
+			$db				= $GLOBALS['db_q'];
+			// Initialize variables
+			$return			= false;
+			// Query set up	
+			$return			= ($id) ? $db->getRow('tb_course', '*', "id = {$id}") : false;
+			// Return
+			return $return;
+		}
+
+		/*
 		Get Fields by Branch Id - getFieldsBranchId($id)
 			@param integer	- Branch id ID
 			@return format	- Mixed array

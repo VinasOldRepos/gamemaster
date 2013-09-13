@@ -259,16 +259,19 @@
 					}
 					// Model info
 					$types				= $ModItem->combo($types, false, $item['id_type']);
-					$item['int_bonus']	= ($item['int_bonus'] > 0) ? '+'.$item['int_bonus'] : $item['int_bonus'];
 					// Prepare data for return
-					View::set('id_item',	$item['id']);
-					View::set('id_field',	$item['id_field']);
-					View::set('int_level',	$item['int_level']);
-					View::set('int_bonus',	$item['int_bonus']);
-					View::set('vc_name',	$item['vc_name']);
-					View::set('vc_field',	$vc_field);
-					View::set('vc_branch',	$vc_branch);
-					View::set('types',		$types);
+					View::set('id_item',		$item['id']);
+					View::set('id_field',		$item['id_field']);
+					View::set('int_level',		$item['int_level']);
+					View::set('int_me_min',		$item['int_me_min']);
+					View::set('int_me_max',		$item['int_me_max']);
+					View::set('int_magic_me',	$item['int_magic_me']);
+					View::set('int_ds',			$item['int_ds']);
+					View::set('int_magic_ds',	$item['int_magic_ds']);
+					View::set('vc_name',		$item['vc_name']);
+					View::set('vc_field',		$vc_field);
+					View::set('vc_branch',		$vc_branch);
+					View::set('types',			$types);
 					// Return
 					View::render('partial_combatItemDetails');
 				}
@@ -313,18 +316,22 @@
 		*/
 		public function addCombatItem() {
 			// Declare classes
-			$RepItem			= new RepItem();
+			$RepItem	= new RepItem();
 			// Initialize variables
-			$return				= false;
-			$id_field			= (isset($_POST['id_field'])) ? trim($_POST['id_field']) : false;
-			$id_type			= (isset($_POST['id_type'])) ? trim($_POST['id_type']) : false;
-			$int_level			= (isset($_POST['int_level'])) ? trim($_POST['int_level']) : false;
-			$int_bonus			= (isset($_POST['int_bonus'])) ? trim($_POST['int_bonus']) : false;
-			$vc_name			= (isset($_POST['vc_name'])) ? trim($_POST['vc_name']) : false;
+			$return		= false;
+			$id_field	= (isset($_POST['id_field'])) ? trim($_POST['id_field']) : false;
+			$id_type	= (isset($_POST['id_type'])) ? trim($_POST['id_type']) : false;
+			$int_level	= (isset($_POST['int_level'])) ? trim($_POST['int_level']) : false;
+			$me_min		= (isset($_POST['me_min'])) ? trim($_POST['me_min']) : '0';
+			$me_max		= (isset($_POST['me_max'])) ? trim($_POST['me_max']) : '0';
+			$magic_me	= (isset($_POST['magic_me'])) ? trim($_POST['magic_me']) : '0';
+			$ds			= (isset($_POST['ds'])) ? trim($_POST['ds']) : '0';
+			$magic_ds	= (isset($_POST['magic_ds'])) ? trim($_POST['magic_ds']) : '0';
+			$vc_name	= (isset($_POST['vc_name'])) ? trim($_POST['vc_name']) : '0';
 			// If values were sent
-			if (($id_field) && ($id_type) && ($int_level) && ($int_bonus) && ($vc_name)) {
+			if (($id_field) && ($id_type) && ($int_level) && ($vc_name)) {
 				// Save Item and prepare return
-				$return	= ($RepItem->insertCombatItem($id_field, $id_type, $int_level, $int_bonus, $vc_name)) ? 'ok' : false;
+				$return	= ($RepItem->insertCombatItem($id_field, $id_type, $int_level, $me_min, $me_max, $magic_me, $ds, $magic_ds, $vc_name)) ? 'ok' : false;
 			}
 			// Return
 			echo $return;
@@ -366,12 +373,16 @@
 			$id_field	= (isset($_POST['id_field'])) ? trim($_POST['id_field']) : false;
 			$id_type	= (isset($_POST['id_type'])) ? trim($_POST['id_type']) : false;
 			$int_level	= (isset($_POST['int_level'])) ? trim($_POST['int_level']) : false;
-			$int_bonus	= (isset($_POST['int_bonus'])) ? trim($_POST['int_bonus']) : false;
+			$me_min		= (isset($_POST['me_min'])) ? trim($_POST['me_min']) : '0';
+			$me_max		= (isset($_POST['me_max'])) ? trim($_POST['me_max']) : '0';
+			$magic_me	= (isset($_POST['magic_me'])) ? trim($_POST['magic_me']) : '0';
+			$ds			= (isset($_POST['ds'])) ? trim($_POST['ds']) : '0';
+			$magic_ds	= (isset($_POST['magic_ds'])) ? trim($_POST['magic_ds']) : '0';
 			$vc_name	= (isset($_POST['vc_name'])) ? trim($_POST['vc_name']) : false;
 			// If values were sent
-			if (($id) && ($id_field) && ($id_type) && ($int_level) && ($int_bonus) && ($vc_name)) {
+			if (($id) && ($id_field) && ($id_type) && ($int_level) && ($vc_name)) {
 				// Save Item and prepare return
-				$return	= ($RepItem->updateCombatItem($id, $id_field, $id_type, $int_level, $int_bonus, $vc_name)) ? 'ok' : false;
+				$return	= ($RepItem->updateCombatItem($id, $id_field, $id_type, $int_level, $me_min, $me_max, $magic_me, $ds, $magic_ds, $vc_name)) ? 'ok' : false;
 			}
 			// Return
 			echo $return;

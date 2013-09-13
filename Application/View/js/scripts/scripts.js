@@ -35,7 +35,23 @@ $('document').ready(function() {
 	$(".details_item_off, .details_item_on").live("click", function() {
 		$controller	= this.parentNode.id;
 		$key		= $(this).attr('key');
-		$(location).attr('href', '/gamemaster/'+$controller+'/'+$key);
+		if ($key == 'CombatSimulator') {
+			$.fancybox({
+				href			: '/gamemaster/Robots/CombatSimulator/',
+				width			: 900,
+				height			: 650,
+				autoScale		: false,
+				showCloseButton	: true,
+				scrolling		: 'yes',
+				transitionIn	: 'elastic',
+				transitionOut	: 'elastic',
+				speedIn			: 600,
+				speedOut		: 200,
+				type			: 'iframe'
+			});
+		} else {
+			$(location).attr('href', '/gamemaster/'+$controller+'/'+$key);
+		}
 		return false;
 	});
 
@@ -271,21 +287,4 @@ function sprintf($length, $char, $string) {
 		}
 		return $string;
 	}
-}
-
-
-// Pause
-function pause($milisecs) {
-	if ($milisecs) {
-		$now		= new Date();
-		$start		= $now.getTime();
-		$thistime	= $start;
-		$paused		= true;
-		while ($paused) {
-			$now		= new Date();
-			$thistime	= $now.getTime();
-			$paused		= ($thistime - $start > $milisecs) ? false : true;
-		}
-	}
-	return false;
 }

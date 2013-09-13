@@ -44,6 +44,7 @@
 					$GLOBALS['menu']['monsters']['display']		= 'none';
 					$GLOBALS['menu']['monsters']['opt1_css']	= 'details_item_off';
 					$GLOBALS['menu']['monsters']['opt2_css']	= 'details_item_off';
+					$GLOBALS['menu']['monsters']['opt3_css']	= 'details_item_off';
 
 					$GLOBALS['menu']['users']['css']			= 'item_off';
 					$GLOBALS['menu']['users']['display']		= 'none';
@@ -74,6 +75,7 @@
 					$GLOBALS['menu']['monsters']['display']		= 'none';
 					$GLOBALS['menu']['monsters']['opt1_css']	= 'details_item_off';
 					$GLOBALS['menu']['monsters']['opt2_css']	= 'details_item_off';
+					$GLOBALS['menu']['monsters']['opt3_css']	= 'details_item_off';
 
 					$GLOBALS['menu']['users']['css']			= 'item_off';
 					$GLOBALS['menu']['users']['display']		= 'none';
@@ -104,6 +106,7 @@
 					$GLOBALS['menu']['monsters']['display']		= 'none';
 					$GLOBALS['menu']['monsters']['opt1_css']	= 'details_item_off';
 					$GLOBALS['menu']['monsters']['opt2_css']	= 'details_item_off';
+					$GLOBALS['menu']['monsters']['opt3_css']	= 'details_item_off';
 
 					$GLOBALS['menu']['users']['css']			= 'item_off';
 					$GLOBALS['menu']['users']['display']		= 'none';
@@ -134,6 +137,7 @@
 					$GLOBALS['menu']['monsters']['display']		= 'block';
 					$GLOBALS['menu']['monsters']['opt1_css']	= 'details_item_off';
 					$GLOBALS['menu']['monsters']['opt2_css']	= 'details_item_off';
+					$GLOBALS['menu']['monsters']['opt3_css']	= 'details_item_off';
 
 					$GLOBALS['menu']['users']['css']			= 'item_off';
 					$GLOBALS['menu']['users']['display']		= 'none';
@@ -164,6 +168,7 @@
 					$GLOBALS['menu']['monsters']['display']		= 'none';
 					$GLOBALS['menu']['monsters']['opt1_css']	= 'details_item_off';
 					$GLOBALS['menu']['monsters']['opt2_css']	= 'details_item_off';
+					$GLOBALS['menu']['monsters']['opt3_css']	= 'details_item_off';
 
 					$GLOBALS['menu']['users']['css']			= 'item_on';
 					$GLOBALS['menu']['users']['display']		= 'block';
@@ -196,6 +201,7 @@
 					$GLOBALS['menu']['monsters']['display']		= 'none';
 					$GLOBALS['menu']['monsters']['opt1_css']	= 'details_item_off';
 					$GLOBALS['menu']['monsters']['opt2_css']	= 'details_item_off';
+					$GLOBALS['menu']['monsters']['opt3_css']	= 'details_item_off';
 
 					$GLOBALS['menu']['users']['css']			= 'item_off';
 					$GLOBALS['menu']['users']['display']		= 'none';
