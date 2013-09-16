@@ -213,4 +213,63 @@
 			return $return;
 		}
 
+		/*
+		Insert Question into Database - insertQuestion($courses, $id_status, $tx_question, $tx_tutor)
+			@param array	- Corses' IDs
+			@param integer	- Status ID
+			@param integer	- Time limit
+			@param text		- Question's text
+			@param text		- Tutor's text
+			@return integer	- Question's ID
+		*/
+		public function insertQuestion($courses, $id_status, $int_timelimit, $tx_question, $tx_tutor) {
+			// Initialize variables
+			$return				= false;
+			// Database Connection
+			$db					= $GLOBALS['db'];
+			// Validate sent information
+			if (($courses) && ($id_status)  && ($int_timelimit) && ($tx_question) && ($tx_tutor)) {
+				// Prepare values
+				$values[]		= $id_status;
+				$values[]		= $int_timelimit;
+				$values[]		= $tx_question;
+				$values[]		= $tx_tutor;
+				// Add Question to Database
+				$db->insertRow('tb_question', $values, '');
+				$question_id	= $db->last_id();
+				foreach ($courses as $course) {
+					$db->insertRow('tb_question_course', array($course, $question_id), '');
+				}
+				$return			= $question_id;
+			}
+			return $return;
+		}
+
+		/*
+		Insert Answer into Database - insertAnswer($id_question, $vc_answer, $boo_correct)
+			@param integer	- Question ID
+			@param string	- Answer
+			@param boolean	- If answer is correct
+			@return boolean
+		*/
+		public function insertAnswer($id_question = false, $vc_answer = false, $boo_correct = 0) {
+			// Initialize variables
+			$return				= false;
+			// Database Connection
+			$db					= $GLOBALS['db'];
+			// Validate sent information
+			if (($id_question) && ($vc_answer)) {
+				if ($boo_correct == 1) {
+					$db->updateRow('tb_answer', array('boo_correct'), array(0), 'id_question = '.$id_question);
+				}
+				// Prepare values
+				$values[]		= $id_question;
+				$values[]		= $vc_answer;
+				$values[]		= $boo_correct;
+				// Add Branch to Database
+				$return			= $db->insertRow('tb_answer', $values, '');
+			}
+			return $return;
+		}
+
 	}

@@ -69,8 +69,8 @@
 			$branches		= $RepQuestion->getAllBranches();
 			$branches		= ($branches) ? $ModMap->combo($branches, true) : false;
 			// Prepare return
-			//$GLOBALS['this_js']		= '<script type="text/javascript" src="/gamemaster/Application/View/js/libs/jquery.fancybox-1.3.4.pack.js"></script>'.PHP_EOL;	// Se não houver, definir como vazio ''
-			//$GLOBALS['this_css']	= '<link href="'.URL_PATH.'/Application/View/css/jquery.fancybox-1.3.4.css" rel="stylesheet">'.PHP_EOL;	// Se não houver, definir como vazio ''
+			$GLOBALS['this_js']		= ''.PHP_EOL;	// Se não houver, definir como vazio ''
+			$GLOBALS['this_css']	= ''.PHP_EOL;	// Se não houver, definir como vazio ''
 			//View::set('monsters',	$monsters);
 			View::set('id_course',	$id_course);
 			View::set('branches',	$branches);
@@ -197,6 +197,98 @@
 		/* ************************************************************* */
 		/* ************************** ROBOTS *************************** */
 		/* ************************************************************* */
+
+		public function importQuestions() {
+			$RepQuestion	= new RepQuestion();
+			set_time_limit(0); // Sem timeout de query
+			$return			= 'Not done';
+			$min_row		= 9;
+			$id_course		= false;
+			$level			= false;
+			$questions		= false;
+			$answers		= false;
+			$file			= 'c:\temp\Geo010-WorldCapitals.csv';
+			$data			= $this->csvIntoArray($file);
+			if ($data) {
+
+				/************************
+				*						*
+				*	   ARRAY RULES		*
+				*						*
+				*	1,0 -> id_branch	*
+				*	2,0 -> id_field		*
+				*	3,0 -> id_course	*
+				*	5,0 -> int_level	*
+				*						*
+				*	Y,1 ->tx_question	*
+				*	Y,3 ->tx_tutor		*
+				*	Y,5 ->time_limit	*
+				*	Y,7 ->correct		*
+				*	Y,8 ->wrong			*
+				*	Y,9 ->wrong			*
+				*	Y,10 ->wrong		*
+				*						*
+				*		SETTINGS		*
+				*						*
+				*	   min row = 9		*
+				*************************/
+
+				$tot_rows				= count($data);
+				echo 'Doing it...';
+				for ($i = 0; $i < $tot_rows; $i++) {
+					// If it's a question
+					if ($i >= $min_row) {
+						// Load Question info
+						$question[]		= $data[$i][1];
+						$question[]		= $data[$i][3];
+						$question[]		= $data[$i][5];
+						// Load Answer
+						$answer[]		= $data[$i][7];
+						$answer[]		= $data[$i][8];
+						$answer[]		= $data[$i][9];
+						$answer[]		= $data[$i][10];
+						// Prepare question and answer to be saved
+						$questions[]	= $question;
+						$answers[]		= $answer;
+						$question		= false;
+						$answer			= false;
+					// If it's settings
+					} else {
+						if ($i > 0) {
+							$id_course[]	= $data[3][0];
+							$level			= $data[5][0];
+						}
+					}
+				}
+				// If there's data to be saved
+				if (($questions) && ($answers) && ($id_course) && ($level) && (count($questions) == count($answers))) {
+					// Save all data
+					for ($i = 0; $i < count($questions); $i++) {
+						$id_question	= $RepQuestion->insertQuestion($id_course, 1 /* approved */, $questions[$i][2], $questions[$i][0], $questions[$i][1]);
+						for ($s = 0; $s < count($answers[$i]); $s++) {
+							$boo_correct	= ($s == 0) ? '1' : '0';
+							$RepQuestion->insertAnswer($id_question, $answers[$i][$s], $boo_correct);
+						}
+					}
+					// Prepare return
+					$return = ' done!!';
+				}
+			}
+			// Return
+			echo $return;
+		}
+
+		public function csvIntoArray($file = false) {
+			$return				= false;
+			if ($file) {
+				$handle			= fopen($file, "r");
+				while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+					$return[]	= $data;
+				}
+				fclose($handle);
+			}
+			return $return;
+		}
 
 		public function resetWorld() {
 			$RepMap		= new RepMap();
