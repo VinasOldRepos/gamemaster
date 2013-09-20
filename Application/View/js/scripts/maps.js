@@ -416,6 +416,7 @@ $('document').ready(function() {
 		$id_field			= $("#id_field").val();
 		$level				= $("#level").val();
 		$vc_name			= $("#vc_name").val();
+		$vc_mouseover		= $("#vc_mouseover").val();
 		$coords				= getAllMapsCoords();
 		$.post('/gamemaster/Maps/saveMap', {
 			id_areatype:	$id_areatype,
@@ -425,6 +426,7 @@ $('document').ready(function() {
 			id_field:		$id_field,
 			level:			$level,
 			vc_name:		$vc_name,
+			vc_mouseover:	$vc_mouseover,
 			coords:			$coords
 		}, function($return) {
 			$return			= $return.trim();
@@ -447,6 +449,8 @@ $('document').ready(function() {
 		$int_level			= $("#level").val();
 		$world_pos			= $("#world_pos").val();
 		$id_areamap_orign	= $("#parent_id_areamap").val();
+		$vc_mouseover		= $("#vc_mouseover").val();
+		$id_course			= $("#id_course").val();
 		$coords				= getAllMapsCoords();
 		if (($id_areamap) && ($id_tiletype) && ($id_field) && ($int_level) && ($coords) ) {
 			$.post('/gamemaster/Maps/updateMap', {
@@ -457,6 +461,8 @@ $('document').ready(function() {
 				int_level:			$int_level,
 				world_pos:			$world_pos,
 				id_areamap_orign:	$id_areamap_orign,
+				vc_mouseover:		$vc_mouseover,
+				id_course:			$id_course,
 				coords:				$coords
 			}, function($return) {
 				$return				= $return.trim();
@@ -482,6 +488,8 @@ $('document').ready(function() {
 		$parent_pos				= $("#parent_pos").val();
 		$parent_id_areamap		= $("#parent_id_areamap").val();
 		$vc_name				= $("#vc_name").val();
+		$vc_mouseover			= $("#vc_mouseover").val();
+		$id_course				= $("#id_course").val();
 		$coords					= getAllMapsCoords();
 		$.post('/gamemaster/Maps/saveDungeon', {
 			id_world:			$id_world,
@@ -491,6 +499,8 @@ $('document').ready(function() {
 			parent_pos:			$parent_pos,
 			parent_id_areamap:	$parent_id_areamap,
 			vc_name:			$vc_name,
+			vc_mouseover:		$vc_mouseover,
+			id_course:			$id_course,
 			coords:				$coords
 		}, function($return) {
 			$return				= $return.trim();

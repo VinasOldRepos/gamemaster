@@ -30,6 +30,10 @@
 								<input type="hidden" name="target_tile_id" id="target_tile_id" value="" />
 								<input type="hidden" name="action" id="action" value="NewEncounterMap" />
 								<input type="hidden" name="id_areatype" id="id_areatype" value="2" /> <!-- dungeon -->
+								<label for="id_course">Course:</label>
+								<select name="id_course" id="id_course" class="main_text_input" style="width: 206px;">
+									<?php echo $courses; ?>
+								</select>
 								<label for="id_tiletype">Background Type:</label>
 								<select name="encounter_id_tiletype" id="encounter_id_tiletype" class="main_text_input" style="width: 206px;">
 									<?php echo $tiletypes; ?>
@@ -37,7 +41,9 @@
 								<div class="not_shown" id="map_name">
 									<br />
 									<label for="level">Area's name:</label>
-									<input type="text" name="vc_name" id="vc_name" class="main_text_input"	 />
+									<input type="text" name="vc_name" id="vc_name" class="main_text_input" />
+									<label for="vc_mouseover">Mouse over text:</label>
+									<input type="text" name="vc_mouseover" id="vc_mouseover" class="main_text_input" />
 								</div>
 							</form>
 						</fieldset>

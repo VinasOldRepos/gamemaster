@@ -46,6 +46,7 @@
 							}
 						} else {
 							$return		.= '	<div class="result_field result_idfield">General</div>'.PHP_EOL;
+							break;
 						}
 					}
 					$return			.= '	<div class="result_field result_item">'.$entries[$i]['vc_type'].'</div>'.PHP_EOL;

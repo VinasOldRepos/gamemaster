@@ -570,23 +570,29 @@
 		}
 
 		/*
-		Insert Map into Database - insertMap($id_areatype, $vc_name, $coords)
+		Insert Map into Database - insertMap(boo_encounter, $id_course, $id_areatype, $vc_name, $vc_mouseover, $coords)
+			@param boolean	- is it an encounter area
 			@param integer	- Area type id
-			@param array	- map info
+			@param integer	- Course id
+			@param string	- Area's name
+			@param string	- Mouseover text
+			@param array	- map tiles
 			@return boolean
 		*/
-		public function insertMap($boo_encounter = false, $id_areatype = false, $vc_name = false, $coords = false) {
+		public function insertMap($boo_encounter = false, $id_course = 0, $id_areatype = false, $vc_name = false, $vc_mouseover = false, $coords = false) {
 			// Initialize variables
 			$return					= false;
 			$map_icon				= false;
 			// Database Connection
 			$db						= $GLOBALS['db'];
 			// Validate sent information
-			if (($id_areatype) && ($coords) && ($vc_name)) {
+			if (($id_areatype) && ($coords) && ($vc_name) && ($vc_mouseover)) {
 				// Prepare map data to be inserted
 				$map_data[]			= $boo_encounter;
+				$map_data[]			= $id_course;
 				$map_data[]			= $id_areatype;
 				$map_data[]			= $vc_name;
+				$map_data[]			= $vc_mouseover;
 				for ($i = 0; $i < 100; $i++) {
 					$map_data[]		= $coords[$i][0];
 					// Gather icon info (position and icon)
@@ -716,22 +722,29 @@
 		}
 
 		/*
-		Update Map in the Database - updateMap($id_areamap, $id_areatype, $coords)
+		Update Map in the Database - updateMap($id_areamap, $id_course, vc_mouseover, $id_areatype, $coords)
 			@param integer	- Area type id
-			@param array	- map info
+			@param integer	- Course id
+			@param integer	- Mouseover text
+			@param integer	- Area type id
+			@param integer	- Map coords
 			@return boolean
 		*/
-		public function updateMap($id_areamap = false, $id_areatype = false, $coords = false) {
+		public function updateMap($id_areamap = false, $id_course = 0, $vc_mouseover = false, $id_areatype = false, $coords = false) {
 			// Initialize variables
 			$return					= false;
 			$map_icon				= false;
 			// Database Connection
 			$db						= $GLOBALS['db'];
 			// Validate sent information
-			if (($id_areamap) && ($id_areatype) && ($coords)) {
+			if (($id_areamap) && ($id_areatype) && ($coords) && ($vc_mouseover)) {
 				// Prepare map data to be inserted
 				$map_data[]			= $id_areatype;
+				$map_data[]			= $id_course;
+				$map_data[]			= $vc_mouseover;
 				$fields[]			= 'id_areatype';
+				$fields[]			= 'id_course';
+				$fields[]			= 'vc_mouseover';
 				for ($i = 0; $i < 100; $i++) {
 					$map_data[]		= $coords[$i][0];
 					$fields[]		= 'vc_coord_'.sprintf('%03d', $i+1);

@@ -69,8 +69,6 @@
 			$branches		= $RepQuestion->getAllBranches();
 			$branches		= ($branches) ? $ModMap->combo($branches, true) : false;
 			// Prepare return
-			$GLOBALS['this_js']		= ''.PHP_EOL;	// Se não houver, definir como vazio ''
-			$GLOBALS['this_css']	= ''.PHP_EOL;	// Se não houver, definir como vazio ''
 			//View::set('monsters',	$monsters);
 			View::set('id_course',	$id_course);
 			View::set('branches',	$branches);
@@ -234,7 +232,7 @@
 				*************************/
 
 				$tot_rows				= count($data);
-				echo 'Doing it...';
+				//echo 'Doing it...';
 				for ($i = 0; $i < $tot_rows; $i++) {
 					// If it's a question
 					if ($i >= $min_row) {

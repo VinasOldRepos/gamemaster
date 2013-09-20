@@ -134,6 +134,7 @@
 					$parent_areamap		= $RepMap->getParentMapIdTypeByMapId($area['id_areamap']);
 					$parent_id_areamap	= $parent_areamap['id_map_orign'];
 					$mapname			= $map['vc_name'];
+					$mouseover			= $map['vc_mouseover'];
 					$link_icon			= $RepMap->getLinksIconsByAreaId($area['id_areamap']);
 					$worlds				= $RepMap->getAllWorlds();
 					$world_pos			= $RepMap->getWorldPosition($parent_id_areamap, $id_areamap);
@@ -160,6 +161,7 @@
 					View::set('fields',				$fields);
 					View::set('level',				$area['int_level']);
 					View::set('mapname',			$mapname);
+					View::set('mouseover',			$mouseover);
 					View::set('parent_id_areamap',	$parent_id_areamap);
 					View::set('vc_id_areamap',		sprintf('%04d', $area['id_areamap']));
 					View::set('world_pos',			sprintf('%03d', $world_pos));
@@ -186,6 +188,11 @@
 			}
 			$return						= false;
 			$link						= false;
+			$id_tiletype				= false;
+			$id_areatype				= false;
+			$id_course					= false;
+			$mapname					= false;
+			$mouseover					= false;
 			$tot_treasure_min			= 0;
 			$tot_treasure_max			= 0;
 			$tot_monsters				= 0;
@@ -202,8 +209,13 @@
 					$tiletypes			= $ModMap->combo($tiletypes, false, $area['id_areatype']);
 					// Load Area Related info
 					$map				= $RepMap->getMapById($area['id_areamap']);
-					$id_tiletype		= ($map) ? $map['id_areatype'] : false;
-					$id_areatype		= $map['id_areatype'];
+					if ($map) {
+						$id_tiletype	= $map['id_areatype'];
+						$id_areatype	= $map['id_areatype'];
+						$id_course		= $map['id_course'];
+						$mapname		= $map['vc_name'];
+						$mouseover		= $map['vc_mouseover'];
+					}
 					$tiles				= $RepMap->getAllEncounterBkgTilesByTileTypeId($id_tiletype);
 					$link_icon			= $RepMap->getLinksIconsByAreaId($area['id_areamap']);
 					$monsters			= $RepMap->getMonstersInMap($area['id_areamap']);
@@ -211,8 +223,9 @@
 					$parent_areamap		= (!$parent_areamap) ? $RepMap->getParentMapIdTypeByMapId($area['id_areamap']) : $parent_areamap;
 					$parent_id_areamap	= (!$parent_id_areamap) ? $parent_areamap['id_map_orign'] : $parent_id_areamap;
 					$worlds				= $RepMap->getAllWorlds();
-					$mapname			= $map['vc_name'];
 					$areas				= $RepMap->getAreasInMap($id_areamap);
+					$RepQuestion		= new RepQuestion();
+					$courses			= $RepQuestion->getCoursesByFieldId($area['id_field']);
 					// Calculate total treasure drop
 					if ($monsters) {
 						$tot_monsters			= count($monsters);
@@ -226,6 +239,7 @@
 					$tiles				= ($tiles) ? $ModMap->listEncounterBkgTiles($tiles) : false;
 					$monsters			= ($monsters) ? $ModMap->mapMonsters($monsters) : '';
 					$areas				= ($areas)  ? $ModMap->listAreaOrder($areas) : false;
+					$courses			= ($courses) ? $ModMap->combo($courses, false, $id_course) : false;
 					// Select "Back" link
 					if ($parent_areamap['boo_encounter'] == 1) {
 						$link			= '/gamemaster/Maps/EditDungeon/'.$parent_id_areamap;
@@ -241,6 +255,7 @@
 					View::set('back_link',			$link);
 					View::set('vc_id_areamap',		sprintf('%04d', $area['id_areamap']));
 					View::set('mapname',			$mapname);
+					View::set('mouseover',			$mouseover);
 					View::set('id_world',			$area['id_world']);
 					View::set('id_field',			$area['id_field']);
 					View::set('int_level',			$area['int_level']);
@@ -254,6 +269,7 @@
 					View::set('tot_treasure_max',	$tot_treasure_max);
 					View::set('tot_monsters',		$tot_monsters);
 					View::set('areas',				$areas);
+					View::set('courses',			$courses);
 					// Render view
 					View::render('dungeonsEdit');
 				}
@@ -307,22 +323,25 @@
 		*/
 		public function NewEncounterArea() {
 			// Declare classes
-			$RepMap			= new RepMap();
-			$ModMap			= new ModMap();
+			$RepMap				= new RepMap();
+			$ModMap				= new ModMap();
 			// Initialize variables
-			$return			= false;
-			$id_world		= (isset($GLOBALS['params'][1])) ? trim(($GLOBALS['params'][1])) : false;
-			$id_field		= (isset($GLOBALS['params'][2])) ? trim(($GLOBALS['params'][2])) : false;
-			$int_level		= (isset($GLOBALS['params'][3])) ? trim(($GLOBALS['params'][3])) : false;
-			$id_areamap		= (isset($GLOBALS['params'][4])) ? trim(($GLOBALS['params'][4])) : false;
-			$parent_pos		= (isset($GLOBALS['params'][5])) ? trim(($GLOBALS['params'][5])) : false;
-			$id_areatype	= 2; // Dungeon
-			$id_tiletype	= 9; // Dungeon
+			$return				= false;
+			$id_world			= (isset($GLOBALS['params'][1])) ? trim(($GLOBALS['params'][1])) : false;
+			$id_field			= (isset($GLOBALS['params'][2])) ? trim(($GLOBALS['params'][2])) : false;
+			$int_level			= (isset($GLOBALS['params'][3])) ? trim(($GLOBALS['params'][3])) : false;
+			$id_areamap			= (isset($GLOBALS['params'][4])) ? trim(($GLOBALS['params'][4])) : false;
+			$parent_pos			= (isset($GLOBALS['params'][5])) ? trim(($GLOBALS['params'][5])) : false;
+			$id_areatype		= 2; // Dungeon
+			$id_tiletype		= 9; // Dungeon
 			// If values were sent
 			if (($parent_pos) && ($id_areamap)) {
 				// Get and model all encounter tiles types
-				$tiletypes	= $RepMap->getAllEncounterTileTypes();
-				$tiletypes	= ($tiletypes) ? $ModMap->combo($tiletypes, true) : false;
+				$tiletypes		= $RepMap->getAllEncounterTileTypes();
+				$RepQuestion	= new RepQuestion();
+				$courses		= ($id_field) ? $RepQuestion->getCoursesByFieldId($id_field) : false;
+				$tiletypes		= ($tiletypes) ? $ModMap->combo($tiletypes, true) : false;
+				$courses		= ($courses) ? $ModMap->combo($courses, true, $id_field) : false;
 				// Define sub menu selection
 				$GLOBALS['menu']['maps']['opt1_css'] = 'details_item_on';
 				// Prepare return values
@@ -332,6 +351,7 @@
 				View::set('id_field',			$id_field);
 				View::set('int_level',			$int_level);
 				View::set('tiletypes',			$tiletypes);
+				View::set('courses',			$courses);
 				// Render view
 				View::render('dungeonsNew');
 			}
@@ -435,15 +455,16 @@
 			$id_field			= (isset($_POST['id_field'])) ? trim($_POST['id_field']) : false;
 			$level				= (isset($_POST['level'])) ? trim($_POST['level']) : false;
 			$vc_name			= (isset($_POST['vc_name'])) ? trim($_POST['vc_name']) : false;
+			$vc_mouseover		= (isset($_POST['vc_mouseover'])) ? trim($_POST['vc_mouseover']) : false;
 			if ($_POST['coords']) {
 				for ($i = 0; $i < 100; $i++) {
 					$coords[$i]	= $_POST['coords'][$i+1];
 				}
 			}
 			// If data was sent
-			if (($id_areatype) && ($id_areamap_orign) && ($world_pos) && ($id_world) && ($id_field) && ($coords) && ($level) && ($vc_name)) {
+			if (($id_areatype) && ($id_areamap_orign) && ($world_pos) && ($id_world) && ($id_field) && ($coords) && ($level) && ($vc_name) && ($vc_mouseover)) {
 				// Save map area
-				$id_areamap		= $RepMap->insertMap(0, $id_areatype, $vc_name, $coords);
+				$id_areamap		= $RepMap->insertMap(0, 0, $id_areatype, $vc_name, $vc_mouseover, $coords);
 				// If map area was saved
 				if ($id_areamap) {
 					// Save area info
@@ -484,15 +505,17 @@
 			$parent_pos			= (isset($_POST['parent_pos'])) ? trim($_POST['parent_pos']) : false;
 			$parent_id_areamap	= (isset($_POST['parent_id_areamap'])) ? trim($_POST['parent_id_areamap']) : false;
 			$vc_name			= (isset($_POST['vc_name'])) ? trim($_POST['vc_name']) : false;
+			$vc_mouseover		= (isset($_POST['vc_mouseover'])) ? trim($_POST['vc_mouseover']) : false;
+			$id_course			= (isset($_POST['id_course'])) ? trim($_POST['id_course']) : false;
 			if ($_POST['coords']) {
 				for ($i = 0; $i < 100; $i++) {
 					$coords[$i]	= $_POST['coords'][$i+1];
 				}
 			}
 			// If data was sent
-			if (($id_world) && ($id_field) && ($int_level) && ($id_areatype) && ($parent_pos) && ($vc_name) && ($parent_id_areamap) && ($coords)) {
+			if (($id_world) && ($id_field) && ($int_level) && ($id_areatype) && ($parent_pos) && ($vc_name) && ($id_course) && ($vc_mouseover) && ($parent_id_areamap) && ($coords)) {
 				// Save dungeon area
-				$id_areamap		= $RepMap->insertMap(1, $id_areatype, $vc_name, $coords);
+				$id_areamap		= $RepMap->insertMap(1, $id_course, $id_areatype, $vc_name, $vc_mouseover, $coords);
 				// If map area was saved
 				if ($id_areamap) {
 					// Save area info
@@ -527,15 +550,17 @@
 			$int_level			= (isset($_POST['int_level'])) ? trim($_POST['int_level']) : false;
 			$world_pos			= (isset($_POST['world_pos'])) ? trim($_POST['world_pos']) : false;
 			$id_areamap_orign	= (isset($_POST['id_areamap_orign'])) ? trim($_POST['id_areamap_orign']) : false;
+			$vc_mouseover		= (isset($_POST['vc_mouseover'])) ? trim($_POST['vc_mouseover']) : false;
+			$id_course			= (isset($_POST['id_course'])) ? trim($_POST['id_course']) : 0;
 			if ($_POST['coords']) {
 				for ($i = 0; $i < 100; $i++) {
 					$coords[$i]	= $_POST['coords'][$i+1];
 				}
 			}
 			// If data was sent
-			if (($id_areamap) && ($coords) && ($id_tiletype) && ($id_field) && ($int_level)) {
+			if (($id_areamap) && ($coords) && ($id_tiletype) && ($id_field) && ($int_level) && ($vc_mouseover)) {
 				// Update map and area info
-				$id_areamap		= $RepMap->updateMap($id_areamap, $id_tiletype, $coords);
+				$id_areamap		= $RepMap->updateMap($id_areamap, $id_course, $vc_mouseover, $id_tiletype, $coords);
 				// If we're updating a local map
 				if (($id_areamap_orign) && ($id_areamap_orign)) {
 					// Get and shrink Map
