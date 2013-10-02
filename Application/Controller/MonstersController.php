@@ -42,7 +42,9 @@
 			} else {
 				// Define JSs e CSSs utilizados por este controller
 				$GLOBALS['this_js']		= '<script type="text/javascript" src="/gamemaster/Application/View/js/scripts/monsters.js"></script>'.PHP_EOL;	// Se não houver, definir como vazio ''
+				$GLOBALS['this_js']		.= '<script type="text/javascript" src="/gamemaster/Application/View/js/libs/jquery.fancybox-1.3.4.pack.js"></script>'.PHP_EOL;	// Se não houver, definir como vazio ''
 				$GLOBALS['this_css']	= '<link href="'.URL_PATH.'/Application/View/css/monsters.css" rel="stylesheet">'.PHP_EOL;	// Se não houver, definir como vazio ''
+				$GLOBALS['this_css']	.= '<link href="'.URL_PATH.'/Application/View/css/jquery.fancybox-1.3.4.css" rel="stylesheet">'.PHP_EOL;	// Se não houver, definir como vazio ''
 				// Define Menu selection
 				Menu::defineSelected($GLOBALS['controller_name']);
 			}

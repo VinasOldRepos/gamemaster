@@ -197,6 +197,8 @@
 		/* ************************************************************* */
 
 		public function importQuestions() {
+			//echo 'you have to manually unlock this';
+			//die;
 			$RepQuestion	= new RepQuestion();
 			set_time_limit(0); // Sem timeout de query
 			$return			= 'Not done';
@@ -252,7 +254,7 @@
 						$answer			= false;
 					// If it's settings
 					} else {
-						if ($i > 0) {
+						if (($i > 0) && (!$id_course) && (!$level)) {
 							$id_course[]	= $data[3][0];
 							$level			= $data[5][0];
 						}
@@ -262,7 +264,7 @@
 				if (($questions) && ($answers) && ($id_course) && ($level) && (count($questions) == count($answers))) {
 					// Save all data
 					for ($i = 0; $i < count($questions); $i++) {
-						$id_question	= $RepQuestion->insertQuestion($id_course, 1 /* approved */, $questions[$i][2], $questions[$i][0], $questions[$i][1]);
+						$id_question		= $RepQuestion->insertQuestion($id_course, 1 /* approved */, $questions[$i][2], $questions[$i][0], $questions[$i][1]);
 						for ($s = 0; $s < count($answers[$i]); $s++) {
 							$boo_correct	= ($s == 0) ? '1' : '0';
 							$RepQuestion->insertAnswer($id_question, $answers[$i][$s], $boo_correct);

@@ -755,11 +755,23 @@
 				}
 				// Save area map and prepare return (id_areamap)
 				$return				= ($db->updateRow('tb_areamap', $fields, $map_data, 'id = '.$id_areamap)) ? $id_areamap : false;
-				// Save Icons
+				// Get linking info
+				$links				= $this->getLinksIconsByAreaId($id_areamap);
 				$db->deleteRow('tb_map_link_icon', 'id_map_orign = '.$id_areamap);
+				// Save Icons and links
 				if ($map_icon) {
+					// Oganize links<br />
+					// **** HERE ****
 					foreach ($map_icon as $icon) {
-						$this->addIconLink($id_areamap, 0, $icon[1], $icon[0], $vc_link = '');
+						$target			= '0';
+						// Take links into accout on the query below
+						foreach ($links as $link) {
+							if ($link['int_pos'] == intval($icon[0])) {
+								$target	= $link['id_map_target'];
+								break;
+							}
+						}
+						$this->addIconLink($id_areamap, $target, $icon[1], $icon[0], $vc_link = '');
 					}
 				}
 			}
