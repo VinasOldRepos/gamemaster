@@ -253,9 +253,12 @@
 				if ($item) {
 					$types				= $RepItem->getAllCombatItemTypes();
 					$RepQuestion		= new RepQuestion();
-					if (isset($item['id_field'])) {
+					if ((isset($item['id_field'])) && ($item['id_field'] != 0)) {
 						$vc_field		= ($field = $RepQuestion->getFieldById($item['id_field'])) ? $field['vc_field'] : false;
 						$vc_branch		= ($branch = $RepQuestion->getBranchFieldId($item['id_field'])) ? $branch['vc_branch'] : false;
+					} else {
+						$vc_field		= 'General';
+						$vc_branch		= 'General';
 					}
 					// Model info
 					$types				= $ModItem->combo($types, false, $item['id_type']);

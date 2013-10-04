@@ -182,6 +182,7 @@
 							}
 						} else {
 							$rows		.= '	<div class="result_field result_idfield">General</div>'.PHP_EOL;
+							break;
 						}
 					}
 					$rows				.= '	<div class="result_field result_item">'.$entries[$i]['vc_type'].'</div>'.PHP_EOL;
