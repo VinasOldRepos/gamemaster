@@ -57,6 +57,7 @@ $('document').ready(function() {
 		$ds			= $("#ds").val();
 		$magic_ds	= $("#magic_ds").val();
 		$vc_name	= $("#vc_combatname").val();
+		$time		= $("#time").val();
 		if (($id_type) && ($int_level) && ($vc_name)) {
 			$.post('/gamemaster/Items/addCombatItem/', {
 				id_field:	$id_field,
@@ -67,6 +68,7 @@ $('document').ready(function() {
 				magic_me:	$magic_me,
 				ds:			$ds,
 				magic_ds:	$magic_ds,
+				time:		$time,
 				vc_name:	$vc_name
 			}, function($return) {
 				$return	= $return.trim();
@@ -142,6 +144,7 @@ $('document').ready(function() {
 		$magic_ds	= $("#magic_ds").val();
 		$id_type	= $("#id_type").val();
 		$vc_name	= $("#vc_name").val();
+		$time		= $("#time").val();
 		if (($id) && ($id_field) && ($int_level) /*&& ($int_bonus)*/ && ($id_type) && ($vc_name)) {
 			$.post('/gamemaster/Items/updtCombatItem/', {
 				id:			$id,
@@ -153,6 +156,7 @@ $('document').ready(function() {
 				ds:			$ds,
 				magic_ds:	$magic_ds,
 				id_type:	$id_type,
+				time:		$time,
 				vc_name:	$vc_name
 			}, function($return) {
 				$return	= $return.trim();

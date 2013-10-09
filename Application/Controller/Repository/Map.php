@@ -375,6 +375,20 @@
 		}
 
 		/*
+		Get All Child Maps - getAllChildMaps($id)
+			@param integer	- ID area Map
+			@return format	- Mixed array
+		*/
+		public function getAllChildMaps($id = false) {
+			// Database Connection
+			$db				= $GLOBALS['db'];
+			// Query 
+			$return			= ($id) ? $db->getAllRows_Arr('tb_map_link_icon', 'id_map_target AS id', 'id_map_orign = '.$id) : false;
+			// Return
+			return $return;
+		}
+
+		/*
 		Get All Icons - getAllIcons(
 			@return format	- Mixed array
 		*/
@@ -757,11 +771,10 @@
 				$return				= ($db->updateRow('tb_areamap', $fields, $map_data, 'id = '.$id_areamap)) ? $id_areamap : false;
 				// Get linking info
 				$links				= $this->getLinksIconsByAreaId($id_areamap);
-				$db->deleteRow('tb_map_link_icon', 'id_map_orign = '.$id_areamap);
 				// Save Icons and links
 				if ($map_icon) {
-					// Oganize links<br />
-					// **** HERE ****
+					$db->deleteRow('tb_map_link_icon', 'id_map_orign = '.$id_areamap);
+					// Oganize links
 					foreach ($map_icon as $icon) {
 						$target			= '0';
 						// Take links into accout on the query below

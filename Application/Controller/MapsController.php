@@ -560,17 +560,26 @@
 			// If data was sent
 			if (($id_areamap) && ($coords) && ($id_tiletype) && ($id_field) && ($int_level) && ($vc_mouseover)) {
 				// Update map and area info
-				$id_areamap		= $RepMap->updateMap($id_areamap, $id_course, $vc_mouseover, $id_tiletype, $coords);
+				$id_areamap			= $RepMap->updateMap($id_areamap, $id_course, $vc_mouseover, $id_tiletype, $coords);
 				// If we're updating a local map
 				if (($id_areamap_orign) && ($id_areamap_orign)) {
 					// Get and shrink Map
 					$map			= $RepMap->getMapById($id_areamap);
 					$image			= $this->shrink($map);
 					$image			= ($image) ? $image : 'unveiled.gif';
-					// Change world map and prepare return'
+					// Change world map and prepare return
 					$RepMap->updateWorldMap($id_areamap_orign, $world_pos, $image);
 				}
-				$return			= ($RepMap->updateArea($id_areatype, $id_field, $id_areamap, $int_level, 1)) ? 'ok' : false;
+				// Update area
+				$return				= ($RepMap->updateArea($id_areatype, $id_field, $id_areamap, $int_level, 1)) ? 'ok' : false;
+				// Update child areas' field
+				$chid_maps			= $RepMap->getAllChildMaps($id_areamap);
+				if ($chid_maps) {
+					foreach ($chid_maps as $map) {
+						$area		= $RepMap->getAreaByAreaMapId($map['id']);
+						($area) ? $RepMap->updateArea($area['id_areatype'], $id_field, $area['id_areamap'], $area['int_level'], $area['boo_open']) : false;
+					}
+				}
 			}
 			// Return
 			echo $return;

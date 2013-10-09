@@ -29,6 +29,7 @@
 	use Application\Controller\Repository\Map		as RepMap;
 	use Application\Controller\Repository\Monster	as RepMonster;
 	use Application\Controller\Repository\Question	as RepQuestion;
+	use Application\Controller\Repository\Item		as RepItem;
 
 	// Model Classes
 	use Application\Model\Map						as ModMap;
@@ -195,10 +196,33 @@
 		/* ************************************************************* */
 		/* ************************** ROBOTS *************************** */
 		/* ************************************************************* */
+		
+		public function magicWeapons() {
+			echo 'clocked';
+			die;
+			$RepItem	= new RepItem();
+			$magic_me	= 6;
+			$items		= $RepItem->getAllCombatItemsByType(6);
+			for ($i = 0; $i < count($items); $i++) {
+				if ($items[$i]['int_magic_me'] == 0) {
+					$id_field	= $items[$i]['id_field'];
+					$id_type	= $items[$i]['id_type'];
+					$int_level	= $items[$i]['int_level'];
+					$me_min		= $items[$i]['int_me_min'];
+					$me_max		= $items[$i]['int_me_max'];
+					$magic_me	= $magic_me;
+					$ds			= $items[$i]['int_ds'];
+					$magic_ds	= $items[$i]['int_magic_ds'];
+					$vc_name	= $items[$i]['vc_name'];
+					$RepItem->insertCombatItem($id_field, $id_type, $int_level, $me_min, $me_max, $magic_me, $ds, $magic_ds, $vc_name);
+				}
+			}
+			echo 'ok';
+		}
 
 		public function importQuestions() {
-			//echo 'you have to manually unlock this';
-			//die;
+			echo 'you have to manually unlock this';
+			die;
 			$RepQuestion	= new RepQuestion();
 			set_time_limit(0); // Sem timeout de query
 			$return			= 'Not done';
@@ -207,7 +231,7 @@
 			$level			= false;
 			$questions		= false;
 			$answers		= false;
-			$file			= 'c:\temp\Geo010-WorldCapitals.csv';
+			$file			= 'c:\temp\Chem011-PeriodicTable.csv';
 			$data			= $this->csvIntoArray($file);
 			if ($data) {
 

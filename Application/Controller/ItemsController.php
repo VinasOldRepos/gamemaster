@@ -271,6 +271,7 @@
 					View::set('int_magic_me',	$item['int_magic_me']);
 					View::set('int_ds',			$item['int_ds']);
 					View::set('int_magic_ds',	$item['int_magic_ds']);
+					View::set('int_time',		$item['int_time']);
 					View::set('vc_name',		$item['vc_name']);
 					View::set('vc_field',		$vc_field);
 					View::set('vc_branch',		$vc_branch);
@@ -330,11 +331,12 @@
 			$magic_me	= (isset($_POST['magic_me'])) ? trim($_POST['magic_me']) : '0';
 			$ds			= (isset($_POST['ds'])) ? trim($_POST['ds']) : '0';
 			$magic_ds	= (isset($_POST['magic_ds'])) ? trim($_POST['magic_ds']) : '0';
+			$time		= (isset($_POST['time'])) ? trim($_POST['time']) : '0';
 			$vc_name	= (isset($_POST['vc_name'])) ? trim($_POST['vc_name']) : '0';
 			// If values were sent
 			if (($id_field) && ($id_type) && ($int_level) && ($vc_name)) {
 				// Save Item and prepare return
-				$return	= ($RepItem->insertCombatItem($id_field, $id_type, $int_level, $me_min, $me_max, $magic_me, $ds, $magic_ds, $vc_name)) ? 'ok' : false;
+				$return	= ($RepItem->insertCombatItem($id_field, $id_type, $int_level, $me_min, $me_max, $magic_me, $ds, $magic_ds, $time, $vc_name)) ? 'ok' : false;
 			}
 			// Return
 			echo $return;
@@ -381,11 +383,12 @@
 			$magic_me	= (isset($_POST['magic_me'])) ? trim($_POST['magic_me']) : '0';
 			$ds			= (isset($_POST['ds'])) ? trim($_POST['ds']) : '0';
 			$magic_ds	= (isset($_POST['magic_ds'])) ? trim($_POST['magic_ds']) : '0';
+			$time		= (isset($_POST['time'])) ? trim($_POST['time']) : '0';
 			$vc_name	= (isset($_POST['vc_name'])) ? trim($_POST['vc_name']) : false;
 			// If values were sent
-			if (($id) && ($id_field) && ($id_type) && ($int_level) && ($vc_name)) {
+			if (($id) && ($id_type) && ($int_level) && ($vc_name)) {
 				// Save Item and prepare return
-				$return	= ($RepItem->updateCombatItem($id, $id_field, $id_type, $int_level, $me_min, $me_max, $magic_me, $ds, $magic_ds, $vc_name)) ? 'ok' : false;
+				$return	= ($RepItem->updateCombatItem($id, $id_field, $id_type, $int_level, $me_min, $me_max, $magic_me, $ds, $magic_ds, $time, $vc_name)) ? 'ok' : false;
 			}
 			// Return
 			echo $return;
