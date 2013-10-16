@@ -112,6 +112,11 @@
 	text-decoration:	underline;
 }
 
+.newTown:hover {
+	cursor: 			pointer;
+	text-decoration:	underline;
+}
+
 .tiles_return_row {
 	position:			absolute;
 	border-style:		solid;

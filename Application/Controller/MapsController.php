@@ -358,6 +358,46 @@
  		}
 
 		/*
+		Set a Town  - SetTown()
+			@return format	- print JQquery
+		*/
+		public function SetTown() {
+			// Declare classes
+			$RepMap					= new RepMap();
+			// Initialize variables
+			$return					= false;
+			$icon					= false;
+			$town					= false;
+			$id_areamap				= (isset($_POST['id_areamap'])) ? trim($_POST['id_areamap']) : false;
+			$parent_pos				= (isset($_POST['parent_pos'])) ? trim($_POST['parent_pos']) : false;
+			$id_field				= (isset($_POST['id_field'])) ? trim($_POST['id_field']) : false;
+			$level					= (isset($_POST['level'])) ? trim($_POST['level']) : false;
+			// If values were sent
+			if (($id_areamap) && ($parent_pos) && ($id_field) && ($level)) {
+				// Check if there's an icon on that position
+				$res				= $RepMap->getLinksIconsByAreaId($id_areamap);
+				foreach ($res as $row) {
+					if ($row == $parent_pos) {
+						$icon		= true;
+						$maplinkid	= $row['id'];
+						break;
+					}
+				}
+				// If there is an icon
+				if ($icon){
+					// Update table (set target link as a negative number) and rpepare return
+					$return			= ($RepMap->updateTargetMapId($maplinkid, -1)) ? 'ok' : false;
+				// If there isn't an icon
+				} else {
+					// Create to Town (target link as a negative number) and rpepare return
+					$town			= ($RepMap->addIconLink($id_areamap, -1, 0, $parent_pos, '')) ? 'ok' : false;
+				}
+				// Return
+				echo $return;
+			}
+ 		}
+
+		/*
 		Generates a new local map (random texture) - generateLocalMap()
 			@return format	- print
 		*/

@@ -406,6 +406,31 @@ $('document').ready(function() {
 		return false;
 	});
 
+	// What happens when user clicks on "link to a Town"
+	$(".newTown").live("click", function() {
+		$pos		= $("#target_tile_id").val();
+		$id_areamap	= $("#id_areamap").val();
+		$id_field	= $("#id_field").val();
+		$int_level	= $("#level").val();
+		if (($pos) && ($id_areamap) && ($id_field) && ($int_level)) {
+			$.post('/gamemaster/Maps/SetTown/', {
+				id_areamap:	$id_areamap,
+				parent_pos:	$pos,
+				id_field:	$id_field,
+				int_level:	$int_level
+			}, function($return) {
+				$return		= $return.trim();
+				if ($return == 'ok') {
+					alert('deu certo!');
+				} else {
+					alert('nao deu certo');
+				}
+				return false;
+			});
+		}
+		return false;
+	});
+
 	// What happens when user click on "Save Map"
 	$(".save_map").live("click", function() {
 		$position			= $("#target_tile_id").val();

@@ -848,6 +848,29 @@
 		}
 
 		/*
+		Update Target Map id - updateTargetMapId($id, $id_map_target)
+			@param integer	- tb_map_link_icon.id
+			@param integer	- Target Map Id
+			@param integer	- status
+			@return boolean
+		*/
+		public function updateTargetMapId($id = false, $id_map_target = false) {
+			// Initialize variables
+			$return				= false;
+			// Database Connection
+			$db					= $GLOBALS['db'];
+			// Validate sent information
+			if (($id) && ($id_map_target)) {
+				// Save area map and prepare return (id_area)
+				$area_info[]	= $id_map_target;
+				$fields[]		= 'id_map_target';
+				$return			= $db->updateRow('tb_map_link_icon', $fields, $area_info, 'id = '.$id);
+			}
+			// Return
+			return $return;
+		}
+
+		/*
 		Delete user - deleteAllMapInfoByMapId($id)
 			@param array	- Mixed with user info (order like database w/ id)
 			@return boolean

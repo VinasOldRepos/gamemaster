@@ -208,7 +208,7 @@ function monstersTurn() {
 	return $return;
 }
 
-function playerDamage($damage, $cancel_timecount) {
+function playerDamage($damage) {
 	$player_hp		= parseInt($("#player_hp").val());
 	$player_hp		= $player_hp - $damage;
 	$("#player_hp").val($player_hp);
@@ -225,7 +225,7 @@ function playerDamage($damage, $cancel_timecount) {
 }
 
 function monsterDamage($damage) {
-	$monster_hp		= $monster_hp - $player_dmg;
+	$monster_hp		= $monster_hp - $damage;
 	$("#monster_hp").val($monster_hp);
 	contentShow("#user_hit");
 	setTimeout(function(){contentHide("#user_hit")}, 2000);

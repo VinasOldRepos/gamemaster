@@ -260,7 +260,7 @@
 			@param string	- name
 			@return boolean
 		*/
-		public function updateCombatItem ($id = false, $id_field = false, $id_type = false, $int_level = false, $me_min = false, $me_max = false, $magic_me = false, $ds = false, $magic_ds = false, $time = false, $vc_name = false) {
+		public function updateCombatItem ($id = false, $id_field = false, $id_type = false, $int_level = 0, $me_min = false, $me_max = false, $magic_me = false, $ds = false, $magic_ds = false, $time = false, $vc_name = false) {
 			// Initialize variables
 			$return			= false;
 			// Database Connection

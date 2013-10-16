@@ -325,7 +325,7 @@
 			$return		= false;
 			$id_field	= (isset($_POST['id_field'])) ? trim($_POST['id_field']) : false;
 			$id_type	= (isset($_POST['id_type'])) ? trim($_POST['id_type']) : false;
-			$int_level	= (isset($_POST['int_level'])) ? trim($_POST['int_level']) : false;
+			$int_level	= (isset($_POST['int_level'])) ? trim($_POST['int_level']) : '0';
 			$me_min		= (isset($_POST['me_min'])) ? trim($_POST['me_min']) : '0';
 			$me_max		= (isset($_POST['me_max'])) ? trim($_POST['me_max']) : '0';
 			$magic_me	= (isset($_POST['magic_me'])) ? trim($_POST['magic_me']) : '0';
@@ -334,7 +334,7 @@
 			$time		= (isset($_POST['time'])) ? trim($_POST['time']) : '0';
 			$vc_name	= (isset($_POST['vc_name'])) ? trim($_POST['vc_name']) : '0';
 			// If values were sent
-			if (($id_field) && ($id_type) && ($int_level) && ($vc_name)) {
+			if (($id_field) && ($id_type) && ($vc_name)) {
 				// Save Item and prepare return
 				$return	= ($RepItem->insertCombatItem($id_field, $id_type, $int_level, $me_min, $me_max, $magic_me, $ds, $magic_ds, $time, $vc_name)) ? 'ok' : false;
 			}
@@ -377,7 +377,7 @@
 			$id			= (isset($_POST['id'])) ? trim($_POST['id']) : false;
 			$id_field	= (isset($_POST['id_field'])) ? trim($_POST['id_field']) : false;
 			$id_type	= (isset($_POST['id_type'])) ? trim($_POST['id_type']) : false;
-			$int_level	= (isset($_POST['int_level'])) ? trim($_POST['int_level']) : false;
+			$int_level	= (isset($_POST['int_level'])) ? trim($_POST['int_level']) : '0';
 			$me_min		= (isset($_POST['me_min'])) ? trim($_POST['me_min']) : '0';
 			$me_max		= (isset($_POST['me_max'])) ? trim($_POST['me_max']) : '0';
 			$magic_me	= (isset($_POST['magic_me'])) ? trim($_POST['magic_me']) : '0';
@@ -386,7 +386,7 @@
 			$time		= (isset($_POST['time'])) ? trim($_POST['time']) : '0';
 			$vc_name	= (isset($_POST['vc_name'])) ? trim($_POST['vc_name']) : false;
 			// If values were sent
-			if (($id) && ($id_type) && ($int_level) && ($vc_name)) {
+			if (($id) && ($id_type) && ($vc_name)) {
 				// Save Item and prepare return
 				$return	= ($RepItem->updateCombatItem($id, $id_field, $id_type, $int_level, $me_min, $me_max, $magic_me, $ds, $magic_ds, $time, $vc_name)) ? 'ok' : false;
 			}

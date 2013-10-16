@@ -197,25 +197,21 @@
 		/* ************************** ROBOTS *************************** */
 		/* ************************************************************* */
 		
-		public function magicWeapons() {
-			echo 'clocked';
-			die;
-			$RepItem	= new RepItem();
-			$magic_me	= 6;
-			$items		= $RepItem->getAllCombatItemsByType(6);
+		public function weaponsLeveler() {
+			$RepItem		= new RepItem();
+			$items			= $RepItem->getAllCombatItemsByType(5);
 			for ($i = 0; $i < count($items); $i++) {
-				if ($items[$i]['int_magic_me'] == 0) {
-					$id_field	= $items[$i]['id_field'];
-					$id_type	= $items[$i]['id_type'];
-					$int_level	= $items[$i]['int_level'];
-					$me_min		= $items[$i]['int_me_min'];
-					$me_max		= $items[$i]['int_me_max'];
-					$magic_me	= $magic_me;
-					$ds			= $items[$i]['int_ds'];
-					$magic_ds	= $items[$i]['int_magic_ds'];
-					$vc_name	= $items[$i]['vc_name'];
-					$RepItem->insertCombatItem($id_field, $id_type, $int_level, $me_min, $me_max, $magic_me, $ds, $magic_ds, $vc_name);
-				}
+				$id_field	= $items[$i]['id_field'];
+				$id_type	= $items[$i]['id_type'];
+				$int_level	= $items[$i]['int_magic_me'];
+				$me_min		= $items[$i]['int_me_min'];
+				$me_max		= $items[$i]['int_me_max'];
+				$magic_me	= $items[$i]['int_magic_me'];
+				$ds			= $items[$i]['int_ds'];
+				$magic_ds	= $items[$i]['int_magic_ds'];
+				$time		= $items[$i]['int_time'];
+				$vc_name	= $items[$i]['vc_name'];
+				$RepItem->updateCombatItem ($items[$i]['id'], $id_field, $id_type, $int_level, $me_min, $me_max, $magic_me, $ds, $magic_ds, $time, $vc_name);
 			}
 			echo 'ok';
 		}
