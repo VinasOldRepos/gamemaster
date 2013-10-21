@@ -371,13 +371,13 @@
 			$id_areamap				= (isset($_POST['id_areamap'])) ? trim($_POST['id_areamap']) : false;
 			$parent_pos				= (isset($_POST['parent_pos'])) ? trim($_POST['parent_pos']) : false;
 			$id_field				= (isset($_POST['id_field'])) ? trim($_POST['id_field']) : false;
-			$level					= (isset($_POST['level'])) ? trim($_POST['level']) : false;
+			$level					= (isset($_POST['int_level'])) ? trim($_POST['int_level']) : false;
 			// If values were sent
 			if (($id_areamap) && ($parent_pos) && ($id_field) && ($level)) {
 				// Check if there's an icon on that position
 				$res				= $RepMap->getLinksIconsByAreaId($id_areamap);
 				foreach ($res as $row) {
-					if ($row == $parent_pos) {
+					if ($row['int_pos'] == $parent_pos) {
 						$icon		= true;
 						$maplinkid	= $row['id'];
 						break;

@@ -64,7 +64,7 @@
 				foreach ($links as $link) {
 					$targets[$link['int_pos']][0]	= $link['id_icon'];
 					$targets[$link['int_pos']][1]	= $link['vc_path'];
-					$targets[$link['int_pos']][2]	= ($link['id_map_target'] > 0) ? $link['id_map_target'] : false;
+					$targets[$link['int_pos']][2]	= ($link['id_map_target'] !== false) ? $link['id_map_target'] : false;
 				}
 			}
 			if ($map) {

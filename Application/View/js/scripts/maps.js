@@ -45,7 +45,7 @@ $('document').ready(function() {
 		return false;
 	});
 
-	// What happens when user clickes a local map tile
+	// What happens when user clicks a local map tile
 	$(".local_map_tile").live("click", function() {
 		$("#tile_options").show();
 		$(".opt_details").hide();
@@ -57,11 +57,16 @@ $('document').ready(function() {
 		$last_status	= $("#"+$last_id).attr('status');
 		$last_icon		= $("#"+$last_id).attr('icon');
 		if ($target_id > 0) {
+			$("#linktown").hide();
 			$("#linkmap").attr('target', $target_id);
 			$("#linkmap").show();
+		} else if ($target_id < 0) {
+			$("#linkmap").hide();
+			$("#linktown").show();
 		} else {
 			$("#linkmap").attr('target', '');
 			$("#linkmap").hide();
+			$("#linktown").hide();
 		}
 		if ($last_status == 'selected') {
 			$("#"+$last_id).attr('status', 'unselected');
@@ -82,7 +87,7 @@ $('document').ready(function() {
 		return false;
 	});
 
-	// What happens when user clickes a dungeon map tile
+	// What happens when user clicks a dungeon map tile
 	$(".dungeon_map_tile").live("click", function(e) {
 		$("#area_interaction").hide();
 		$("#map_interaction").hide();
@@ -423,7 +428,7 @@ $('document').ready(function() {
 				if ($return == 'ok') {
 					alert('deu certo!');
 				} else {
-					alert('nao deu certo');
+					alert('nao deu certo\n\n-> '+$return);
 				}
 				return false;
 			});
