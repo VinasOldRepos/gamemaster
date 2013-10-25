@@ -48,28 +48,30 @@ $('document').ready(function() {
 
 	// What happens when user tries to save a combat item
 	$(".new_combatitem").live("click", function() {
-		$id_field	= $("#id_field").val();
-		$id_type	= $("#combat_type").val();
-		$int_level	= $("#combat_int_level").val();
-		$me_min		= $("#me_min").val();
-		$me_max		= $("#me_max").val();
-		$magic_me	= $("#magic_me").val();
-		$ds			= $("#ds").val();
-		$magic_ds	= $("#magic_ds").val();
-		$vc_name	= $("#vc_combatname").val();
-		$time		= $("#time").val();
+		$id_field		= $("#id_field").val();
+		$id_type		= $("#combat_type").val();
+		$int_level		= $("#combat_int_level").val();
+		$me_min			= $("#me_min").val();
+		$me_max			= $("#me_max").val();
+		$magic_me		= $("#magic_me").val();
+		$ds				= $("#ds").val();
+		$magic_ds		= $("#magic_ds").val();
+		$magic_ds		= $("#magic_ds").val();
+		$vc_wearable	= $("#vc_wearable").val();
+		$time			= $("#time").val();
 		if (($id_type) && ($int_level) && ($vc_name)) {
 			$.post('/gamemaster/Items/addCombatItem/', {
-				id_field:	$id_field,
-				id_type:	$id_type,
-				int_level:	$int_level,
-				me_min:		$me_min,
-				me_max:		$me_max,
-				magic_me:	$magic_me,
-				ds:			$ds,
-				magic_ds:	$magic_ds,
-				time:		$time,
-				vc_name:	$vc_name
+				id_field:		$id_field,
+				id_type:		$id_type,
+				int_level:		$int_level,
+				me_min:			$me_min,
+				me_max:			$me_max,
+				magic_me:		$magic_me,
+				ds:				$ds,
+				magic_ds:		$magic_ds,
+				vc_wearable:	$vc_wearable,
+				time:			$time,
+				vc_name:		$vc_name
 			}, function($return) {
 				$return	= $return.trim();
 				if ($return == 'ok') {
@@ -100,7 +102,7 @@ $('document').ready(function() {
 				int_bonus_end:		$int_bonus_end,
 				vc_name:			$vc_name
 			}, function($return) {
-				$return	= $return.trim();
+				$return				= $return.trim();
 				if ($return == 'ok') {
 					$(location).attr('href', '/gamemaster/Items/Inserted');
 				} else {
@@ -134,30 +136,32 @@ $('document').ready(function() {
 
 	// What happens when user updates a combat item
 	$(".updt_combatItem").live("click", function() {
-		$id			= $("#id_item").val();
-		$id_field	= $("#id_field").val();
-		$int_level	= $("#int_level").val();
-		$me_min		= $("#me_min").val();
-		$me_max		= $("#me_max").val();
-		$magic_me	= $("#magic_me").val();
-		$ds			= $("#ds").val();
-		$magic_ds	= $("#magic_ds").val();
-		$id_type	= $("#id_type").val();
-		$vc_name	= $("#vc_name").val();
-		$time		= $("#time").val();
+		$id				= $("#id_item").val();
+		$id_field		= $("#id_field").val();
+		$int_level		= $("#int_level").val();
+		$me_min			= $("#me_min").val();
+		$me_max			= $("#me_max").val();
+		$magic_me		= $("#magic_me").val();
+		$ds				= $("#ds").val();
+		$magic_ds		= $("#magic_ds").val();
+		$id_type		= $("#id_type").val();
+		$vc_wearable	= $("#vc_wearable").val();
+		$vc_name		= $("#vc_name").val();
+		$time			= $("#time").val();
 		if (($id) && ($id_field) && ($int_level) /*&& ($int_bonus)*/ && ($id_type) && ($vc_name)) {
 			$.post('/gamemaster/Items/updtCombatItem/', {
-				id:			$id,
-				id_field:	$id_field,
-				int_level:	$int_level,
-				me_min:		$me_min,
-				me_max:		$me_max,
-				magic_me:	$magic_me,
-				ds:			$ds,
-				magic_ds:	$magic_ds,
-				id_type:	$id_type,
-				time:		$time,
-				vc_name:	$vc_name
+				id:				$id,
+				id_field:		$id_field,
+				int_level:		$int_level,
+				me_min:			$me_min,
+				me_max:			$me_max,
+				magic_me:		$magic_me,
+				ds:				$ds,
+				magic_ds:		$magic_ds,
+				id_type:		$id_type,
+				time:			$time,
+				vc_wearable:	$vc_wearable,
+				vc_name:		$vc_name
 			}, function($return) {
 				$return	= $return.trim();
 				if ($return == 'ok') {

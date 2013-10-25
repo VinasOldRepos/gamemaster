@@ -429,7 +429,7 @@
 			// Database Connection
 			$db				= $GLOBALS['db'];
 			// Query set up
-			$return			= ($int_level) ? $db->getAllRows_Arr('corra_game_db.tb_monster', '*', 'int_level = '.$int_level.' ORDER BY vc_name') : false;
+			$return			= ($int_level) ? $db->getAllRows_Arr('tb_monster', '*', 'int_level = '.$int_level.' ORDER BY vc_name') : false;
 			// Return
 			return $return;
 		}

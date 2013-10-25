@@ -185,7 +185,7 @@
 		}
 
 		/*
-		Insert Combat Item into Database - insertCombatItem($id_field, $id_type, $int_level, $me_min, $me_max, $magic_me, $ds, $magic_ds, $vc_name, $time)
+		Insert Combat Item into Database - insertCombatItem($id_field, $id_type, $int_level, $me_min, $me_max, $magic_me, $ds, $magic_ds, $time, $vc_wearable, $vc_name)
 			@param integer	- Field id
 			@param integer	- Type id
 			@param integer	- level
@@ -195,10 +195,11 @@
 			@param integer	- bonus ds
 			@param integer	- bonus magic ds
 			@param integer	- bonus time
+			@param integer	- where to wear it
 			@param string	- name
 			@return boolean
 		*/
-		public function insertCombatItem($id_field = false, $id_type = false, $int_level = false, $me_min = false, $me_max = false, $magic_me = false, $ds = false, $magic_ds = false, $time = false, $vc_name = false) {
+		public function insertCombatItem($id_field = false, $id_type = false, $int_level = false, $me_min = false, $me_max = false, $magic_me = false, $ds = false, $magic_ds = false, $time = false, $vc_wearable = false, $vc_name = false) {
 			// Initialize variables
 			$return		= false;
 			// Database Connection
@@ -215,6 +216,7 @@
 				$info[]	= $ds;
 				$info[]	= $magic_ds;
 				$info[]	= $time;
+				$info[]	= $vc_wearable;
 				$info[]	= $vc_name;
 				$return	= ($db->insertRow('tb_combat_item', $info, '')) ? $db->last_id() : false;
 			}
@@ -237,7 +239,7 @@
 			// Database Connection
 			$db			= $GLOBALS['db'];
 			// Validate sent information
-			if (($id_type) && ($int_level) && ($int_bonus_start) && ($int_bonus_end) && ($vc_name)) {
+			if (($id_type !== false) && ($int_level !== false) && ($int_bonus_start !== false) && ($int_bonus_end !== false) && ($vc_name !== false)) {
 				// Save area map and prepare return (id_area)
 				$info[]	= $id_type;
 				$info[]	= $int_level;
@@ -260,13 +262,13 @@
 			@param string	- name
 			@return boolean
 		*/
-		public function updateCombatItem ($id = false, $id_field = false, $id_type = false, $int_level = 0, $me_min = false, $me_max = false, $magic_me = false, $ds = false, $magic_ds = false, $time = false, $vc_name = false) {
+		public function updateCombatItem ($id = false, $id_field = false, $id_type = false, $int_level = 0, $me_min = false, $me_max = false, $magic_me = false, $ds = false, $magic_ds = false, $time = false, $vc_wearable = false, $vc_name = false) {
 			// Initialize variables
 			$return			= false;
 			// Database Connection
 			$db				= $GLOBALS['db'];
 			// Validate sent information
-			if (($id !== false) && ($id_field !== false) && ($id_type !== false) && ($int_level !== false) && ($me_min !== false) && ($me_max !== false) && ($magic_me !== false) && ($ds !== false) && ($magic_ds !== false) && ($vc_name !== false) && ($time !== false)) {
+			if (($id !== false) && ($id_field !== false) && ($id_type !== false) && ($int_level !== false) && ($me_min !== false) && ($me_max !== false) && ($magic_me !== false) && ($ds !== false) && ($magic_ds !== false) && ($vc_wearable !== false) && ($vc_name !== false) && ($time !== false)) {
 				// Save area map and prepare return (id_area)
 				$info[]		= $id_field;
 				$info[]		= $id_type;
@@ -277,6 +279,7 @@
 				$info[]		= $ds;
 				$info[]		= $magic_ds;
 				$info[]		= $time;
+				$info[]		= $vc_wearable;
 				$info[]		= $vc_name;
 				$fields[]	= 'id_field';
 				$fields[]	= 'id_type';
@@ -287,6 +290,7 @@
 				$fields[]	= 'int_ds';
 				$fields[]	= 'int_magic_ds';
 				$fields[]	= 'int_time';
+				$fields[]	= 'vc_wearable';
 				$fields[]	= 'vc_name';
 				$return		= $db->updateRow('tb_combat_item', $fields, $info, "id = {$id}");
 			}

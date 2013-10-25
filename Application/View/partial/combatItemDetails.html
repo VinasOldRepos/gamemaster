@@ -33,6 +33,10 @@
 							<label for="ds">DS:</label> <input type="text" name="ds" id="ds" maxlength="100" class="sec_text_input" value="<?php echo $int_ds; ?>" />
 							<label for="magic_ds">Magic Bonus DS:</label> <input type="text" name="magic_ds" id="magic_ds" maxlength="100" class="sec_text_input" value="<?php echo $int_magic_ds; ?>" />
 							<label for="time">Time Bonus (%):</label> <input type="text" name="time" id="time" maxlength="2" class="sec_text_input"  value="<?php echo $int_time; ?>" />
+							<label for="combat_type">Where to wear:</label>
+							<select name="vc_wearable" id="vc_wearable" class="sec_text_input" style="width: 206px;">
+								<?php echo $wearables; ?>
+							</select>
 							<label for="vc_name">Name:</label> <input type="text" name="vc_name" id="vc_name" maxlength="100" class="sec_text_input" value="<?php echo $vc_name; ?>" />
 
 							<div class="form_buttons">

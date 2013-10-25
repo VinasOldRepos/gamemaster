@@ -30,6 +30,60 @@
 			return $return;
 		}
 
+		public function comboWearables($null_select = false, $id = false) {
+			if ($id == 'head') {
+				$return			= '<option value="head" selected="selected">Head</option>'.PHP_EOL;
+			} else {
+				$return			= '<option value="head">Head</option>'.PHP_EOL;
+			}
+			if ($id == 'neck') {
+				$return			.= '<option value="neck" selected="selected">Neck</option>'.PHP_EOL;
+			} else {
+				$return			.= '<option value="neck">Neck</option>'.PHP_EOL;
+			}
+			if ($id == 'chest') {
+				$return			.= '<option value="chest" selected="selected">Chest</option>'.PHP_EOL;
+			} else {
+				$return			.= '<option value="chest">Chest</option>'.PHP_EOL;
+			}
+			if ($id == 'back') {
+				$return			.= '<option value="back" selected="selected">Back</option>'.PHP_EOL;
+			} else {
+				$return			.= '<option value="back">Back</option>'.PHP_EOL;
+			}
+			if ($id == 'mainhand') {
+				$return			.= '<option value="mainhand" selected="selected">Main Hand</option>'.PHP_EOL;
+			} else {
+				$return			.= '<option value="mainhand">Main Hand</Main hand>'.PHP_EOL;
+			}
+			if ($id == 'offhand') {
+				$return			.= '<option value="offhand" selected="selected">Off Hand</option>'.PHP_EOL;
+			} else {
+				$return			.= '<option value="offhand">Off Hand</option>'.PHP_EOL;
+			}
+			if ($id == 'bothhands') {
+				$return			.= '<option value="bothhands" selected="selected">Both Hands</option>'.PHP_EOL;
+			} else {
+				$return			.= '<option value="bothhands">Both Hands</option>'.PHP_EOL;
+			}
+			if ($id == 'finger') {
+				$return			.= '<option value="finger" selected="selected">Finger</option>'.PHP_EOL;
+			} else {
+				$return			.= '<option value="finger">Finger</option>'.PHP_EOL;
+			}
+			if ($id == 'legs') {
+				$return			.= '<option value="legs" selected="selected">Legs</option>'.PHP_EOL;
+			} else {
+				$return			.= '<option value="legs">Legs</option>'.PHP_EOL;
+			}
+			if ($id == 'feet') {
+				$return			.= '<option value="feet" selected="selected">Feet</option>'.PHP_EOL;
+			} else {
+				$return			.= '<option value="feet">Feet</option>'.PHP_EOL;
+			}
+			return $return;
+		}
+
 		public function listCombatItems($entries = false, $fields = false, $ordering = false, $direction = false) {
 			$return					= false;
 			if (($entries) && ($fields)) {
