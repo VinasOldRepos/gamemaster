@@ -145,10 +145,10 @@
 					$RepQuestion		= new RepQuestion();
 					$id_branch			= ($branch = $RepQuestion->getBranchFieldId($area['id_field'])) ? $branch['id'] : false;
 					$branches			= $RepQuestion->getAllBranches();
-					$fields				= $RepQuestion->getAllFields();
+					$fields				= $RepQuestion->getFieldsBranchId($id_branch);
 					// Model Field Related Info
-					$branches			= ($branches) ? $ModMap->combo($branches, false, $id_branch) : false;
-					$fields				= ($fields) ? $ModMap->combo($fields, false, $area['id_field']) : false;
+					$branches			= ($branches) ? $ModMap->combo($branches, true, $id_branch) : false;
+					$fields				= ($fields) ? $ModMap->combo($fields, true, $area['id_field']) : false;
 					// Define sub menu selection
 					$GLOBALS['menu']['maps']['opt1_css'] = 'details_item_on';
 					// Prepare return values
@@ -492,7 +492,7 @@
 			$world_pos			= (isset($_POST['world_pos'])) ? trim($_POST['world_pos']) : false;
 			$id_world			= (isset($_POST['id_world'])) ? trim($_POST['id_world']) : false;
 			$id_areamap_orign	= (isset($_POST['id_areamap'])) ? trim($_POST['id_areamap']) : false;
-			$id_field			= (isset($_POST['id_field'])) ? trim($_POST['id_field']) : false;
+			$id_field			= (isset($_POST['id_field'])) ? trim($_POST['id_field']) : 0;
 			$level				= (isset($_POST['level'])) ? trim($_POST['level']) : false;
 			$vc_name			= (isset($_POST['vc_name'])) ? trim($_POST['vc_name']) : false;
 			$vc_mouseover		= (isset($_POST['vc_mouseover'])) ? trim($_POST['vc_mouseover']) : false;
@@ -502,7 +502,7 @@
 				}
 			}
 			// If data was sent
-			if (($id_areatype) && ($id_areamap_orign) && ($world_pos) && ($id_world) && ($id_field) && ($coords) && ($level) && ($vc_name) && ($vc_mouseover)) {
+			if (($id_areatype) && ($id_areamap_orign) && ($world_pos) && ($id_world) && ($coords) && ($vc_name) && ($vc_mouseover)) {
 				// Save map area
 				$id_areamap		= $RepMap->insertMap(0, 0, $id_areatype, $vc_name, $vc_mouseover, $coords);
 				// If map area was saved
@@ -591,6 +591,7 @@
 			$world_pos			= (isset($_POST['world_pos'])) ? trim($_POST['world_pos']) : false;
 			$id_areamap_orign	= (isset($_POST['id_areamap_orign'])) ? trim($_POST['id_areamap_orign']) : false;
 			$vc_mouseover		= (isset($_POST['vc_mouseover'])) ? trim($_POST['vc_mouseover']) : false;
+			$vc_name			= (isset($_POST['vc_name'])) ? trim($_POST['vc_name']) : false;
 			$id_course			= (isset($_POST['id_course'])) ? trim($_POST['id_course']) : 0;
 			if ($_POST['coords']) {
 				for ($i = 0; $i < 100; $i++) {
@@ -598,9 +599,9 @@
 				}
 			}
 			// If data was sent
-			if (($id_areamap) && ($coords) && ($id_tiletype) && ($id_field) && ($int_level) && ($vc_mouseover)) {
+			if (($id_areamap) && ($coords) && ($id_tiletype) && ($vc_mouseover)) {
 				// Update map and area info
-				$id_areamap			= $RepMap->updateMap($id_areamap, $id_course, $vc_mouseover, $id_tiletype, $coords);
+				$id_areamap			= $RepMap->updateMap($id_areamap, $id_course, $vc_name, $vc_mouseover, $id_tiletype, $coords);
 				// If we're updating a local map
 				if (($id_areamap_orign) && ($id_areamap_orign)) {
 					// Get and shrink Map

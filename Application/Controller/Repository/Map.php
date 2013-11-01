@@ -636,13 +636,13 @@
 			@param integer	- status
 			@return boolean
 		*/
-		public function insertArea($id_world = false, $id_areatype = false, $id_field = false, $id_areamap = false, $level = false, $boo_open = true) {
+		public function insertArea($id_world = false, $id_areatype = false, $id_field = 0, $id_areamap = false, $level = 0, $boo_open = true) {
 			// Initialize variables
 			$return				= false;
 			// Database Connection
 			$db					= $GLOBALS['db'];
 			// Validate sent information
-			if (($id_world) && ($id_areatype) && ($id_field) && ($id_areamap) && ($level) && ($boo_open)) {
+			if (($id_world !== false) && ($id_areatype !== false) && ($id_field !== false) && ($id_areamap !== false) && ($level !== false) && ($boo_open !== false)) {
 				// Save area map and prepare return (id_area)
 				$area_info[]	= $id_world;
 				$area_info[]	= $id_areatype;
@@ -736,7 +736,7 @@
 		}
 
 		/*
-		Update Map in the Database - updateMap($id_areamap, $id_course, vc_mouseover, $id_areatype, $coords)
+		Update Map in the Database - updateMap($id_areamap, $id_course, $vc_name, $vc_mouseover, $id_areatype, $coords)
 			@param integer	- Area type id
 			@param integer	- Course id
 			@param integer	- Mouseover text
@@ -744,7 +744,7 @@
 			@param integer	- Map coords
 			@return boolean
 		*/
-		public function updateMap($id_areamap = false, $id_course = 0, $vc_mouseover = false, $id_areatype = false, $coords = false) {
+		public function updateMap($id_areamap = false, $id_course = 0, $vc_name = false, $vc_mouseover = false, $id_areatype = false, $coords = false) {
 			// Initialize variables
 			$return					= false;
 			$map_icon				= false;
@@ -755,9 +755,15 @@
 				// Prepare map data to be inserted
 				$map_data[]			= $id_areatype;
 				$map_data[]			= $id_course;
+				if ($vc_name) {
+					$map_data[]		= $vc_name;
+				}
 				$map_data[]			= $vc_mouseover;
 				$fields[]			= 'id_areatype';
 				$fields[]			= 'id_course';
+				if ($vc_name) {
+					$fields[]		= 'vc_name';
+				}
 				$fields[]			= 'vc_mouseover';
 				for ($i = 0; $i < 100; $i++) {
 					$map_data[]		= $coords[$i][0];
@@ -825,13 +831,13 @@
 			@param integer	- status
 			@return boolean
 		*/
-		public function updateArea($id_areatype = false, $id_field = false, $id_areamap = false, $level = false, $boo_open = true) {
+		public function updateArea($id_areatype = false, $id_field = 0, $id_areamap = false, $level = 0, $boo_open = true) {
 			// Initialize variables
 			$return				= false;
 			// Database Connection
 			$db					= $GLOBALS['db'];
 			// Validate sent information
-			if (($id_areatype) && ($id_field) && ($id_areamap) && ($level) && ($boo_open)) {
+			if (($id_areatype !== false) && ($id_field !== false) && ($id_areamap !== false) && ($level !== false) && ($boo_open !== false)) {
 				// Save area map and prepare return (id_area)
 				$area_info[]	= $id_areatype;
 				$area_info[]	= $id_field;

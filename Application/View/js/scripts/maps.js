@@ -221,16 +221,21 @@ $('document').ready(function() {
 	$("#id_branch").live("change", function() {
 		$id_branch	= $(this).val();
 		if ($id_branch) {
-			$.post('/gamemaster/Maps/loadFields', {
-				id_branch:	$id_branch
-			}, function($return) {
-				if ($return) {
-					$("#id_field").html($return);
-				} else {
-					alert("Sorry,\n\nThere was a problem when loading fields for the selected branch.\n\nError: ");
-				}
-				return false;
-			});
+			if ($id_branch > 0) {
+				$.post('/gamemaster/Maps/loadFields', {
+					id_branch:	$id_branch
+				}, function($return) {
+					if ($return) {
+						$("#id_field").html($return);
+					} else {
+						alert("Sorry,\n\nThere was a problem when loading fields for the selected branch.\n\nError: ");
+					}
+					return false;
+				});
+			} else {
+				$("#id_field").val(0);
+				//$("#id_field select").val(0);
+			}
 		}
 		return false;
 	});
@@ -426,9 +431,9 @@ $('document').ready(function() {
 			}, function($return) {
 				$return		= $return.trim();
 				if ($return == 'ok') {
-					alert('deu certo!');
+					alert('Linked to a town!');
 				} else {
-					alert('nao deu certo\n\n-> '+$return);
+					alert('Could not link this to a town.\n\n-> '+$return);
 				}
 				return false;
 			});
@@ -481,8 +486,9 @@ $('document').ready(function() {
 		$id_areamap_orign	= $("#parent_id_areamap").val();
 		$vc_mouseover		= $("#vc_mouseover").val();
 		$id_course			= $("#id_course").val();
+		$vc_name			= $("#vc_name").val();
 		$coords				= getAllMapsCoords();
-		if (($id_areamap) && ($id_tiletype) && ($id_field) && ($int_level) && ($coords) ) {
+		if (($id_areamap) && ($id_tiletype) && ($coords)) {
 			$.post('/gamemaster/Maps/updateMap', {
 				id_areamap:			$id_areamap,
 				id_areatype:		$id_areatype,
@@ -493,6 +499,7 @@ $('document').ready(function() {
 				id_areamap_orign:	$id_areamap_orign,
 				vc_mouseover:		$vc_mouseover,
 				id_course:			$id_course,
+				vc_name:			$vc_name,
 				coords:				$coords
 			}, function($return) {
 				$return				= $return.trim();
