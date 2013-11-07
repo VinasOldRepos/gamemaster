@@ -198,16 +198,16 @@
 }
 
 .monsters_return_row {
-	position:			absolute;
 	border-style:		solid;
 	border-color:		#000;
 	border-width:		1px;
-	margin-bottom:		2px;
+	margin-bottom:		1px;
 	background-color:	#FFF;
 	color:				#7A7A7A;
 }
 
 .monsters_return_row:hover {
+	position:			absolute;
 	cursor:				pointer;
 	background-color:	#7A7A7A;
 	color:				#FFF;
@@ -265,7 +265,7 @@
 
 .details_result_box {
 	margin-left:	10px;
-	height:			300px;
+	height:			350px;
 	overflow-y:		scroll;
 	background-color: #FFF;
 }
