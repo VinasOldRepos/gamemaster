@@ -240,6 +240,29 @@ $('document').ready(function() {
 		return false;
 	});
 
+	// What happens when user selects field (new map)
+	$("#id_field").live("change", function() {
+		$id_field	= $(this).val();
+		if ($id_field) {
+			if ($id_field > 0) {
+				$.post('/gamemaster/Maps/loadCourses', {
+					id_field:	$id_field
+				}, function($return) {
+					if ($return) {
+						$("#id_course").html($return);
+					} else {
+						alert("Sorry,\n\nThere was a problem when loading courses for the selected field.\n\nError: ");
+					}
+					return false;
+				});
+			} else {
+				$("#id_course").val(0);
+				//$("#id_field select").val(0);
+			}
+		}
+		return false;
+	});
+
 	// What happens when user clicks on an action menu item
 	$(".tile_opt").live("click", function() {
 		$this_block		= $(this).attr('key');
@@ -449,6 +472,7 @@ $('document').ready(function() {
 		$id_world			= $("#id_world").val();
 		$id_areamap			= $("#id_areamap").val();
 		$id_field			= $("#id_field").val();
+		$id_course			= $("#id_course").val();
 		$level				= $("#level").val();
 		$vc_name			= $("#vc_name").val();
 		$vc_mouseover		= $("#vc_mouseover").val();
@@ -459,6 +483,7 @@ $('document').ready(function() {
 			id_world:		$id_world,
 			id_areamap:		$id_areamap,
 			id_field:		$id_field,
+			id_course:		$id_course,
 			level:			$level,
 			vc_name:		$vc_name,
 			vc_mouseover:	$vc_mouseover,
@@ -481,6 +506,7 @@ $('document').ready(function() {
 		$id_tiletype		= $("#id_tiletype").val();
 		$id_areatype		= $("#id_areatype").val();
 		$id_field			= $("#id_field").val();
+		$id_course			= $("#id_course").val();
 		$int_level			= $("#level").val();
 		$world_pos			= $("#world_pos").val();
 		$id_areamap_orign	= $("#parent_id_areamap").val();
@@ -494,6 +520,7 @@ $('document').ready(function() {
 				id_areatype:		$id_areatype,
 				id_tiletype:		$id_tiletype,
 				id_field:			$id_field,
+				id_course:			$id_course,
 				int_level:			$int_level,
 				world_pos:			$world_pos,
 				id_areamap_orign:	$id_areamap_orign,

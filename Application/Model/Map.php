@@ -277,9 +277,9 @@
 				$return			= '<div class="details_result_box" id="tiles_result_box">'.PHP_EOL;
 				for ($i = 0; $i < $tot_entries; $i++) {
 					$return		.= '	<div class="monsters_return_row" key="'.$entries[$i]['id'].'">'.PHP_EOL;
-					$return		.= '		<div class="result_field result_id">'.$entries[$i]['vc_id'].'</div>'.PHP_EOL;
-					$return		.= '		<div class="result_field result_iconname">'.$entries[$i]['vc_name'].'</div>'.PHP_EOL;
-					$return		.= '	</div><br />'.PHP_EOL;
+					$return		.= '		<div class="result_id" style="float: left;">'.$entries[$i]['vc_id'].'</div>'.PHP_EOL;
+					$return		.= '		<div class="result_iconname" style="float: inline;">'.$entries[$i]['vc_name'].'</div>'.PHP_EOL;
+					$return		.= '	</div>'.PHP_EOL;
 				}
 				$return			.= '</div><br />'.PHP_EOL;
 			}

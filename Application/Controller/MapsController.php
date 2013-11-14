@@ -130,43 +130,49 @@
 				if ($area) {
 					// Load Area Related info
 					$map				= $RepMap->getMapById($area['id_areamap']);
-					$id_areatype		= ($map) ? $map['id_areatype'] : false;
-					$parent_areamap		= $RepMap->getParentMapIdTypeByMapId($area['id_areamap']);
-					$parent_id_areamap	= $parent_areamap['id_map_orign'];
-					$mapname			= $map['vc_name'];
-					$mouseover			= $map['vc_mouseover'];
-					$link_icon			= $RepMap->getLinksIconsByAreaId($area['id_areamap']);
-					$worlds				= $RepMap->getAllWorlds();
-					$world_pos			= $RepMap->getWorldPosition($parent_id_areamap, $id_areamap);
-					// Model Area Related info
-					$map				= $ModMap->map($map, $link_icon);
-					$worlds				= ($worlds) ? $ModMap->combo($worlds, false, $area['id_world']) : false;
-					// Load Field related info
-					$RepQuestion		= new RepQuestion();
-					$id_branch			= ($branch = $RepQuestion->getBranchFieldId($area['id_field'])) ? $branch['id'] : false;
-					$branches			= $RepQuestion->getAllBranches();
-					$fields				= $RepQuestion->getFieldsBranchId($id_branch);
-					// Model Field Related Info
-					$branches			= ($branches) ? $ModMap->combo($branches, true, $id_branch) : false;
-					$fields				= ($fields) ? $ModMap->combo($fields, true, $area['id_field']) : false;
-					// Define sub menu selection
-					$GLOBALS['menu']['maps']['opt1_css'] = 'details_item_on';
-					// Prepare return values
-					View::set('id_areamap',			$area['id_areamap']);
-					View::set('id_areatype',		$area['id_areatype']);
-					View::set('id_tiletype',		$area['id_areatype']);
-					View::set('map',				$map);
-					View::set('worlds',				$worlds);
-					View::set('branches',			$branches);
-					View::set('fields',				$fields);
-					View::set('level',				$area['int_level']);
-					View::set('mapname',			$mapname);
-					View::set('mouseover',			$mouseover);
-					View::set('parent_id_areamap',	$parent_id_areamap);
-					View::set('vc_id_areamap',		sprintf('%04d', $area['id_areamap']));
-					View::set('world_pos',			sprintf('%03d', $world_pos));
-					// Render view
-					View::render('mapsEdit');
+					if ($map) {
+						$id_areatype		= $map['id_areatype'];
+						$id_course			= $map['id_course'];
+						$parent_areamap		= $RepMap->getParentMapIdTypeByMapId($area['id_areamap']);
+						$parent_id_areamap	= $parent_areamap['id_map_orign'];
+						$mapname			= $map['vc_name'];
+						$mouseover			= $map['vc_mouseover'];
+						$link_icon			= $RepMap->getLinksIconsByAreaId($area['id_areamap']);
+						$worlds				= $RepMap->getAllWorlds();
+						$world_pos			= $RepMap->getWorldPosition($parent_id_areamap, $id_areamap);
+						// Load Field related info
+						$RepQuestion		= new RepQuestion();
+						$id_branch			= ($branch = $RepQuestion->getBranchFieldId($area['id_field'])) ? $branch['id'] : false;
+						$branches			= $RepQuestion->getAllBranches();
+						$fields				= $RepQuestion->getFieldsBranchId($id_branch);
+						$courses			= $RepQuestion->getCoursesByFieldId($area['id_field']);
+						// Model Area Related info
+						$map				= $ModMap->map($map, $link_icon);
+						$worlds				= ($worlds) ? $ModMap->combo($worlds, false, $area['id_world']) : false;
+						// Model Field Related Info
+						$branches			= ($branches) ? $ModMap->combo($branches, true, $id_branch) : false;
+						$fields				= ($fields) ? $ModMap->combo($fields, true, $area['id_field']) : false;
+						$courses			= ($courses) ? $ModMap->combo($courses, true, $id_course) : false;
+						// Define sub menu selection
+						$GLOBALS['menu']['maps']['opt1_css']	= 'details_item_on';
+						// Prepare return values
+						View::set('id_areamap',			$area['id_areamap']);
+						View::set('id_areatype',		$area['id_areatype']);
+						View::set('id_tiletype',		$area['id_areatype']);
+						View::set('map',				$map);
+						View::set('worlds',				$worlds);
+						View::set('branches',			$branches);
+						View::set('fields',				$fields);
+						View::set('courses',			$courses);
+						View::set('level',				$area['int_level']);
+						View::set('mapname',			$mapname);
+						View::set('mouseover',			$mouseover);
+						View::set('parent_id_areamap',	$parent_id_areamap);
+						View::set('vc_id_areamap',		sprintf('%04d', $area['id_areamap']));
+						View::set('world_pos',			sprintf('%03d', $world_pos));
+						// Render view
+						View::render('mapsEdit');
+					}
 				}
 			}
  		}
@@ -493,6 +499,7 @@
 			$id_world			= (isset($_POST['id_world'])) ? trim($_POST['id_world']) : false;
 			$id_areamap_orign	= (isset($_POST['id_areamap'])) ? trim($_POST['id_areamap']) : false;
 			$id_field			= (isset($_POST['id_field'])) ? trim($_POST['id_field']) : 0;
+			$id_course			= (isset($_POST['id_course'])) ? trim($_POST['id_course']) : 0;
 			$level				= (isset($_POST['level'])) ? trim($_POST['level']) : false;
 			$vc_name			= (isset($_POST['vc_name'])) ? trim($_POST['vc_name']) : false;
 			$vc_mouseover		= (isset($_POST['vc_mouseover'])) ? trim($_POST['vc_mouseover']) : false;
@@ -504,7 +511,7 @@
 			// If data was sent
 			if (($id_areatype) && ($id_areamap_orign) && ($world_pos) && ($id_world) && ($coords) && ($vc_name) && ($vc_mouseover)) {
 				// Save map area
-				$id_areamap		= $RepMap->insertMap(0, 0, $id_areatype, $vc_name, $vc_mouseover, $coords);
+				$id_areamap		= $RepMap->insertMap(0, $id_course, $id_areatype, $vc_name, $vc_mouseover, $coords);
 				// If map area was saved
 				if ($id_areamap) {
 					// Save area info
