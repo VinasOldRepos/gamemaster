@@ -245,7 +245,7 @@
 					$tiles				= ($tiles) ? $ModMap->listEncounterBkgTiles($tiles) : false;
 					$monsters			= ($monsters) ? $ModMap->mapMonsters($monsters) : '';
 					$areas				= ($areas)  ? $ModMap->listAreaOrder($areas) : false;
-					$courses			= ($courses) ? $ModMap->combo($courses, false, $id_course) : false;
+					$courses			= ($courses) ? $ModMap->combo($courses, true, $id_course) : false;
 					// Select "Back" link
 					if ($parent_areamap['boo_encounter'] == 1) {
 						$link			= '/gamemaster/Maps/EditDungeon/'.$parent_id_areamap;
