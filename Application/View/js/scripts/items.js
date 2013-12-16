@@ -59,6 +59,7 @@ $('document').ready(function() {
 		$magic_ds		= $("#magic_ds").val();
 		$vc_wearable	= $("#vc_wearable").val();
 		$time			= $("#time").val();
+		$vc_name		= $("#vc_combatname").val();
 		if (($id_type) && ($int_level) && ($vc_name)) {
 			$.post('/gamemaster/Items/addCombatItem/', {
 				id_field:		$id_field,
